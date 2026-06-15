@@ -2,8 +2,8 @@
   "branch_mode": "nightly",
   "base_release_tag": "v2026.609.0",
   "base_release_sha": "a0f7d3dabaf5308ade45cae0c64ebd133948dca2",
-  "last_seen_parent_sha": "69a368ed5183b10eacbc944480ec00b23f528b1e",
-  "last_applied_manifest_hash": "5b6032dc2d6de2378375ec80e929660fb12e415496cfebd82903ea3d0b5a9087",
-  "last_run_at": "2026-06-11T10:26:09Z",
+  "last_seen_parent_sha": "412a04c964915fd45e15675f064d24332d50f6cc",
+  "last_applied_manifest_hash": "18c709087796eac108c550639c7f5c44697aa932b7872673893311ef40a94ce1",
+  "last_run_at": "2026-06-15T09:27:27Z",
   "last_run_outcome": "applied"
 }
