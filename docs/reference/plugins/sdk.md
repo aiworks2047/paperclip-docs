@@ -79,6 +79,8 @@ Types: `PluginDefinition`, `PaperclipPlugin`, `PluginHealthDiagnostics`, `Plugin
 | `PluginLogger` | Structured logger (`ctx.logger.info/warn/error`). |
 | `PluginDatabaseClient` | Access the managed Postgres namespace declared for the plugin. |
 
+When you emit a metric with `metrics.write` (via `PluginMetricsClient`) or write a line with `log` (via `PluginLogger`), you can pass an optional `companyId` to scope that record to a company so it is cascade-deleted when the company is removed; omit it or pass `null` to keep the record at instance scope.
+
 Issue-domain helpers: `PluginIssueMutationActor`, `PluginIssueRelationSummary`, `PluginIssueCheckoutOwnership`, `PluginIssueWakeupResult`, `PluginIssueWakeupBatchResult`, `PluginIssueRunSummary`, `PluginIssueApprovalSummary`, `PluginIssueCostSummary`, `PluginBudgetIncidentSummary`, `PluginIssueInvocationBlockSummary`, `PluginIssueOrchestrationSummary`, `PluginIssueSubtreeOptions`, `PluginIssueAssigneeSummary`, `PluginIssueSubtree`, `IssueDocumentSummary`.
 
 Workspace metadata for `ctx.executionWorkspaces`: `PluginExecutionWorkspaceMetadata`.

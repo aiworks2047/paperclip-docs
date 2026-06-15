@@ -85,6 +85,115 @@ First-party sandbox provider that provisions [Modal](https://modal.com/) sandbox
 
 ---
 
+## Kubernetes (`driver: "kubernetes"`)
+
+Package: `@paperclipai/plugin-kubernetes` (alpha, currently `v0.1.0`).
+
+This is the self-hostable sandbox provider. Instead of handing agent runs to a managed cloud service, you run each one as a workload inside your own Kubernetes cluster — one tenant namespace per company, a hardened pod per run, and a deny-all network baseline you open up explicitly. Reach for it when you need agents to execute on infrastructure you control: your own compute, your own network policy, your own isolation guarantees.
+
+Install it like any other plugin from the [Plugins](../../administration/plugins.md) page:
+
+```text
+@paperclipai/plugin-kubernetes
+```
+
+For local development you can install from a workspace path instead:
+
+```bash
+paperclipai plugin install --local /path/to/paperclip/packages/plugins/sandbox-providers/kubernetes
+```
+
+### When To Use
+
+- You want agent sandboxes to run as Kubernetes pods on a cluster you operate, with tenant isolation and network policy enforced by Kubernetes itself.
+- You need agents on infrastructure that never leaves your environment — air-gapped, regulated, or self-hosted by policy.
+- You want microVM-grade isolation per run (via Kata Containers and Firecracker).
+
+### Backends
+
+The plugin runs in one of two backend modes, selected with the `backend` field:
+
+| Backend | Default | Stability | Multi-command exec | Requires |
+|---|---|---|---|---|
+| `sandbox-cr` | Yes | Alpha | Yes | `kubernetes-sigs/agent-sandbox` controller |
+| `job` | No | Stable | No | Nothing beyond Kubernetes 1.27+ |
+
+`sandbox-cr` (the default) creates a `Sandbox` custom resource. Its controller provisions a long-lived pod that Paperclip execs individual commands into — this is the multi-command pattern that adapter installation depends on. When the lease is released, the `Sandbox` CR is deleted and the controller tears the pod down.
+
+`job` is the stable fallback. It creates a `batch/v1` Job whose container entrypoint runs once and exits, so there's no multi-command exec — Paperclip's adapter-install pattern will not work in job mode. Choose it only when you can't install the agent-sandbox controller, or when you must stick to strictly stable Kubernetes APIs.
+
+### Prerequisites
+
+For the default `sandbox-cr` backend:
+
+1. A Kubernetes cluster running 1.27 or later.
+2. The [`kubernetes-sigs/agent-sandbox`](https://github.com/kubernetes-sigs/agent-sandbox) controller installed in the cluster. It's alpha and installs the `sandboxes.agents.x-k8s.io/v1alpha1` CRD plus its controller:
+
+   ```bash
+   kubectl apply -f https://github.com/kubernetes-sigs/agent-sandbox/releases/latest/download/install.yaml
+   ```
+
+3. Paperclip-server with access to the cluster — either in-cluster (`inCluster: true`) or external via a `kubeconfig`.
+
+For the `job` backend you only need a 1.27+ cluster and cluster access from Paperclip-server; no extra controllers or CRDs.
+
+> The `sandbox-cr` backend is built on agent-sandbox `v1alpha1`. Expect breaking changes as that CRD evolves, and keep the `job` backend in mind as the stable escape hatch.
+
+### Configure
+
+Create a sandbox environment under **Company Settings → Environments** with `driver: kubernetes`. Exactly one auth field is required:
+
+- `inCluster: true` — use the in-pod ServiceAccount credentials, when Paperclip-server runs inside the same cluster.
+- `kubeconfig: <YAML>` — an inline kubeconfig, stored as a company secret.
+- `kubeconfigSecretRef: <secret-uuid>` — a reference to an existing Paperclip secret.
+
+Common optional fields:
+
+| Field | Default | Purpose |
+|---|---|---|
+| `backend` | `"sandbox-cr"` | `sandbox-cr` (alpha, requires the agent-sandbox controller) or `job` (stable, one-shot entrypoint). |
+| `adapterType` | `"claude_local"` | One of the supported adapter types (`claude_local`, `codex_local`, `gemini_local`, `cursor_local`, `opencode_local`, `acpx_local`, `pi_local`). Determines the runtime image, env keys, and egress allow-list. |
+| `namespacePrefix` | `"paperclip-"` | Prefix for the per-company tenant namespace. |
+| `companySlug` | derived from companyId | Override the auto-derived company slug. |
+| `imageRegistry` | (none) | Override the default registry for agent runtime images. |
+| `imageAllowList` | `[]` | Glob patterns of allowed `target.imageOverride` values. Empty means no override is permitted. |
+| `imagePullSecrets` | `[]` | Names of pre-created Docker image pull secrets in the tenant namespace. |
+| `egressAllowFqdns` | `[]` | Additional FQDNs beyond the adapter defaults (for example `api.anthropic.com`). |
+| `egressAllowCidrs` | `[]` | Additional CIDRs to allow egress to. |
+| `egressMode` | `"standard"` | `standard` (NetworkPolicy + CIDRs) or `cilium` (CiliumNetworkPolicy + FQDN allow-list). |
+| `runtimeClassName` | (none) | For example `kata-fc` for Firecracker-backed microVMs. The cluster must have the RuntimeClass installed. |
+| `serviceAccountAnnotations` | `{}` | Annotations applied to the per-tenant ServiceAccount (for example an IRSA `eks.amazonaws.com/role-arn`). |
+| `jobTtlSecondsAfterFinished` | `900` | Seconds after a Job completes before garbage collection. |
+| `podActivityDeadlineSec` | `3600` | Hard ceiling on a single run's wall-clock time. |
+
+The `adapterType` you pick drives the runtime image and egress defaults. For example, `claude_local` runs `ghcr.io/paperclipai/agent-runtime-claude:v1` and pre-allows egress to `api.anthropic.com`; `codex_local` runs `ghcr.io/paperclipai/agent-runtime-codex:v1` and allows `api.openai.com`. The full JSON Schema lives in `src/manifest.ts` in the parent repo.
+
+### What gets created in your cluster
+
+The provider provisions per-company resources lazily on first dispatch. Each tenant company gets its own namespace and isolation primitives:
+
+```
+Namespace          paperclip-{companySlug}   (Pod Security Standards: restricted)
+ServiceAccount     paperclip-tenant-sa
+Role               paperclip-tenant-role     (only get pods/log)
+RoleBinding        paperclip-tenant-rb
+ResourceQuota      paperclip-quota
+LimitRange         paperclip-limits
+NetworkPolicy      paperclip-deny-all        (deny ingress + egress baseline)
+NetworkPolicy      paperclip-egress-allow    (DNS + paperclip-server callback + your CIDRs)
+                   OR CiliumNetworkPolicy paperclip-egress-fqdn when egressMode=cilium
+```
+
+Each run then gets its own short-lived resources, named `pc-{ulid}`, that cascade-delete when the lease is released (a `Sandbox` CR + pod + `pc-{ulid}-env` secret under `sandbox-cr`, or a `batch/v1` Job + pod + secret under `job`).
+
+### Security baseline
+
+Every agent pod runs non-root (`runAsUser: 1000`, `runAsNonRoot: true`), drops all Linux capabilities with `allowPrivilegeEscalation: false`, uses `readOnlyRootFilesystem: true` with explicit `emptyDir` mounts for the writable paths it needs, and applies `seccompProfile: RuntimeDefault`. Each tenant namespace enforces `pod-security.kubernetes.io/enforce: restricted` and starts from a deny-all NetworkPolicy, so the only egress that works is what the adapter defaults and your `egressAllowFqdns` / `egressAllowCidrs` open up.
+
+For stronger isolation, install [Kata Containers](https://github.com/kata-containers/kata-containers) with the Firecracker hypervisor and set `runtimeClassName: kata-fc`. Each agent pod then runs inside a Firecracker microVM. This requires nodes capable of nested virtualization.
+
+---
+
 ## Fake Sandbox (`provider: "fake-plugin"`)
 
 Package: `@paperclipai/plugin-fake-sandbox`.

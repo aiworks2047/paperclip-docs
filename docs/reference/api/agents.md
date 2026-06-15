@@ -464,7 +464,7 @@ The `permissionKey` field on a grant is one of:
 
 | Key | What it allows |
 |---|---|
-| `agents:create` | Hire or create new agents in the company. Also satisfies `agent_config:read` and `agent_config:update` checks. |
+| `agents:create` | Hire or create new agents in the company, and run mutations or environment probes against agent configuration. Still satisfies `agent_config:read` and `agent_config:update` checks — but board (human) company members no longer need it to read agent configuration, skills, or config-revisions. Those reads are gated only on company membership. Agent (non-human) actors still need `agents:create` (or the legacy `canCreateAgents` flag) to read peer agents' configurations. |
 | `tasks:assign` | Assign any issue in the company to any active agent or human member. |
 | `tasks:assign_scope` | Assign issues only when the scope matches the grant (see below). Requires a structured scope on the grant. |
 | `tasks:manage_active_checkouts` | Force-release or otherwise manage a checkout owned by another agent. |
@@ -877,8 +877,8 @@ Use them when you need to:
 
 Important notes:
 
-- Configuration reads require the same company-level access gate used by the route.
-- Revisions redact secret-bearing fields before returning them.
+- If you are a board (human) member of the company, configuration and config-revision reads need only your company membership — no `agents:create` permission is required. Agent (non-human) actors still need `agents:create` (granted, or the legacy `canCreateAgents` flag on their own record) to read these. Mutations and environment probes always require `agents:create`.
+- Revisions redact secret-bearing fields before returning them, so reads never expose secrets regardless of who you are.
 - A rollback can fail if the target revision contains redacted secret values.
 
 ---

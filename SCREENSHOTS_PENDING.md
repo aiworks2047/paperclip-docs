@@ -1,15 +1,21 @@
 # Screenshots pending refresh
 
-Window: v2026.609.0 → parent master HEAD (69a368e), nightly run 2026-06-11T10:26Z
+Window: `v2026.609.0` → parent `master` HEAD (`412a04c`), nightly run 2026-06-15.
 
-Stale entries are those whose `depends_on` UI source changed within this window. (The big v2026.609.0 backlog has been pruned to this window's churn.)
+Stale entries are those whose `depends_on` UI source changed within this cumulative window. 62 of 276 registry entries are affected.
 
 Refresh with `npm run screenshots:refresh` (captures stale entries into a review PR — never auto-pushed).
 
 ## Stale by changed UI source
 
-- `ui/src/pages/Routines.tsx` → routines list (light + dark)
-- `ui/src/pages/RoutineDetail.tsx` → routine detail, cron-picker, run-history (light + dark)
-- `ui/src/pages/IssueDetail.tsx` → issue list, detail-chat, detail-activity, detail-sidebar, task-detail-with-comments (light + dark)
+- `ui/src/components/AgentConfigForm.tsx` → agent-config captures (20 entries, light + dark)
+- `ui/src/pages/CompanySkills.tsx` → company skills captures (12 entries) — note the Skills Store foundation work is in flight; the discovery/detail surfaces are still storybook-only and not yet shipped as pages.
+- `ui/src/pages/IssueDetail.tsx` → issue detail/chat/activity/sidebar captures (10 entries)
+- `ui/src/pages/RoutineDetail.tsx` → routine detail / cron picker / run-history (6 entries)
+- `ui/src/pages/NewAgent.tsx` → new-agent flow (4 entries)
+- `ui/src/components/OnboardingWizard.tsx` → onboarding wizard (4 entries) — onboarding is mid-redesign (NUX variants / `OnboardingChat`, A/B-gated); capture after the variant settles.
+- `ui/src/components/SidebarCompanyMenu.tsx` → sidebar company menu (4 entries)
+- `ui/src/pages/Routines.tsx` → routines list (2 entries)
+- `ui/src/pages/InstanceExperimentalSettings.tsx` → experimental settings (2 entries) — now hosts the Conference Room Chat toggle (experimental, flag-gated).
 
-> Note: the routine captures reflect the pre-"variation C" sub-sidebar layout (#7848) and will look different after refresh. Issue-detail captures predate the inline workspace-file artifact links (#7681).
+> Note: several of these UI surfaces changed as part of experimental / feature-flagged work (dark-mode theming, onboarding NUX variants, Conference Room Chat). Hold recaptures of the experimental surfaces until the flags settle so the live docs don't show transient states.
