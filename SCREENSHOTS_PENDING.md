@@ -1,6 +1,6 @@
 # Screenshots pending refresh
 
-Window: `v2026.609.0` → parent `master` HEAD (`412a04c`), nightly run 2026-06-15.
+Window: `v2026.609.0` → parent `master` HEAD (`1b89a8e`), nightly run 2026-06-17. (No UI sources changed since the prior run — the only new upstream commit was a Dockerfile fix; the stale set below is unchanged.)
 
 Stale entries are those whose `depends_on` UI source changed within this cumulative window. 62 of 276 registry entries are affected.
 
