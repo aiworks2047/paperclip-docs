@@ -1,3 +1,7 @@
+---
+paperclip_version: v2026.618.0
+---
+
 # Heartbeats & Routines
 
 When you first hire a few agents, it's tempting to give each one a timer — "wake up every few minutes and see if there's anything to do." It feels proactive. In practice, it's the fastest way to end up with a sidebar full of paused agents, surprise token bills, and a dashboard you have to fight with just to keep things quiet.

@@ -1,3 +1,7 @@
+---
+paperclip_version: v2026.618.0
+---
+
 # OpenClaw Gateway
 
 `openclaw_gateway` connects Paperclip to an OpenClaw instance over the OpenClaw Gateway WebSocket protocol. Use it when OpenClaw is running on another machine, inside Docker, or behind a shared gateway and you want Paperclip agents to delegate work to it.

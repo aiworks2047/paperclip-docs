@@ -1,5 +1,5 @@
 ---
-paperclip_version: v2026.609.0
+paperclip_version: v2026.618.0
 ---
 
 # Skills Reference
@@ -90,6 +90,7 @@ When importing from a project workspace where `SKILL.md` lives at the repo root 
 Bundled with the Paperclip server (`skills/` next to the server):
 
 - `paperclip` — base heartbeat procedure.
+- `paperclip-board` — manage a company as a board member via chat: onboarding (company creation, CEO setup, hiring plans), agent management, approvals, task monitoring, cost oversight, and work-product review. Set up by `paperclipai board setup`.
 - `paperclip-create-agent` — governance-aware hire workflow.
 - `paperclip-create-plugin` — plugin scaffold flow.
 - `paperclip-dev` — operating a local Paperclip instance.
@@ -189,7 +190,7 @@ The scan is non-destructive: it returns `imported`, `updated`, `skipped`, `confl
 
 Editable, Paperclip-managed skills are written to `<paperclipInstanceRoot>/skills/{companyId}/<slug>/`. Read-only sources (GitHub, skills.sh, URL) keep the `markdown` body in the database row and only materialise into a temporary location when an adapter needs the files on disk.
 
-Bundled skills (the four `paperclip-*` skills shipped with the server) are re-imported from the server's `skills/` directory on every list call (`ensureBundledSkills`). They cannot be edited or deleted — installing the same Paperclip release will recreate them.
+Bundled skills (the five `paperclip-*` skills shipped with the server) are re-imported from the server's `skills/` directory on every list call (`ensureBundledSkills`). They cannot be edited or deleted — installing the same Paperclip release will recreate them.
 
 ---
 

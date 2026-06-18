@@ -1,3 +1,7 @@
+---
+paperclip_version: v2026.618.0
+---
+
 # Codex Local
 
 `codex_local` runs OpenAI's Codex CLI on the same machine as Paperclip. Use it when you want a local coding agent with persistent session state, managed `CODEX_HOME`, and Paperclip skills injected into the Codex skills directory.

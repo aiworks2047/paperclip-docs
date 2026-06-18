@@ -1,3 +1,7 @@
+---
+paperclip_version: v2026.618.0
+---
+
 # Pi Local
 
 `pi_local` runs the Pi coding agent CLI on the same machine as Paperclip. Use it when you want Pi's built-in tool set (read, bash, edit, write, grep, find, ls), provider/model routing, and session resume across heartbeats.
