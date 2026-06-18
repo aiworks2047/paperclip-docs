@@ -85,6 +85,20 @@ First-party sandbox provider that provisions [Modal](https://modal.com/) sandbox
 
 ---
 
+## Novita AI (`provider: "novita"`)
+
+Package: `@paperclipai/plugin-novita-sandbox`
+
+Configure from **Company Settings → Environments**. Put the Novita API key on the sandbox environment itself — Paperclip stores pasted API keys as company secrets. `NOVITA_API_KEY` remains an optional host-level fallback when an environment omits the key.
+
+The provider provisions Novita Agent Sandbox instances for Paperclip agent runs. The optional `domain` field overrides the Novita API domain, `template` selects a Novita sandbox template, and `requestedCwd` controls the workspace directory created inside the sandbox lease. `requestedCwd` must be an absolute path and defaults to `/home/user/paperclip-workspace`.
+
+Timeout fields are split between sandbox work and provider calls: `timeoutMs` controls the sandbox lifetime and default per-command timeout, while `requestTimeoutMs` controls Novita SDK HTTP/RPC calls. The plugin validates `timeoutMs >= 10000` and `requestTimeoutMs >= 1000`.
+
+Set `autoPause` when the selected Novita template supports auto-pause. Set `reuseLease: true` to pause and later resume the same sandbox across Paperclip runs; otherwise Paperclip kills the sandbox when the lease is released.
+
+---
+
 ## Fake Sandbox (`provider: "fake-plugin"`)
 
 Package: `@paperclipai/plugin-fake-sandbox`.
