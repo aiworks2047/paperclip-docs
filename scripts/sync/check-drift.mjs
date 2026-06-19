@@ -398,6 +398,10 @@ function shouldFetchEnvSource(path) {
   if (/^cli\/src\/checks\/.+(?:auth|config|secret|env).+\.ts$/.test(path)) return true;
   if (/^cli\/src\/commands\/(?:env|env-lab|configure|client\/secrets|client\/auth)\.ts$/.test(path)) return true;
   if (path.startsWith("packages/plugins/sandbox-providers/") && /(^|\/)(README\.md|manifest\.ts|config\.ts|plugin\.ts|worker\.ts)$/.test(path)) return true;
+  // Adapter packages read env vars (e.g. SANDBOX_INSTALL_COMMAND, per-runtime
+  // API-key fallbacks) directly in their server/index modules — scan all
+  // non-test adapter package source, same reasoning as server/src above.
+  if (/^packages\/adapters\/[^/]+\/src\/.+\.ts$/.test(path)) return true;
   if (/^packages\/adapter-utils\/src\/(?:.*env.*|execution-target.*|sandbox.*|remote.*|workspace.*)\.ts$/.test(path)) return true;
   if (/^packages\/shared\/src\/.*(?:config|environment|secret|workspace|runtime).*\.ts$/.test(path)) return true;
   if (/^packages\/[^/]+\/src\/(?:env|config|runtime-config|worktree-config)\.ts$/.test(path)) return true;

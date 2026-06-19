@@ -811,13 +811,20 @@ function shouldFetchEnvSource(path) {
   if (!/\.(?:ts|tsx|js|mjs|json|md)$/.test(path)) return false;
   if (!/^(cli\/src|server\/src|packages|ui\/src)\//.test(path)) return false;
   const base = path.split("/").pop();
-  if (path === "server/src/config.ts" || path === "server/src/config-file.ts") return true;
-  if (/^server\/src\/(auth\/better-auth|agent-auth-jwt|runtime-api|worktree-config)\.ts$/.test(path)) return true;
-  if (/^server\/src\/services\/(?:environment|execution-workspace|workspace|secret|plugin|sandbox)[A-Za-z0-9_-]*\.ts$/.test(path)) return true;
+  // Scan every non-test server/src TypeScript file. Server feature files read
+  // process.env directly all over the place (e.g. TRUST_PROXY in app.ts, the
+  // OTEL_* vars in instrumentation.ts, request middleware under middleware/),
+  // so any narrower server allowlist leaves blind spots that surface as
+  // unverified env-var claims. Tests are already excluded above.
+  if (/^server\/src\/.+\.ts$/.test(path)) return true;
   if (/^cli\/src\/config\/.+\.ts$/.test(path)) return true;
   if (/^cli\/src\/checks\/.+(?:auth|config|secret|env).+\.ts$/.test(path)) return true;
   if (/^cli\/src\/commands\/(?:env|env-lab|configure|client\/secrets|client\/auth)\.ts$/.test(path)) return true;
   if (path.startsWith("packages/plugins/sandbox-providers/") && /(^|\/)(README\.md|manifest\.ts|config\.ts|plugin\.ts|worker\.ts)$/.test(path)) return true;
+  // Adapter packages read env vars (e.g. SANDBOX_INSTALL_COMMAND, per-runtime
+  // API-key fallbacks) directly in their server/index modules — scan all
+  // non-test adapter package source, same reasoning as server/src above.
+  if (/^packages\/adapters\/[^/]+\/src\/.+\.ts$/.test(path)) return true;
   if (/^packages\/adapter-utils\/src\/(?:.*env.*|execution-target.*|sandbox.*|remote.*|workspace.*)\.ts$/.test(path)) return true;
   if (/^packages\/shared\/src\/.*(?:config|environment|secret|workspace|runtime).*\.ts$/.test(path)) return true;
   if (/^packages\/[^/]+\/src\/(?:env|config|runtime-config|worktree-config)\.ts$/.test(path)) return true;
