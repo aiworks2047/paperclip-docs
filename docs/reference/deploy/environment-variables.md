@@ -1,5 +1,5 @@
 ---
-paperclip_version: v2026.512.0
+paperclip_version: v2026.618.0
 ---
 
 # Environment Variables
@@ -54,8 +54,26 @@ Related deployment variables:
 | `PAPERCLIP_DEPLOYMENT_EXPOSURE` | Exposure policy override, typically `private` or `public` in authenticated mode. |
 | `PAPERCLIP_AUTH_BASE_URL_MODE` | Base URL handling mode, such as `auto` or `explicit`. |
 | `PAPERCLIP_ALLOWED_HOSTNAMES` | Comma-separated allowlist for authenticated/private host validation. |
+| `TRUST_PROXY` | How much to trust the `X-Forwarded-For` header when the server sits behind a reverse proxy or load balancer. Defaults to unset (trust nothing). See below. |
 
 > **Tip:** If `paperclipai doctor` is failing on hostnames, redirects, or auth origins, inspect this group first.
+
+### Trusting a reverse proxy (`TRUST_PROXY`)
+
+When you run Paperclip behind a load balancer or reverse proxy (nginx, Caddy, a cloud LB), the real client IP arrives in the `X-Forwarded-For` header rather than on the socket. `TRUST_PROXY` tells the server how far to trust that header so `req.ip` and rate-limiting see the actual client instead of your proxy.
+
+The default is **unset**, which trusts nothing — the safe choice, because an untrusted client can otherwise spoof its address by sending its own `X-Forwarded-For`. Only opt in when there really is a proxy in front of the server.
+
+Accepted values:
+
+| Value | Meaning |
+|---|---|
+| unset, `""`, `false`, `0` | Trust nothing. The default. |
+| `true` | Trust the header unconditionally. **Unsafe** unless the server is unreachable except through your proxy. |
+| a positive integer (e.g. `1`) | Trust that many proxy hops. Use `1` for a single LB in front of the server. |
+| a comma-separated list | Trust specific sources by named subnet (`loopback`, `linklocal`, `uniquelocal`) or CIDR (e.g. `10.0.0.0/8`, `fd00::/8`). |
+
+A malformed value (a stray sign, leading zeros, or an unrecognised token) makes the server **refuse to start** with an explanatory error, so a typo fails loudly rather than silently disabling proxy trust. After setting it, confirm `req.ip` in the request log matches the real client IP through your proxy.
 
 ---
 
@@ -106,6 +124,23 @@ These variables control where the server forwards operator-submitted feedback (a
 | `PAPERCLIP_TELEMETRY_BACKEND_TOKEN` | unset | Legacy alias for `PAPERCLIP_FEEDBACK_EXPORT_BACKEND_TOKEN`. |
 
 If neither variable is set, feedback submissions are stored locally and never leave the instance.
+
+---
+
+## Observability (OpenTelemetry)
+
+Paperclip can emit distributed traces over OpenTelemetry (OTLP) so you can watch requests flow through the server in a tracing backend like Jaeger, Tempo, or Honeycomb. It is **opt-in and off by default** — nothing is loaded until you point it at a collector.
+
+To turn it on, set `OTEL_EXPORTER_OTLP_ENDPOINT` and install the OpenTelemetry packages the server needs (`@opentelemetry/sdk-node`, `@opentelemetry/auto-instrumentations-node`, the exporter for your protocol, `@opentelemetry/resources`, and `@opentelemetry/semantic-conventions`). If the endpoint is set but the packages are missing, the server logs a one-line hint and keeps running without tracing.
+
+| Variable | Default | Meaning |
+|---|---|---|
+| `OTEL_EXPORTER_OTLP_ENDPOINT` | unset | OTLP collector endpoint. Setting it is the master switch that enables tracing. |
+| `OTEL_EXPORTER_OTLP_PROTOCOL` | `grpc` | Exporter protocol: `grpc`, `http/protobuf`, or `http/json`. An unknown value logs a warning and falls back to `grpc`. |
+| `OTEL_SERVICE_NAME` | `paperclip` | Service name reported on spans. |
+| `OTEL_SERVICE_VERSION` | `unknown` | Service version reported on spans. |
+
+A bad endpoint or an unreachable collector never takes the server down — the SDK logs the failure and tracing simply stays off. On shutdown the server flushes buffered spans (with a short timeout) before exiting.
 
 ---
 
@@ -170,3 +205,18 @@ Those are mainly useful for adapter authors and agent-side tooling that need dir
 | `GOOGLE_API_KEY` | Alternate Google API key path for `gemini_local` |
 
 > **Tip:** If an adapter test is failing, start by checking whether the expected provider key is present in the process environment.
+
+---
+
+## Adapter Provider Overrides
+
+The local CLI adapters can be pointed at a custom or remote OpenAI-compatible gateway through these server-read variables. Each takes a JSON value that Paperclip writes into the adapter's own runtime config before a run, so you can route an adapter at your own provider without editing the agent's machine by hand. The full JSON shape and behaviour for each live on the adapter's reference page.
+
+| Variable | Adapter | Meaning |
+|---|---|---|
+| `PAPERCLIP_CODEX_PROVIDERS` | `codex_local` | JSON of custom providers (and an optional `model_provider`) written into Codex's managed `config.toml`. See [Codex Local](../adapters/codex-local.md). |
+| `PAPERCLIP_PI_PROVIDERS` | `pi_local` | JSON of custom providers written into Pi's managed `models.json`. See [Pi Local](../adapters/pi-local.md). |
+| `PAPERCLIP_OPENCODE_PROVIDERS` | `opencode_local` | JSON merged into OpenCode's `provider` config. See [OpenCode Local](../adapters/opencode-local.md). |
+| `PAPERCLIP_OPENCODE_SMALL_MODEL` | `opencode_local` | Sets OpenCode's `small_model` (the auxiliary/helper model). See [OpenCode Local](../adapters/opencode-local.md). |
+
+Values support `{env:VAR}` placeholders, which are expanded server-side so secrets stay out of the stored JSON.

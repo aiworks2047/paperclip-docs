@@ -1,5 +1,5 @@
 ---
-paperclip_version: v2026.609.0
+paperclip_version: v2026.618.0
 ---
 
 # Issues
@@ -388,6 +388,18 @@ At the bottom of the Chat tab sits the composer. It supports:
 - **Interrupt / cancel queued runs** — if a new run has been queued off the back of your last message but has not yet started, the composer shows an interrupt control so you can cancel before the agent wakes.
 - **Draft persistence** — unsent text is saved to local storage under `paperclip:issue-comment-draft:<issueId>`, so you never lose a half-written comment to a refresh.
 - **Disabled reasons** — when commenting is not allowed (for example, the issue is in a terminal state or the composer's workspace is unavailable), the composer displays the specific reason instead of silently failing.
+
+### Interrupts, handoffs, and scoped wakes
+
+A single comment can do up to three different things, and Paperclip keeps them separate so the result is never a surprise. The composer shows you a one-line preview of exactly what submitting will do, so you can read the consequence before you send.
+
+**Interrupting a run.** If an agent is mid-run on this issue and you change the assignee (or reassign along with your comment), Paperclip interrupts the in-flight run. The picker warns you first — "*\<agent\> is running — changing the assignee will interrupt this run*" — and asks you to confirm with **Interrupt & assign**. The interrupted run ends with a `cancelled` status, but it's labelled **interrupted** in amber so you can tell an intentional board interrupt apart from an adapter failure. Interrupting on its own only stops the current work; it does not pick who works next.
+
+**Handing off.** Choosing a new owner is a separate decision from interrupting. Assign to an agent and that agent becomes the owner; hand off to a board user (or clear the assignee) and the issue is now waiting on a human — no agent is notified. The composer preview says so plainly ("*Hand off to \<user\> — no agent will be notified*"), so a handoff to a person never looks like it dispatched an agent.
+
+**Scoped wakes.** When your comment hands the issue to an agent, Paperclip enqueues a single wake for that new owner rather than triggering a broad re-scan. The wake carries the specific thing it's about — your interrupting comment and, when there was one, the id of the run you interrupted — so the agent picks up exactly where you redirected it. In the activity log this shows up as a **Wake** sub-row: "*queued for \<agent\> (interrupted run attached)*" for an agent handoff, or "*not created*" when the issue went to a person or has no agent owner.
+
+**Plain text is not a handoff.** Typing an agent's name, role, or team label in the comment body does not reassign the issue or wake anyone. To route to an agent you need a structured `@`-mention (which resolves to `agent://<id>`) or an explicit assignee change. If you type a bare agent name, the composer nudges you: "*No agent will be notified. Use @ to mention an agent.*"
 
 ### Run-id binding
 
