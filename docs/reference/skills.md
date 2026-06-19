@@ -92,12 +92,9 @@ Bundled with the Paperclip server (`skills/` next to the server):
 - `paperclip` — base heartbeat procedure.
 - `paperclip-board` — manage a company as a board member via chat: onboarding (company creation, CEO setup, hiring plans), agent management, approvals, task monitoring, cost oversight, and work-product review. Set up by `paperclipai board setup`.
 - `paperclip-create-agent` — governance-aware hire workflow.
-- `paperclip-create-plugin` — plugin scaffold flow.
 - `paperclip-dev` — operating a local Paperclip instance.
 - `paperclip-converting-plans-to-tasks` — the Paperclip way of translating a plan into assigned issues with the right specialty, dependencies, and parallelization.
-- `diagnose-why-work-stopped` — forensics procedure for stalled, looping, or "went too deep" issue trees: surface the exact stop point and deliver a fix-as-rule plan gated by board approval.
 - `para-memory-files` — file-based memory using Tiago Forte's PARA method, covering the knowledge-graph, daily-notes, and tacit-knowledge layers plus weekly synthesis and recall.
-- `terminal-bench-loop` — bounded, human-in-the-loop driver that runs a single Terminal-Bench problem through Paperclip until the smoke passes, the board rejects the next fix, or the iteration budget is exhausted.
 
 Community examples in [`paperclipai/companies`](https://github.com/paperclipai/companies):
 
@@ -190,7 +187,7 @@ The scan is non-destructive: it returns `imported`, `updated`, `skipped`, `confl
 
 Editable, Paperclip-managed skills are written to `<paperclipInstanceRoot>/skills/{companyId}/<slug>/`. Read-only sources (GitHub, skills.sh, URL) keep the `markdown` body in the database row and only materialise into a temporary location when an adapter needs the files on disk.
 
-Bundled skills (the five `paperclip-*` skills shipped with the server) are re-imported from the server's `skills/` directory on every list call (`ensureBundledSkills`). They cannot be edited or deleted — installing the same Paperclip release will recreate them.
+Bundled skills (those shipped in the server's `skills/` directory) are re-imported on every list call (`ensureBundledSkills`). They cannot be edited or deleted — installing the same Paperclip release will recreate them.
 
 ---
 
@@ -409,7 +406,7 @@ These three extension points are easy to confuse. They sit at different layers:
 | **Format** | Folder with `SKILL.md` plus optional `references/`, `scripts/`, `assets/` | Node package built against the plugin SDK | Module with `executeRun`, `listSkills`, `syncSkills`, etc. |
 | **Lives at** | Company level, in the company skill library | Instance level, in `~/.paperclip/adapter-plugins/` | Built into the server or registered as an external adapter |
 | **Loaded** | At the start of an agent run, when the routing description matches | On server start; mounted into the API and UI | Per-run, when an agent's `adapterType` matches |
-| **Authored by** | Anyone who can edit the company skill library | Plugin authors (use the [`paperclip-create-plugin` skill](https://github.com/paperclipai/paperclip/blob/main/skills/paperclip-create-plugin/SKILL.md)) | Adapter authors (see [Creating an Adapter](./adapters/creating-an-adapter.md)) |
+| **Authored by** | Anyone who can edit the company skill library | Plugin authors (use the [`paperclip-create-plugin` skill](https://github.com/paperclipai/paperclip/blob/master/.agents/skills/paperclip-create-plugin/SKILL.md)) | Adapter authors (see [Creating an Adapter](./adapters/creating-an-adapter.md)) |
 | **Versioning** | Pinned to a git commit (GitHub/skills.sh) or live (local) | Pinned by the plugin's package version | Pinned by the Paperclip release |
 | **Failure mode if wrong** | Agent reads bad instructions, produces bad output | API surface does not load | Runs fail to start |
 
