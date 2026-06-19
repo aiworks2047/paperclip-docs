@@ -89,13 +89,29 @@ First-party sandbox provider that provisions [Modal](https://modal.com/) sandbox
 
 Package: `@paperclipai/plugin-novita-sandbox`
 
-Configure from **Company Settings → Environments**. Put the Novita API key on the sandbox environment itself — Paperclip stores pasted API keys as company secrets. `NOVITA_API_KEY` remains an optional host-level fallback when an environment omits the key.
+Provisions Novita Agent Sandbox instances for Paperclip agent runs. Install it like any other plugin from the [Plugins](../../administration/plugins.md) page, by package name:
 
-The provider provisions Novita Agent Sandbox instances for Paperclip agent runs. The optional `domain` field overrides the Novita API domain, `template` selects a Novita sandbox template, and `requestedCwd` controls the workspace directory created inside the sandbox lease. `requestedCwd` must be an absolute path and defaults to `/home/user/paperclip-workspace`.
+```text
+@paperclipai/plugin-novita-sandbox
+```
 
-Timeout fields are split between sandbox work and provider calls: `timeoutMs` controls the sandbox lifetime and default per-command timeout, while `requestTimeoutMs` controls Novita SDK HTTP/RPC calls. The plugin validates `timeoutMs >= 10000` and `requestTimeoutMs >= 1000`.
+The host runs `npm install` into its managed plugin directory at install time, so the provider's own dependencies (such as `novita-sandbox`) are pulled in for you.
 
-Set `autoPause` when the selected Novita template supports auto-pause. Set `reuseLease: true` to pause and later resume the same sandbox across Paperclip runs; otherwise Paperclip kills the sandbox when the lease is released.
+Configure Novita from **Company Settings → Environments**. Put the Novita API key on the sandbox environment itself — Paperclip stores pasted API keys as company secrets. `NOVITA_API_KEY` remains an optional host-level fallback when an environment omits the key.
+
+The driver's `configSchema` exposes:
+
+| Field | Default | Purpose |
+|---|---|---|
+| `apiKey` | (none) | Environment-specific Novita API key — a pasted key or an existing Paperclip secret reference. Falls back to `NOVITA_API_KEY` when omitted (an API key from one source or the other is required). |
+| `domain` | (SDK default) | Optional Novita API domain override. |
+| `template` | (SDK default) | Novita sandbox template ID or name. Leave blank to use the SDK's default base template. |
+| `requestedCwd` | `/home/user/paperclip-workspace` | Workspace directory created inside the sandbox lease. Must be an absolute path. |
+| `timeoutMs` | `300000` | Sandbox lifetime and default per-command timeout, in milliseconds. Validated `>= 10000`. |
+| `requestTimeoutMs` | `30000` | HTTP/RPC request timeout for Novita SDK calls, in milliseconds. Validated `>= 1000`. |
+| `secure` | `true` | Use secure connections when the Novita SDK supports them. |
+| `autoPause` | `false` | Enable Novita's sandbox auto-pause when the selected template supports it. |
+| `reuseLease` | `false` | Pause and later resume the sandbox across Paperclip runs instead of killing it on release. |
 
 ---
 
