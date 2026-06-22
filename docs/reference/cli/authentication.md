@@ -173,12 +173,14 @@ paperclipai auth login
 paperclipai auth login --instance-admin
 paperclipai auth login --company-id <company-id>
 paperclipai auth login --api-base https://paperclip.example.com
+paperclipai auth login --no-browser
 ```
 
 | Flag | Use |
 | --- | --- |
 | `--instance-admin` | Request instance-admin approval instead of plain board access. The approver must themselves be an instance admin. |
 | `--company-id <id>` | Scope the requested access to a specific company. |
+| `--no-browser` | Don't try to open a browser — just print the approval URL so you can open it yourself. Handy on headless hosts or over SSH. |
 
 If you cancel in the browser, the CLI exits with `CLI auth challenge was cancelled.`; if you wait too long, `CLI auth challenge expired before approval.` Either way, just re-run the command.
 
