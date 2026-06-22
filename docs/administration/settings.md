@@ -243,7 +243,7 @@ An experimental flag in Paperclip is a feature that:
 - Is being evaluated against real usage before it becomes the default, and
 - May be renamed, reworked, or promoted to a core setting in a future release.
 
-Turning one on is not dangerous in the "this will break your data" sense — but it does mean you're opting into behavior that may change how agents run or how the backend restarts. Flip flags when you have a reason to, not for curiosity, and expect to re-read the release notes if you upgrade.
+Turning one on is not dangerous in the "this will break your data" sense — but experimental features come **without compatibility guarantees**. They may break, change, or be removed at any time, and Paperclip doesn't promise migration or long-term support for them. The app shows a warning to this effect when you enable one. Flip flags when you have a reason to, not for curiosity; don't lean on an experimental feature for a workflow that has to stay stable, and expect to re-read the release notes if you upgrade.
 
 ### The available flags
 

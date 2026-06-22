@@ -17,10 +17,10 @@ There are two command groups. The plural `paperclipai skills` group is the one y
 | Operation | Commands | What it changes |
 | --- | --- | --- |
 | **Company install** | `skills install`, `import`, `create`, `scan-projects` | Adds or updates a skill in the company's library. Available to the whole company; does **not** attach it to any agent. |
-| **Agent attach** | `skills agent sync`, `skills agent clear` | Replaces an agent's *desired* (non-required) company-skill set. A desired-state operation — it is not additive. |
+| **Agent attach** | `skills agent sync`, `skills agent clear` | Replaces an agent's *desired* company-skill set. A desired-state operation — it is not additive. |
 | **Adapter runtime sync** | reported by `skills agent list`; triggered by `sync`/`clear` | The server-side adapter reconciles the desired set with files on disk and returns an `AgentSkillSnapshot`. |
 
-> **Note:** Required Paperclip runtime skills (heartbeat and friends) are enforced by the server. They always remain on an agent — `skills agent clear` only removes the *non-required* desired skills you added.
+> **Note:** `skills agent sync` and `skills agent clear` operate on the agent's full desired set — `clear` empties it. Bundled Paperclip skills still live in the company library as read-only entries, but the server no longer force-attaches them to an agent.
 
 > **Tip:** Add `--json` to any command to print the raw API result for scripting. Every company-scoped command takes `--company-id <company-id>` (and respects your selected profile/context). See [common options](./common-options.md).
 
@@ -162,7 +162,7 @@ paperclipai skills remove <skill-ref> --yes --company-id <company-id>
 
 ## Agent attach: desired skills
 
-Once a skill is in the library, attaching it to an agent is a desired-state replacement, not an addition. `skills agent sync` sets the agent's full non-required desired set; anything you omit is dropped. The adapter then reconciles and the command returns an `AgentSkillSnapshot`.
+Once a skill is in the library, attaching it to an agent is a desired-state replacement, not an addition. `skills agent sync` sets the agent's full desired set; anything you omit is dropped. The adapter then reconciles and the command returns an `AgentSkillSnapshot`.
 
 ```sh
 paperclipai skills agent list <agent-ref> --company-id <company-id>
@@ -172,16 +172,16 @@ paperclipai skills agent clear <agent-ref> --yes --company-id <company-id>
 
 | Command | Use |
 | --- | --- |
-| `agent list <agentRef>` | Show the agent's runtime skill snapshot: adapter type, whether sync is `supported`, the `mode`, the desired count, and per-skill runtime entries (state, origin, managed/required flags). |
-| `agent sync <agentRef>` | Replace the agent's non-required desired company skills and sync runtime state. Requires at least one `--skill`. |
-| `agent clear <agentRef>` | Clear the non-required desired set (sends an empty list). Prompts in a TTY; requires `--yes` otherwise. |
+| `agent list <agentRef>` | Show the agent's runtime skill snapshot: adapter type, whether sync is `supported`, the `mode`, the desired count, and per-skill runtime entries (state, origin, managed flag). |
+| `agent sync <agentRef>` | Replace the agent's desired company skills and sync runtime state. Requires at least one `--skill`. |
+| `agent clear <agentRef>` | Clear the desired set (sends an empty list). Prompts in a TTY; requires `--yes` otherwise. |
 
 | Flag | Use |
 | --- | --- |
 | `--skill <skillRef>` | (`sync`) A desired company skill `id`, `key`, or `slug`. Repeat for several. At least one is required. |
 | `--yes` | (`clear`) Confirm without the interactive prompt. |
 
-An `<agentRef>` is an agent `id` or shortname/url-key. Because `sync` is a full replacement, list the complete desired set every time. Required Paperclip skills survive both `sync` and `clear` — the server keeps enforcing them.
+An `<agentRef>` is an agent `id` or shortname/url-key. Because `sync` is a full replacement, list the complete desired set every time — anything you omit is detached, and `clear` detaches everything.
 
 ---
 

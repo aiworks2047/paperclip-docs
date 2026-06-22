@@ -51,7 +51,6 @@ The frontmatter is parsed by Paperclip's own minimal YAML reader (`parseFrontmat
 | `name` | recommended | string | Human-readable label. Falls back to the slug when missing. |
 | `description` | recommended | string | The routing logic the agent reads first. Block scalars (`>`, `|`) are supported. |
 | `slug` | optional | string | Stable kebab-case identifier. Derived from `name` (or the folder name) if absent, normalized via `normalizeAgentUrlKey`. |
-| `required` | optional | boolean | Most installs leave this `false`. The server itself only treats bundled Paperclip skills as required at runtime. |
 | `key` / `skillKey` | optional | string | Canonical key override. See [Naming collisions](#naming-collisions-and-resolution). |
 | `metadata` | optional | object | Arbitrary record persisted alongside the skill. Recognised sub-fields are listed below. |
 
@@ -92,7 +91,6 @@ Bundled with the Paperclip server (`skills/` next to the server):
 - `paperclip` — base heartbeat procedure.
 - `paperclip-board` — manage a company as a board member via chat: onboarding (company creation, CEO setup, hiring plans), agent management, approvals, task monitoring, cost oversight, and work-product review. Set up by `paperclipai board setup`.
 - `paperclip-create-agent` — governance-aware hire workflow.
-- `paperclip-dev` — operating a local Paperclip instance.
 - `paperclip-converting-plans-to-tasks` — the Paperclip way of translating a plan into assigned issues with the right specialty, dependencies, and parallelization.
 - `para-memory-files` — file-based memory using Tiago Forte's PARA method, covering the knowledge-graph, daily-notes, and tacit-knowledge layers plus weekly synthesis and recall.
 
@@ -149,9 +147,9 @@ Mutating routes require either `agents:create` permission or `permissions.canCre
 { "source": "https://github.com/paperclipai/paperclip/tree/main/skills/paperclip" }
 { "source": "https://github.com/paperclipai/paperclip/blob/main/skills/paperclip/SKILL.md" }
 { "source": "paperclipai/paperclip" }
-{ "source": "paperclipai/paperclip/paperclip-dev" }
-{ "source": "https://skills.sh/paperclipai/paperclip/paperclip-dev" }
-{ "source": "npx skills add paperclipai/paperclip --skill paperclip-dev" }
+{ "source": "paperclipai/paperclip/paperclip-create-agent" }
+{ "source": "https://skills.sh/paperclipai/paperclip/paperclip-create-agent" }
+{ "source": "npx skills add paperclipai/paperclip --skill paperclip-create-agent" }
 { "source": "https://example.com/raw/SKILL.md" }
 { "source": "/Users/me/code/my-project/skills/code-review" }
 ```
@@ -323,7 +321,7 @@ Each entry can be:
 - a canonical **key** (`paperclipai/paperclip/paperclip`),
 - or a **slug** (`code-review`) — but only when the slug is unique inside the company.
 
-The server resolves each reference (`resolveRequestedSkillKeys`), unions the result with all bundled-required keys, and persists the final list under `adapterConfig.paperclipSkillSync.desiredSkills`. Unknown or ambiguous references fail the request with `Invalid company skill selection (...)`.
+The server resolves each reference to its canonical key and persists exactly that list under `adapterConfig.paperclipSkillSync.desiredSkills` — the desired set is precisely what you send, with no extra keys folded in. Unknown or ambiguous references fail the request with `Invalid company skill selection (...)`.
 
 ### After hire — `POST /api/agents/{agentId}/skills/sync`
 
@@ -333,7 +331,7 @@ The server resolves each reference (`resolveRequestedSkillKeys`), unions the res
 }
 ```
 
-This route reconciles the agent's attachments to match exactly what you send: any skill in the list is attached, anything not in the list is detached. Bundled-required skills cannot be removed — they are always added back to the resolved set.
+This route reconciles the agent's attachments to match exactly what you send: any skill in the list is attached, anything not in the list is detached. An empty list detaches everything.
 
 The response is an `AgentSkillSnapshot`:
 
@@ -349,9 +347,8 @@ The response is an `AgentSkillSnapshot`:
       "runtimeName": "paperclip",
       "desired": true,
       "managed": true,
-      "required": true,
       "state": "installed",
-      "origin": "paperclip_required"
+      "origin": "company_managed"
     }
   ],
   "warnings": []
@@ -386,13 +383,12 @@ Returns the same snapshot shape without changing anything. For adapters without 
 
 Adapters declare which materialisation strategy they need via `requiresMaterializedRuntimeSkills` (or fall back to a legacy hardcoded set: `cursor`, `gemini_local`, `opencode_local`, `pi_local`).
 
-**Bundled skills are always available.** `paperclip` and any other skill marked `paperclip_bundled` are forced into every agent's resolved set, regardless of `desiredSkills`. This is enforced in `resolveDesiredSkillAssignment`.
+**Bundled skills live in the library.** `paperclip` and any other skill marked `paperclip_bundled` are imported into the company library as read-only entries. They are no longer force-added to an agent's resolved set — `resolveDesiredSkillAssignment` now persists exactly the desired set you sync, nothing more.
 
-**Required vs. optional in the UI.** The Agent → Skills tab splits the company library into three groups:
+**Managed vs. unmanaged in the UI.** The Agent → Skills tab shows two groups:
 
-- **Required** — bundled-required skills the adapter cannot drop.
-- **Optional** — every other installed skill, opt-in via checkbox.
-- **Unmanaged** — read-only entries surfaced when an adapter reports skills it discovered itself (for example, a global skills bundle on the host machine).
+- **Company skills** — every installed library skill, each opt-in via checkbox. What you tick becomes the agent's desired set.
+- **Unmanaged** — read-only entries (collapsed by default) surfaced when an adapter reports skills it discovered itself (for example, a global skills bundle on the host machine). These carry a `user_installed` or `external_unknown` origin and cannot be edited from here.
 
 ---
 
@@ -423,7 +419,7 @@ Every persisted skill has a `key` field — the unique identifier for that skill
 | Source | Key form | Example |
 |---|---|---|
 | Bundled with Paperclip | `paperclipai/paperclip/{slug}` | `paperclipai/paperclip/paperclip` |
-| GitHub / skills.sh | `{owner}/{repo}/{slug}` | `paperclipai/paperclip/paperclip-dev` |
+| GitHub / skills.sh | `{owner}/{repo}/{slug}` | `paperclipai/paperclip/paperclip-create-agent` |
 | URL | `url/{host}/{hash}/{slug}` | `url/example.com/9f2a3b1c4d/code-review` |
 | Local path (project scan, raw folder) | `local/{hash}/{slug}` | `local/4e8a91c2d3/code-review` |
 | Paperclip-managed (created from the UI) | `company/{companyId}/{slug}` | `company/5cbe79ee.../delegation-checklist` |

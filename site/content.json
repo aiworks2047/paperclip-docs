@@ -137,6 +137,10 @@
         {
           "title": "Execution Workspaces",
           "file": "../docs/guides/projects-workflow/workspaces.md"
+        },
+        {
+          "title": "Task Watchdogs",
+          "file": "../docs/guides/projects-workflow/task-watchdogs.md"
         }
       ]
     },
