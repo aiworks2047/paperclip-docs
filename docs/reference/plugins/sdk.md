@@ -109,6 +109,7 @@ Plugin manifests are validated against types re-exported from `@paperclipai/shar
 | `PluginDatabaseDeclaration` | Managed Postgres namespace. |
 | `PluginApiRouteDeclaration` (+ `PluginApiRouteCompanyResolution`) | Plugin-mounted REST routes. |
 | `PluginLocalFolderDeclaration` | Local-folder mounts surfaced via `PluginLocalFoldersClient`. |
+| `PluginObjectReferenceProviderDeclaration` (+ `PluginObjectReferenceRefreshPolicy`) | External-object reference provider — see [External-object reference providers](#external-object-reference-providers). |
 | `PluginMinimumHostVersion` | Required host version range. |
 | `PluginCompanySettings`, `PluginRecord`, `PluginDatabaseNamespaceRecord`, `PluginMigrationRecord`, `PluginConfig`, `CompanySkill`, `PluginManagedResourceKind`, `PluginManagedResourceRef` | Persisted records and shared building blocks. |
 
@@ -137,6 +138,55 @@ Keys are stable identity. Renaming `agentKey`, `projectKey`, `routineKey`, or `s
 
 For the full manifest example and authoring rules, see the parent `doc/plugins/PLUGIN_AUTHORING_GUIDE.md`; the declaration types listed under [Manifest types](#manifest-types) above are the source of truth for what each managed entry accepts.
 
+### External-object reference providers
+
+An **external-object reference provider** teaches Paperclip to recognise URLs that point at work living in another system — a GitHub PR, a Linear issue — and to keep a status-aware reference to that object alongside your issues. When an operator pastes a supported URL into issue content, the host detects it, asks your plugin to resolve the current remote status, and then refreshes it on a schedule so the reference renders as a live, status-aware chip across issue surfaces instead of a plain link.
+
+You declare providers on the manifest under top-level `objectReferences[]`, and you implement the lifecycle as optional handlers on the object you pass to `definePlugin({...})`. Declaring `objectReferences` requires both the `external.objects.detect` and `external.objects.read` capabilities; the batch refresh handler additionally requires `external.objects.refresh`.
+
+#### Declaring a provider
+
+Each entry is a `PluginObjectReferenceProviderDeclaration`:
+
+| Field | Type | Declares |
+|---|---|---|
+| `providerKey` | `string` | Stable provider key such as `"github"`, `"linear"`, or `"mocktracker"`. |
+| `displayName` | `string` | Human-readable provider name shown in operator-facing surfaces. |
+| `objectTypes` | `string[]` | Provider object types this plugin can detect and resolve. |
+| `urlPatterns?` | `string[]` | Human-readable URL patterns this provider recognizes. These are metadata for operators and docs; your worker still performs the actual detection. |
+| `refreshPolicy?` | `PluginObjectReferenceRefreshPolicy` | Optional default refresh behaviour for this provider. |
+| `webhookEndpointKeys?` | `string[]` | Optional webhook endpoint keys declared under `webhooks` that can refresh these objects. Each key must match a declared `PluginWebhookDeclaration` endpoint. |
+
+`PluginObjectReferenceRefreshPolicy` controls how long a resolved object is treated as fresh:
+
+| Field | Type | Declares |
+|---|---|---|
+| `defaultTtlSeconds?` | `number` | Default freshness window for resolved objects from this provider. |
+| `staleAfterSeconds?` | `number` | UI-visible staleness window. Core still stores liveness separately from remote status. |
+
+#### The detect → resolve → refresh lifecycle
+
+You implement the lifecycle as three optional hooks on your plugin definition. Each is gated behind its own capability.
+
+`onDetectExternalObjects(params)` — Paperclip calls this when it scans issue, comment, or document content and asks whether any sanitized URL candidates belong to your providers. The host has already stripped URL userinfo, query strings, and fragments unless provider-safe identity components were explicitly hashed. Requires `external.objects.detect`.
+
+- Receives `DetectExternalObjectsParams`: `companyId`, an array of `PluginExternalObjectUrlCandidate` (`sanitizedCanonicalUrl`, `sanitizedDisplayUrl`, `canonicalIdentityHash`, `canonicalIdentity`, `redactedMatchedText`), and a `PluginExternalObjectSourceContext` (`companyId`, `sourceIssueId`, `sourceKind`, `sourceRecordId`, `documentKey`, `propertyKey`).
+- Returns `DetectExternalObjectsResult`: `{ detections }`, where each `PluginExternalObjectDetection` carries `urlIdentityHash`, `providerKey`, `objectType`, `externalId`, and optional `displayKey`, `iconKey`, `displayTitle`, and `confidence`.
+
+`onResolveExternalObject(params)` — Paperclip calls this when it needs the current normalized status for one external object owned by a declared provider. Requires `external.objects.read`.
+
+- Receives `ResolveExternalObjectParams`: `companyId`, `providerKey`, `objectType`, `externalId`, and the current `object` as a `PluginExternalObjectRecordSnapshot` (the persisted row — `id`, `companyId`, `providerKey`, `objectType`, `externalId`, `sanitizedCanonicalUrl`, `canonicalIdentityHash`, `displayKey`, `iconKey`, `displayTitle`, `statusKey`, `statusLabel`, `statusIconKey`, `statusCategory`, `statusTone`, `liveness`, `isTerminal`, `data`, `remoteVersion`, `etag`).
+- Returns `PluginExternalObjectResolveResult`, a discriminated union:
+  - `{ ok: true, snapshot }`, where `snapshot` is a `PluginExternalObjectResolvedSnapshot` carrying the refreshed `statusCategory` and `statusTone` plus optional `displayKey`, `iconKey`, `displayTitle`, `statusKey`, `statusLabel`, `statusIconKey`, `isTerminal`, `data`, `remoteVersion`, `etag`, and `ttlSeconds`.
+  - `{ ok: false, liveness, errorCode, errorMessage?, retryAfterSeconds? }`, where `liveness` is constrained to `"auth_required"` or `"unreachable"` — use this to report an expired token or an unreachable remote without dropping the reference.
+
+`onRefreshExternalObjects(params)` — an optional batch resolver for providers that can refresh many objects more efficiently than calling `onResolveExternalObject` one at a time. Requires `external.objects.refresh`.
+
+- Receives `RefreshExternalObjectsParams`: `companyId` and an array of `PluginExternalObjectRecordSnapshot` `objects`.
+- Returns `RefreshExternalObjectsResult`: `{ results }`, an array of `{ objectId, result }` where each `result` is a `PluginExternalObjectResolveResult` shaped exactly like the single-object resolve return.
+
+If you implement only `onResolveExternalObject`, the host refreshes objects one at a time within the window set by your `refreshPolicy`; declaring `onRefreshExternalObjects` lets you collapse those into a single round trip. For a concrete reference implementation, see the parent `server/src/services/github-external-object-provider.ts`.
+
 ### JSON-RPC protocol
 
 The SDK speaks JSON-RPC 2.0 between host and worker. Most plugin authors never call these directly, but they are exported for advanced use (custom transports, tests, replay tools).
@@ -152,6 +202,8 @@ Helpers and constants:
 - `JsonRpcParseError`, `JsonRpcCallError`
 
 Protocol types: `JsonRpcId`, `JsonRpcRequest`, `JsonRpcSuccessResponse`, `JsonRpcError`, `JsonRpcErrorResponse`, `JsonRpcResponse`, `JsonRpcNotification`, `JsonRpcMessage`, `JsonRpcErrorCode`, `PluginRpcErrorCode`, plus the parameter shapes for each RPC method: `InitializeParams`, `InitializeResult`, `ConfigChangedParams`, `ValidateConfigParams`, `OnEventParams`, `RunJobParams`, `GetDataParams`, `PerformActionParams`, `ExecuteToolParams`, and the host method tables `HostToWorkerMethods` / `HostToWorkerMethodName` / `WorkerToHostMethods` / `WorkerToHostMethodName` / `HostToWorkerRequest` / `HostToWorkerResponse` / `WorkerToHostRequest` / `WorkerToHostResponse` / `WorkerToHostNotifications` / `WorkerToHostNotificationName`.
+
+External-object protocol shapes: `PluginExternalObjectUrlCandidate`, `PluginExternalObjectSourceContext`, `DetectExternalObjectsParams`, `PluginExternalObjectDetection`, `DetectExternalObjectsResult`, `PluginExternalObjectRecordSnapshot`, `ResolveExternalObjectParams`, `PluginExternalObjectResolvedSnapshot`, `PluginExternalObjectResolveResult`, `RefreshExternalObjectsParams`, `RefreshExternalObjectsResult`. See [External-object reference providers](#external-object-reference-providers) for the lifecycle that uses them.
 
 Environment-driver protocol shapes: `PluginEnvironmentDiagnostic`, `PluginEnvironmentDriverBaseParams`, `PluginEnvironmentValidateConfigParams`, `PluginEnvironmentValidationResult`, `PluginEnvironmentProbeParams`, `PluginEnvironmentProbeResult`, `PluginEnvironmentLease`, `PluginEnvironmentAcquireLeaseParams`, `PluginEnvironmentResumeLeaseParams`, `PluginEnvironmentReleaseLeaseParams`, `PluginEnvironmentDestroyLeaseParams`, `PluginEnvironmentRealizeWorkspaceParams`, `PluginEnvironmentRealizeWorkspaceResult`, `PluginEnvironmentExecuteParams`, `PluginEnvironmentExecuteResult`.
 
