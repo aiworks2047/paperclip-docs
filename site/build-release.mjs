@@ -3,6 +3,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { marked } from "marked";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -12,6 +13,7 @@ const sourceStylesPath = path.join(__dirname, "styles.css");
 const sourceAppJsPath = path.join(__dirname, "app.js");
 const sourceNavPath = path.join(__dirname, "content.json");
 const screenshotsSourceDir = path.join(docsRoot, "user-guides", "screenshots");
+const defaultCanonicalOrigin = "https://docs.paperclip.ing";
 
 function printUsage() {
   console.log(`Usage: node site/build-release.mjs [options]
@@ -71,6 +73,79 @@ function normalizeBasePath(value) {
 
 function toPosixPath(value) {
   return value.split(path.sep).join("/");
+}
+
+function normalizeRouteKey(value) {
+  return String(value || "").replace(/^\/+/, "").replace(/\/+$/, "");
+}
+
+function normalizeDocPath(value) {
+  const normalized = [];
+  for (const segment of value.split("/")) {
+    if (!segment || segment === ".") continue;
+    if (segment === "..") {
+      if (normalized.length && normalized[normalized.length - 1] !== "..") {
+        normalized.pop();
+      } else {
+        normalized.push("..");
+      }
+      continue;
+    }
+    normalized.push(segment);
+  }
+  return normalized.join("/");
+}
+
+function derivePageSlug(file) {
+  const normalized = normalizeDocPath(file).replace(/^(\.\.\/)+/, "");
+  const withoutExtension = normalized.replace(/\.md$/, "");
+  if (withoutExtension.startsWith("user-guides/guides/")) {
+    return withoutExtension.slice("user-guides/guides/".length);
+  }
+  return withoutExtension;
+}
+
+function isNavPage(node) {
+  return Boolean(node && typeof node === "object" && typeof node.file === "string");
+}
+
+function getNavChildren(node) {
+  return Array.isArray(node?.pages) ? node.pages : [];
+}
+
+export function flattenNavPages(nav) {
+  const pages = [];
+  for (const section of nav.sections || []) {
+    const visit = (nodes, groupTrail = []) => {
+      for (const node of getNavChildren({ pages: nodes })) {
+        if (isNavPage(node)) {
+          pages.push({
+            page: node,
+            section,
+            navTrail: [section.title, ...groupTrail, node.title],
+          });
+          continue;
+        }
+        const children = getNavChildren(node);
+        if (children.length) visit(children, [...groupTrail, node.title].filter(Boolean));
+      }
+    };
+    visit(section.pages || []);
+  }
+  return pages;
+}
+
+export function attachSlugs(nav) {
+  const slugCounts = new Map();
+  for (const { page, section, navTrail } of flattenNavPages(nav)) {
+    const baseSlug = normalizeRouteKey(page.slug || derivePageSlug(page.file));
+    const seenCount = slugCounts.get(baseSlug) || 0;
+    page.slug = seenCount === 0 ? baseSlug : `${baseSlug}-${seenCount + 1}`;
+    slugCounts.set(baseSlug, seenCount + 1);
+    page.sectionTitle = section.title;
+    page.navTrail = navTrail;
+  }
+  return nav;
 }
 
 export function isPathInside(parentPath, targetPath) {
@@ -211,6 +286,15 @@ function applyAppBasePath(basePath) {
 }
 
 function isNavPayload(value) {
+  const isNavPageNode = (node) => Boolean(
+    node &&
+    typeof node === "object" &&
+    typeof node.title === "string" &&
+    (
+      typeof node.file === "string" ||
+      (Array.isArray(node.pages) && node.pages.every(isNavPageNode))
+    )
+  );
   return Boolean(
     value &&
     typeof value === "object" &&
@@ -220,12 +304,7 @@ function isNavPayload(value) {
       typeof section === "object" &&
       typeof section.title === "string" &&
       Array.isArray(section.pages) &&
-      section.pages.every((page) =>
-        page &&
-        typeof page === "object" &&
-        typeof page.title === "string" &&
-        typeof page.file === "string"
-      )
+      section.pages.every(isNavPageNode)
     )
   );
 }
@@ -359,11 +438,9 @@ async function collectReleaseFiles(nav) {
   const queue = [];
   const warnings = [];
 
-  for (const section of nav.sections) {
-    for (const page of section.pages) {
-      const absolutePath = path.resolve(__dirname, page.file);
-      queue.push(absolutePath);
-    }
+  for (const { page } of flattenNavPages(nav)) {
+    const absolutePath = path.resolve(__dirname, page.file);
+    queue.push(absolutePath);
   }
 
   while (queue.length > 0) {
@@ -399,19 +476,28 @@ async function collectReleaseFiles(nav) {
   return { markdownFiles, warnings };
 }
 
-function rewriteNav(nav) {
+export function rewriteNav(nav) {
+  const rewriteNodes = (nodes) => getNavChildren({ pages: nodes }).map((node) => {
+    if (!isNavPage(node)) {
+      return {
+        ...node,
+        pages: rewriteNodes(getNavChildren(node)),
+      };
+    }
+
+    const absolutePath = path.resolve(__dirname, node.file);
+    const relativeFromDocsRoot = toPosixPath(path.relative(docsRoot, absolutePath));
+    return {
+      ...node,
+      file: relativeFromDocsRoot,
+    };
+  });
+
   return {
     ...nav,
     sections: nav.sections.map((section) => ({
       ...section,
-      pages: section.pages.map((page) => {
-        const absolutePath = path.resolve(__dirname, page.file);
-        const relativeFromDocsRoot = toPosixPath(path.relative(docsRoot, absolutePath));
-        return {
-          ...page,
-          file: relativeFromDocsRoot,
-        };
-      }),
+      pages: rewriteNodes(section.pages),
     })),
   };
 }
@@ -444,12 +530,139 @@ location ${deploymentBasePath} {
 `;
 }
 
+function getPublicBasePath(basePath) {
+  return getDeploymentBasePath(basePath);
+}
+
+function getPublicAssetPath(basePath, fileName) {
+  const publicBasePath = getPublicBasePath(basePath);
+  return `${publicBasePath.replace(/\/$/, "")}/${fileName}`;
+}
+
+function getCanonicalPath(basePath, route = "") {
+  const publicBasePath = getPublicBasePath(basePath);
+  const base = publicBasePath.replace(/\/$/, "");
+  const normalizedRoute = normalizeRouteKey(route);
+  return normalizedRoute ? `${base}/${normalizedRoute}` : `${base || "/"}`;
+}
+
+function getCanonicalUrl(basePath, route = "") {
+  return new URL(getCanonicalPath(basePath, route), defaultCanonicalOrigin).toString();
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function stripMarkdownForDescription(markdown) {
+  return markdown
+    .replace(/```[\s\S]*?```/g, " ")
+    .replace(/`([^`]+)`/g, "$1")
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, " ")
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+    .replace(/^#{1,6}\s+/gm, "")
+    .replace(/^>\s?/gm, "")
+    .replace(/[*_~#>|]/g, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function getPageDescription(markdown) {
+  const paragraphs = markdown
+    .replace(/```[\s\S]*?```/g, "")
+    .split(/\n{2,}/)
+    .filter((paragraph) => !paragraph.trim().startsWith("#"))
+    .map((paragraph) => stripMarkdownForDescription(paragraph))
+    .filter(Boolean);
+  const firstParagraph = paragraphs.find((paragraph) => !paragraph.startsWith("paperclip_version:"));
+  return (firstParagraph || "Paperclip documentation.").slice(0, 180);
+}
+
+function getMarkdownTitle(markdown, fallbackTitle) {
+  const heading = markdown.match(/^#\s+(.+)$/m);
+  return stripMarkdownForDescription(heading?.[1] || fallbackTitle || "Paperclip Docs");
+}
+
+function rewriteIndexAssetUrls(source, basePath) {
+  return source
+    .replace('href="styles.css"', `href="${getPublicAssetPath(basePath, "styles.css")}"`)
+    .replace('src="app.js"', `src="${getPublicAssetPath(basePath, "app.js")}"`);
+}
+
+function setHeadMetadata(html, { title, description, canonicalUrl }) {
+  const metadata = [
+    `<title>${escapeHtml(title)}</title>`,
+    `<meta name="description" content="${escapeHtml(description)}" />`,
+    `<link rel="canonical" href="${escapeHtml(canonicalUrl)}" />`,
+  ].join("\n  ");
+  return html.replace(/<title>[\s\S]*?<\/title>/, metadata);
+}
+
+function renderStaticMarkdown(markdown) {
+  marked.setOptions({ gfm: true, breaks: false });
+  return marked.parse(markdown);
+}
+
+function buildStaticPageHtml(sourceIndex, page, markdown, basePath) {
+  const description = getPageDescription(markdown);
+  const title = `${getMarkdownTitle(markdown, page.title)} | Paperclip Docs`;
+  const canonicalUrl = getCanonicalUrl(basePath, page.slug);
+  const articleHtml = renderStaticMarkdown(markdown);
+  return setHeadMetadata(rewriteIndexAssetUrls(sourceIndex, basePath), {
+    title,
+    description,
+    canonicalUrl,
+  })
+    .replace('<section id="landing">', '<section id="landing">')
+    .replace('<div id="article-view">', '<div id="article-view" class="is-active">')
+    .replace('<div id="loading">', '<div id="loading" style="display:none">')
+    .replace('<article id="article" style="display:none"></article>', `<article id="article">${articleHtml}</article>`);
+}
+
+async function writeStaticRoutePages({ outDir, sourceIndex, releaseNav, markdownBodiesByFile, basePath }) {
+  for (const { page } of flattenNavPages(releaseNav)) {
+    const markdown = markdownBodiesByFile.get(page.file);
+    if (!markdown) continue;
+    const routePath = path.join(outDir, ...page.slug.split("/"), "index.html");
+    if (!isPathInside(outDir, routePath)) {
+      throw new Error(`Refusing to write route outside release directory: ${page.slug}`);
+    }
+    await ensureDir(path.dirname(routePath));
+    await fs.writeFile(routePath, buildStaticPageHtml(sourceIndex, page, markdown, basePath));
+  }
+}
+
+function buildSitemap(releaseNav, basePath) {
+  const urls = [getCanonicalUrl(basePath)];
+  for (const { page } of flattenNavPages(releaseNav)) {
+    urls.push(getCanonicalUrl(basePath, page.slug));
+  }
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls.map((url) => `  <url><loc>${escapeHtml(url)}</loc></url>`).join("\n")}
+</urlset>
+`;
+}
+
+function buildRobots(basePath) {
+  return `User-agent: *
+Allow: /
+
+Sitemap: ${getCanonicalUrl(basePath, "sitemap.xml")}
+`;
+}
+
 function buildDeployGuide(basePath) {
   const deploymentBasePath = getDeploymentBasePath(basePath);
   const basePathGuidance = basePath === "auto"
     ? `This bundle was built with \`--base-path auto\`.
 
-That mode is a fallback. For GitHub Pages or any subdirectory deployment, rebuild with an explicit path, for example:
+That mode is a fallback. For production or a Cloudflare Pages preview, rebuild with an explicit path, for example:
 
 \`\`\`sh
 node site/build-release.mjs --base-path ${deploymentBasePath}
@@ -462,18 +675,22 @@ ${basePathGuidance}
 
 ## Routing model
 
-- The app uses hash routing, so deep links look like \`${deploymentBasePath}#/installation\`
-- No server-side rewrite rules are required for route handling
+- The app uses static path routes, so deep links look like \`${deploymentBasePath}reference/skills\`
+- Each docs page is emitted as its own \`index.html\` with route-specific SEO metadata and crawler-visible content
+- Legacy hash and \`?page=\` links are still accepted by the client app and normalized to path routes
 - Serve the bundle root at \`${deploymentBasePath}\`
 - Keep all copied files together so requests for \`content.json\`, markdown files, images, fonts, and JS resolve normally
+- Serve generated files such as \`sitemap.xml\`, \`robots.txt\`, and nested route directories unchanged
 
 If \`content.json\` or linked markdown files are missing from the uploaded bundle, the docs app will fail to load content.
 
-## GitHub Pages
+## Cloudflare Pages
 
-- Publish the built bundle from a branch such as \`gh-pages\`
-- Include a \`.nojekyll\` file in the published output
-- Configure the Pages source branch in repository settings, or through the Pages REST API
+- The \`paperclipai/paperclip-docs\` repository is connected to Cloudflare Pages; do not deploy this bundle with Wrangler for normal docs releases.
+- Pushing \`main\` triggers the production deployment. Cloudflare serves it on \`docs.paperclip.ing\`, the project domain, and a deployment-specific \`https://<hash>.paperclip-docs-74t.pages.dev\` URL.
+- Pushing any other branch triggers a preview/canary deployment. In the Cloudflare Pages dashboard, open **Workers & Pages -> paperclip-docs -> Deployments** and use the row whose source branch and commit match your push.
+- Canary URLs are Cloudflare-generated deployment URLs, for example \`https://92b9a99c.paperclip-docs-74t.pages.dev\`; do not derive them from the branch name by hand.
+- If GitHub shows a Cloudflare Pages check or deployment link on the commit/PR, that URL should match the Cloudflare dashboard deployment row.
 
 ## Other static hosts
 
@@ -484,7 +701,7 @@ The generated \`.htaccess\` and \`nginx.conf.example\` are optional examples for
 async function main() {
   const options = parseArgs(process.argv.slice(2));
   const sourceNav = JSON.parse(await fs.readFile(sourceNavPath, "utf8"));
-  const releaseNav = rewriteNav(sourceNav);
+  const releaseNav = attachSlugs(rewriteNav(sourceNav));
   const { markdownFiles, warnings } = await collectReleaseFiles(sourceNav);
 
   await fs.rm(options.outDir, { recursive: true, force: true });
@@ -494,20 +711,27 @@ async function main() {
   const sourceStyles = await fs.readFile(sourceStylesPath, "utf8");
   const sourceAppJs = await fs.readFile(sourceAppJsPath, "utf8");
   const releaseAppJs = rewriteAppJs(sourceAppJs, options.basePath);
-  await fs.writeFile(path.join(options.outDir, "index.html"), sourceIndex);
+  const releaseIndex = rewriteIndexAssetUrls(sourceIndex, options.basePath);
+  await fs.writeFile(path.join(options.outDir, "index.html"), releaseIndex);
   await fs.writeFile(path.join(options.outDir, "styles.css"), sourceStyles);
   await fs.writeFile(path.join(options.outDir, "app.js"), releaseAppJs);
   await fs.writeFile(path.join(options.outDir, ".htaccess"), buildHtaccess(options.basePath));
   await fs.writeFile(path.join(options.outDir, "nginx.conf.example"), buildNginxConfig(options.basePath));
   await fs.writeFile(path.join(options.outDir, "DEPLOY.md"), buildDeployGuide(options.basePath));
+  await fs.writeFile(path.join(options.outDir, "sitemap.xml"), buildSitemap(releaseNav, options.basePath));
+  await fs.writeFile(path.join(options.outDir, "robots.txt"), buildRobots(options.basePath));
 
   // Copy markdown files, stripping YAML frontmatter, and collect per-file
   // frontmatter to surface via content.json (keyed by repo-relative path).
   const sortedMarkdownFiles = [...markdownFiles].sort((left, right) => left.localeCompare(right));
   const frontmatterByFile = new Map();
+  const markdownBodiesByFile = new Map();
   for (const markdownPath of sortedMarkdownFiles) {
     const frontmatter = await copyMarkdownIntoRelease(markdownPath, options.outDir);
+    const source = await fs.readFile(markdownPath, "utf8");
+    const { body } = parseFrontmatter(source);
     const relativeFromDocsRoot = toPosixPath(path.relative(docsRoot, markdownPath));
+    markdownBodiesByFile.set(relativeFromDocsRoot, body);
     if (Object.keys(frontmatter).length > 0) {
       frontmatterByFile.set(relativeFromDocsRoot, frontmatter);
     }
@@ -515,13 +739,18 @@ async function main() {
 
   // Attach parsed frontmatter onto matching nav page entries so the SPA can
   // surface fields like `paperclip_version` per page.
-  for (const section of releaseNav.sections) {
-    for (const page of section.pages) {
-      const fm = frontmatterByFile.get(page.file);
-      if (fm) page.frontmatter = fm;
-    }
+  for (const { page } of flattenNavPages(releaseNav)) {
+    const fm = frontmatterByFile.get(page.file);
+    if (fm) page.frontmatter = fm;
   }
   await fs.writeFile(path.join(options.outDir, "content.json"), `${JSON.stringify(releaseNav, null, 2)}\n`);
+  await writeStaticRoutePages({
+    outDir: options.outDir,
+    sourceIndex,
+    releaseNav,
+    markdownBodiesByFile,
+    basePath: options.basePath,
+  });
 
   if (await pathExists(screenshotsSourceDir)) {
     const screenshotTargetDir = path.join(options.outDir, "user-guides", "screenshots");
@@ -529,12 +758,10 @@ async function main() {
   }
 
   const missingNavTargets = [];
-  for (const section of releaseNav.sections) {
-    for (const page of section.pages) {
-      const targetPath = path.join(options.outDir, page.file);
-      if (!(await pathExists(targetPath))) {
-        missingNavTargets.push(page.file);
-      }
+  for (const { page } of flattenNavPages(releaseNav)) {
+    const targetPath = path.join(options.outDir, page.file);
+    if (!(await pathExists(targetPath))) {
+      missingNavTargets.push(page.file);
     }
   }
 

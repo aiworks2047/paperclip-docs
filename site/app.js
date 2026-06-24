@@ -27,6 +27,10 @@ let allPages    = [];
 let currentFile = null;
 let currentMarkdown = '';
 let tocObserver = null;
+let tocScrollHandler = null;
+let tocResizeHandler = null;
+let tocDocumentClickHandler = null;
+let tocKeydownHandler = null;
 const APP_DIR_NAME = 'site';
 const APP_BASE_PATH = (() => {
   const marker = `/${APP_DIR_NAME}`;
@@ -80,6 +84,41 @@ function derivePageSlug(file) {
   return withoutExtension;
 }
 
+function isNavPage(node) {
+  return Boolean(node && typeof node === 'object' && typeof node.file === 'string');
+}
+
+function getNavChildren(node) {
+  return Array.isArray(node?.pages) ? node.pages : [];
+}
+
+function countNavPages(nodes) {
+  return getNavChildren({ pages: nodes }).reduce((count, node) => {
+    if (isNavPage(node)) return count + 1;
+    return count + countNavPages(getNavChildren(node));
+  }, 0);
+}
+
+function getFirstNavPage(nodes) {
+  for (const node of getNavChildren({ pages: nodes })) {
+    if (isNavPage(node)) return node;
+    const firstChild = getFirstNavPage(getNavChildren(node));
+    if (firstChild) return firstChild;
+  }
+  return null;
+}
+
+function pageTrail(page) {
+  return Array.isArray(page?.navTrail) && page.navTrail.length
+    ? page.navTrail
+    : [page?.sectionTitle, page?.title].filter(Boolean);
+}
+
+function pageGroupLabel(page) {
+  const trail = pageTrail(page);
+  return trail.slice(0, -1).join(' / ') || page?.sectionTitle || '';
+}
+
 function resolveContentUrl(path) {
   return new URL(path, APP_SHELL_URL).toString();
 }
@@ -91,7 +130,7 @@ function buildRouteValue(page, headingId = null) {
 function getRouteUrl(routeValue) {
   const normalized = normalizeRouteKey(routeValue);
   const basePath = APP_BASE_URL.pathname.replace(/\/$/, '');
-  return normalized ? `${basePath}/#/${normalized}` : `${basePath}/#/`;
+  return normalized ? `${basePath}/${normalized}` : `${basePath}/`;
 }
 
 function getPageUrl(page) {
@@ -360,7 +399,7 @@ function showLanding() {
   document.getElementById('article-view').classList.remove('is-active');
   document.getElementById('breadcrumb').innerHTML = '';
   const basePath = APP_BASE_URL.pathname.replace(/\/$/, '');
-  history.replaceState(null, '', `${basePath}/#/`);
+  history.replaceState(null, '', `${basePath}/`);
 }
 function showArticleView() {
   document.getElementById('landing').classList.remove('is-active');
@@ -383,7 +422,8 @@ document.addEventListener('click', e => {
   if (card) {
     e.preventDefault();
     const section = navData?.sections?.[Number(card.dataset.navSection)];
-    if (section?.pages?.length) loadPage(section.pages[0].file);
+    const firstPage = getFirstNavPage(section?.pages || []);
+    if (firstPage) loadPage(firstPage.file);
     return;
   }
   // Landing quick link -> specific page
@@ -392,6 +432,14 @@ document.addEventListener('click', e => {
     e.preventDefault();
     loadPage(qlink.dataset.navFile);
     return;
+  }
+  const routeLink = e.target.closest('[data-nav="link"]');
+  if (routeLink) {
+    const route = parseRoute(applyRedirect(routeLink.getAttribute('href')));
+    if (route.page) {
+      e.preventDefault();
+      loadPage(route.page.file, route.headingId);
+    }
   }
 });
 
@@ -419,7 +467,7 @@ async function buildSearchIndex() {
         .replace(/https?:\S+/g, '')
         .replace(/\s+/g, ' ')
         .trim();
-      return { file: page.file, sectionTitle: page.sectionTitle, pageTitle: page.title, headings, text };
+      return { file: page.file, sectionTitle: pageGroupLabel(page), pageTitle: page.title, headings, text };
     } catch { return null; }
   });
   searchIndex = (await Promise.all(tasks)).filter(Boolean);
@@ -651,16 +699,18 @@ function buildLanding() {
     block.innerHTML = `<h2>${escapeHtml(tier)}</h2><div class="landing-tier-cards" style="--tier-cols:${cols}"></div>`;
     const cardsWrap = block.querySelector('.landing-tier-cards');
     byTier.get(tier).forEach(({ section, i }) => {
+      const firstPage = getFirstNavPage(section.pages);
+      const pageCount = countNavPages(section.pages);
       const a = document.createElement('a');
       a.className = 'card';
-      a.href = section.pages[0] ? getPageUrl(section.pages[0]) : '#';
+      a.href = firstPage ? getPageUrl(firstPage) : '#';
       a.dataset.navSection = i;
-      const desc = section.desc || `${section.pages.length} page${section.pages.length === 1 ? '' : 's'} in ${section.title}.`;
+      const desc = section.desc || `${pageCount} page${pageCount === 1 ? '' : 's'} in ${section.title}.`;
       a.innerHTML = `
         <div class="card-icon">${sectionIconTag(section)}</div>
         <div class="card-title">${escapeHtml(section.title)}</div>
         <div class="card-desc">${escapeHtml(desc)}</div>
-        <div class="card-meta"><span>${section.pages.length} page${section.pages.length === 1 ? '' : 's'}</span><span class="dot"></span><span>${escapeHtml(getSectionKind(section))}</span></div>
+        <div class="card-meta"><span>${pageCount} page${pageCount === 1 ? '' : 's'}</span><span class="dot"></span><span>${escapeHtml(getSectionKind(section))}</span></div>
       `;
       cardsWrap.appendChild(a);
     });
@@ -668,6 +718,29 @@ function buildLanding() {
   });
 
   renderLucideIcons();
+}
+
+function sidebarPagesHTML(nodes, level = 0) {
+  return getNavChildren({ pages: nodes }).map(node => {
+    if (isNavPage(node)) {
+      return `<a class="sb-link" data-file="${escapeAttr(node.file)}" href="${escapeAttr(getPageUrl(node))}">${escapeHtml(node.title)}</a>`;
+    }
+
+    const children = getNavChildren(node);
+    const pageCount = countNavPages(children);
+    if (!children.length) return '';
+    return `
+      <div class="sb-group" data-open="false" data-depth="${level}">
+        <button class="sb-group-btn" type="button">
+          <span class="sb-group-title">${escapeHtml(node.title || 'Group')}</span>
+          <span class="sb-group-count">${pageCount}</span>
+          <svg class="chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="m4 2 4 4-4 4"/></svg>
+        </button>
+        <div class="sb-group-pages">
+          ${sidebarPagesHTML(children, level + 1)}
+        </div>
+      </div>`;
+  }).join('');
 }
 
 /* ─── Sidebar (accordion) — used for desktop sidebar AND mobile drawer ──── */
@@ -685,18 +758,21 @@ function sidebarSectionsHTML() {
 
   return orderedTiers.map(tier => {
     const header = `<div class="sb-tier-header">${escapeHtml(tier)}</div>`;
-    const sections = byTier.get(tier).map(({ section, si }) => `
+    const sections = byTier.get(tier).map(({ section, si }) => {
+      const pageCount = countNavPages(section.pages);
+      return `
     <div class="sb-section" data-section-idx="${si}" data-section-title="${escapeAttr(section.title)}" data-open="false">
       <button class="sb-section-btn" type="button">
         <span class="sb-section-icon">${sectionIconTag(section)}</span>
         <span class="sb-section-title">${escapeHtml(section.title)}</span>
-        <span class="sb-section-count">${section.pages.length}</span>
+        <span class="sb-section-count">${pageCount}</span>
         <svg class="chev" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="m4 2 4 4-4 4"/></svg>
       </button>
       <div class="sb-pages">
-        ${section.pages.map(page => `<a class="sb-link" data-file="${escapeAttr(page.file)}" href="${escapeAttr(getPageUrl(page))}">${escapeHtml(page.title)}</a>`).join('')}
+        ${sidebarPagesHTML(section.pages)}
       </div>
-    </div>`).join('');
+    </div>`;
+    }).join('');
     return header + sections;
   }).join('');
 }
@@ -707,6 +783,12 @@ function wireSidebarContainer(container) {
     if (secBtn) {
       const sec = secBtn.parentElement;
       sec.dataset.open = sec.dataset.open === 'true' ? 'false' : 'true';
+      return;
+    }
+    const groupBtn = e.target.closest('.sb-group-btn');
+    if (groupBtn) {
+      const group = groupBtn.parentElement;
+      group.dataset.open = group.dataset.open === 'true' ? 'false' : 'true';
       return;
     }
     const link = e.target.closest('.sb-link');
@@ -736,17 +818,29 @@ function buildMobileDrawer() {
 function buildFlatList() {
   allPages = [];
   const slugCounts = new Map();
-  navData.sections.forEach(section => {
-    section.pages.forEach(page => {
-      const baseSlug = normalizeRouteKey(page.slug || derivePageSlug(page.file));
-      const seenCount = slugCounts.get(baseSlug) || 0;
-      page.slug = seenCount === 0 ? baseSlug : `${baseSlug}-${seenCount + 1}`;
-      slugCounts.set(baseSlug, seenCount + 1);
-      allPages.push({
-        ...page,
-        sectionTitle: section.title,
-      });
+
+  function visitNodes(nodes, section, groupTrail = []) {
+    getNavChildren({ pages: nodes }).forEach(node => {
+      if (isNavPage(node)) {
+        const baseSlug = normalizeRouteKey(node.slug || derivePageSlug(node.file));
+        const seenCount = slugCounts.get(baseSlug) || 0;
+        node.slug = seenCount === 0 ? baseSlug : `${baseSlug}-${seenCount + 1}`;
+        slugCounts.set(baseSlug, seenCount + 1);
+        allPages.push({
+          ...node,
+          sectionTitle: section.title,
+          navTrail: [section.title, ...groupTrail, node.title],
+        });
+        return;
+      }
+
+      const children = getNavChildren(node);
+      if (children.length) visitNodes(children, section, [...groupTrail, node.title].filter(Boolean));
     });
+  }
+
+  navData.sections.forEach(section => {
+    visitNodes(section.pages, section);
   });
 }
 
@@ -848,7 +942,7 @@ function insertMetaRow(article, page) {
   if (article.querySelector('.meta-row')) return;
   const row = document.createElement('div');
   row.className = 'meta-row';
-  row.innerHTML = `<span class="chip">${escapeHtml(page.sectionTitle)}</span><span class="spacer"></span>`;
+  row.innerHTML = `<span class="chip">${escapeHtml(pageGroupLabel(page))}</span><span class="spacer"></span>`;
   h1.after(row);
   row.appendChild(buildPageActions(page));
 }
@@ -945,11 +1039,12 @@ function updateBreadcrumb(page) {
   const bc = document.getElementById('breadcrumb');
   if (!bc) return;
   if (!page) { bc.innerHTML = ''; return; }
-  bc.innerHTML = `
-    <span>${escapeHtml(page.sectionTitle)}</span>
-    <span class="sep">/</span>
-    <span class="crumb-current">${escapeHtml(page.title)}</span>
-  `;
+  const trail = pageTrail(page);
+  bc.innerHTML = trail.map((crumb, index) => {
+    const isCurrent = index === trail.length - 1;
+    const crumbHtml = `<span${isCurrent ? ' class="crumb-current"' : ''}>${escapeHtml(crumb)}</span>`;
+    return index === 0 ? crumbHtml : `<span class="sep">/</span>${crumbHtml}`;
+  }).join('');
 }
 
 /* ─── Active state ──────────────────────────────────────────────────────── */
@@ -964,7 +1059,15 @@ function setActiveState(file) {
       if (isActive) sec.dataset.open = 'true';
     });
     container.querySelectorAll('.sb-link').forEach(link => {
-      link.classList.toggle('active', link.dataset.file === file);
+      const isActive = link.dataset.file === file;
+      link.classList.toggle('active', isActive);
+      if (isActive) {
+        for (let parent = link.parentElement; parent; parent = parent.parentElement) {
+          if (parent.classList?.contains('sb-section') || parent.classList?.contains('sb-group')) {
+            parent.dataset.open = 'true';
+          }
+        }
+      }
     });
   });
 }
@@ -1224,28 +1327,80 @@ function postProcessInternalLinks(root) {
       return;
     }
 
-    if (href.startsWith('#')) return;
+    if (href.startsWith('#')) {
+      const page = allPages.find(candidate => candidate.file === currentFile);
+      const headingId = normalizeRouteKey(href.slice(1));
+      if (page && headingId) {
+        a.href = getPageHeadingUrl(page, headingId);
+        a.addEventListener('click', e => {
+          e.preventDefault();
+          const heading = document.getElementById(headingId);
+          history.pushState(null, '', getPageHeadingUrl(page, headingId));
+          if (heading) focusHeading(heading);
+        });
+      }
+      return;
+    }
 
     const [docHref, headingHref] = href.split('#');
     if (docHref && docHref.endsWith('.md')) {
+      const baseDir = currentFile.replace(/\/[^/]+$/, '/');
+      const targetFile = normalizeDocPath(baseDir + docHref);
+      const targetPage = allPages.find(candidate => candidate.file === targetFile);
+      if (targetPage) {
+        a.href = headingHref ? getPageHeadingUrl(targetPage, headingHref) : getPageUrl(targetPage);
+      }
       a.addEventListener('click', e => {
         e.preventDefault();
-        const baseDir = currentFile.replace(/\/[^/]+$/, '/');
-        loadPage(normalizeDocPath(baseDir + docHref), headingHref || null);
+        loadPage(targetFile, headingHref || null);
       });
     }
   });
 }
 
-/* ─── Table of contents (pill toggle + floating dropdown) ───────────────── */
+/* ─── Table of contents (desktop rail + compact dropdown) ───────────────── */
+function resetToc() {
+  if (tocObserver) {
+    tocObserver.disconnect();
+    tocObserver = null;
+  }
+  if (tocScrollHandler) {
+    window.removeEventListener('scroll', tocScrollHandler);
+    tocScrollHandler = null;
+  }
+  if (tocResizeHandler) {
+    window.removeEventListener('resize', tocResizeHandler);
+    tocResizeHandler = null;
+  }
+  if (tocDocumentClickHandler) {
+    document.removeEventListener('click', tocDocumentClickHandler);
+    tocDocumentClickHandler = null;
+  }
+  if (tocKeydownHandler) {
+    document.removeEventListener('keydown', tocKeydownHandler);
+    tocKeydownHandler = null;
+  }
+
+  document.querySelectorAll('.toc-wrap').forEach(el => el.remove());
+  const rail = document.getElementById('toc-rail');
+  const railLinks = document.getElementById('toc-rail-links');
+  if (railLinks) railLinks.innerHTML = '';
+  if (rail) rail.classList.add('is-empty');
+}
+
+function headingLabel(heading) {
+  const clone = heading.cloneNode(true);
+  clone.querySelectorAll('.heading-anchor').forEach(anchor => anchor.remove());
+  return clone.textContent.trim();
+}
+
 function buildToc(article, file) {
-  if (tocObserver) { tocObserver.disconnect(); tocObserver = null; }
+  resetToc();
 
   const metaRow = article.querySelector('.meta-row');
-  if (!metaRow) return;
-
-  // Clear previous (defensive)
-  metaRow.querySelector('.toc-wrap')?.remove();
+  const rail = document.getElementById('toc-rail');
+  const railLinks = document.getElementById('toc-rail-links');
+  if (!metaRow || !rail || !railLinks) return;
 
   const headings = [...article.querySelectorAll('h2, h3')];
   if (headings.length < 2) return;
@@ -1254,6 +1409,21 @@ function buildToc(article, file) {
 
   const CHEVRON_SVG = '<svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="m3 4.5 3 3 3-3"/></svg>';
   const TOC_SVG = '<svg class="toc-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h10M3 8h7M3 12h9"/></svg>';
+
+  function makeTocLink(heading, onClick) {
+    const a = document.createElement('a');
+    a.className = `toc-link ${heading.tagName === 'H3' ? 'level-3' : 'level-2'}`;
+    a.dataset.headingId = heading.id;
+    a.textContent = headingLabel(heading);
+    a.href = page ? getPageHeadingUrl(page, heading.id) : `#${heading.id}`;
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      if (page) history.pushState(null, '', getPageHeadingUrl(page, heading.id));
+      focusHeading(heading);
+      if (onClick) onClick();
+    });
+    return a;
+  }
 
   const wrap = document.createElement('div');
   wrap.className = 'toc-wrap';
@@ -1274,46 +1444,64 @@ function buildToc(article, file) {
   const openPanel = () => { panel.classList.add('is-open'); toggle.setAttribute('aria-expanded', 'true'); };
 
   headings.forEach(h => {
-    const a = document.createElement('a');
-    a.className = `toc-link ${h.tagName === 'H3' ? 'level-3' : 'level-2'}`;
-    a.dataset.headingId = h.id;
-    // Use textContent minus the trailing heading-anchor (the anchor was appended after text, so textContent
-    // after decorateHeadings still has the svg text — but textContent on an <a> with svg is empty. Safe to use h.textContent which
-    // includes only text nodes and keyboard chars from svg text (none). In practice this works.
-    a.textContent = h.textContent.trim();
-    a.href = page ? getPageHeadingUrl(page, h.id) : `#${h.id}`;
-    a.addEventListener('click', e => {
-      e.preventDefault();
-      if (page) history.pushState(null, '', getPageHeadingUrl(page, h.id));
-      focusHeading(h);
-      closePanel();
-    });
-    panel.appendChild(a);
+    panel.appendChild(makeTocLink(h, closePanel));
+    railLinks.appendChild(makeTocLink(h));
   });
   metaRow.appendChild(wrap);
+  rail.classList.remove('is-empty');
 
   toggle.addEventListener('click', e => {
     e.stopPropagation();
     panel.classList.contains('is-open') ? closePanel() : openPanel();
   });
-  document.addEventListener('click', e => {
+  tocDocumentClickHandler = e => {
     if (panel.classList.contains('is-open') && !wrap.contains(e.target)) closePanel();
-  });
-  document.addEventListener('keydown', e => {
+  };
+  tocKeydownHandler = e => {
     if (e.key === 'Escape' && panel.classList.contains('is-open')) closePanel();
-  });
+  };
+  document.addEventListener('click', tocDocumentClickHandler);
+  document.addEventListener('keydown', tocKeydownHandler);
 
-  const links = panel.querySelectorAll('.toc-link');
-  tocObserver = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const id = entry.target.id;
-        links.forEach(l => l.classList.toggle('active', l.dataset.headingId === id));
-      }
-    });
-  }, { rootMargin: `-${56 + 40 + 20}px 0px -68% 0px`, threshold: 0 });
+  const links = [...document.querySelectorAll('.toc-link')];
+  const setActiveLink = id => {
+    links.forEach(link => link.classList.toggle('active', link.dataset.headingId === id));
+  };
+  const getActiveHeading = () => {
+    const offset = 136;
+    const bottomSlack = 4;
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - bottomSlack) {
+      return headings[headings.length - 1];
+    }
+
+    let active = headings[0];
+    for (const heading of headings) {
+      if (heading.getBoundingClientRect().top <= offset) active = heading;
+      else break;
+    }
+    return active;
+  };
+  let tocFrame = 0;
+  const updateActive = () => {
+    tocFrame = 0;
+    setActiveLink(getActiveHeading().id);
+  };
+  const scheduleActiveUpdate = () => {
+    if (tocFrame) return;
+    tocFrame = window.requestAnimationFrame(updateActive);
+  };
+
+  tocScrollHandler = scheduleActiveUpdate;
+  tocResizeHandler = scheduleActiveUpdate;
+  window.addEventListener('scroll', tocScrollHandler, { passive: true });
+  window.addEventListener('resize', tocResizeHandler);
+  tocObserver = new IntersectionObserver(scheduleActiveUpdate, {
+    rootMargin: '-136px 0px -62% 0px',
+    threshold: [0, 1],
+  });
 
   headings.forEach(h => tocObserver.observe(h));
+  updateActive();
 }
 
 /* ─── Prev/next ─────────────────────────────────────────────────────────── */
@@ -1348,6 +1536,7 @@ function renderPageNav(file) {
 
 /* ─── Helpers ───────────────────────────────────────────────────────────── */
 function showLoading() {
+  resetToc();
   document.getElementById('loading').style.display     = 'flex';
   document.getElementById('error-state').style.display = 'none';
   document.getElementById('article').style.display     = 'none';
@@ -1359,6 +1548,7 @@ function hideLoading() { document.getElementById('loading').style.display = 'non
 function showError(msg, detail = '') {
   // Error state lives inside article-view; make sure the right view is showing.
   showArticleView();
+  resetToc();
   document.getElementById('loading').style.display     = 'none';
   document.getElementById('article').style.display     = 'none';
   document.getElementById('page-nav').style.display    = 'none';
