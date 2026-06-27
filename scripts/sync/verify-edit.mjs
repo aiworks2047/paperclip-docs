@@ -746,7 +746,18 @@ function findCliCommandFile(name, cliFiles) {
   return null;
 }
 
-function fetchAdapterFiles(repo, adapter, ref, refSlug) {
+function readAdapterDocSources() {
+  try {
+    const anchor = JSON.parse(
+      readFileSync(join(SELF_DIR, "anchor-map.json"), "utf8")
+    );
+    return anchor.adapter_doc_sources || null;
+  } catch {
+    return null;
+  }
+}
+
+function fetchAdapterFiles(repo, adapter, ref, refSlug, adapterDocSources) {
   const acc = [];
   const seen = new Set();
   function visit(dir) {
@@ -764,11 +775,15 @@ function fetchAdapterFiles(repo, adapter, ref, refSlug) {
       }
     }
   }
-  for (const base of [
+  // Use anchor-map.json adapter_doc_sources override when the doc name does not
+  // match the adapter package directory (e.g. hermes-local/hermes-gateway → hermes).
+  const overrideBases = adapterDocSources && adapterDocSources[adapter];
+  const bases = overrideBases || [
     `packages/adapters/${adapter}`,
     `packages/adapters/${adapter}/src`,
     `packages/plugins/sandbox-providers/${adapter}`,
-  ]) {
+  ];
+  for (const base of bases) {
     visit(base);
   }
   return acc;
@@ -1085,9 +1100,10 @@ function main() {
     return cliFiles;
   };
   const adapterFilesCache = {};
+  const adapterDocSources = readAdapterDocSources();
   const getAdapterFiles = (adapter) => {
     if (!adapterFilesCache[adapter]) {
-      adapterFilesCache[adapter] = fetchAdapterFiles(repo, adapter, against, refSlug);
+      adapterFilesCache[adapter] = fetchAdapterFiles(repo, adapter, against, refSlug, adapterDocSources);
     }
     return adapterFilesCache[adapter];
   };
