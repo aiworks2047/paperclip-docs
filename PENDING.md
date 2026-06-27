@@ -27,7 +27,7 @@ Cutoff this run: `2026-06-24T20:24:06Z` (now − 24h). These cleared into the wi
 
 ## Not authored this run (eligible, but no doc impact)
 
-- **`50ae8fc6` Improve reusable workspace selector search (#8597)** — adds a `SearchableSelect` component and wires search into the existing reusable-execution-workspace picker in the New Issue dialog. Pure UX refinement of an existing selector; no new CLI/API/env/schema surface, no documented behaviour change. No registry screenshot has a `depends_on` on the touched files (`NewIssueDialog.tsx`, `IssueWorkspaceCard.tsx`, `ReusableExecutionWorkspaceSelect.tsx`), so no screenshot staleness either. Left unauthored.
+- ✅ **`50ae8fc6` Improve reusable workspace selector search (#8597)** — adds a `SearchableSelect` component and wires search into the existing reusable-execution-workspace picker in the New Issue dialog. Pure UX refinement of an existing selector; no new CLI/API/env/schema surface, no documented behaviour change. No registry screenshot has a `depends_on` on the touched files (`NewIssueDialog.tsx`, `IssueWorkspaceCard.tsx`, `ReusableExecutionWorkspaceSelect.tsx`), so no screenshot staleness either. **Authored 2026-06-27 (out of band)**: documented the searchable reuse selector under `docs/guides/day-to-day/issues.md` → "Creating a New Issue" → step 8 "Choose where the work runs".
 
 ## ⚠ Drift
 

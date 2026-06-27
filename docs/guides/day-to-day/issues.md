@@ -123,7 +123,21 @@ The current UI uses **Issues** as the page name, even though the product languag
 
    If this issue is a subtask — part of a larger piece of work — link it to the parent. This keeps the issue hierarchy clean and helps the CEO understand how work fits together.
 
-8. **Save the issue**
+8. **Choose where the work runs** *(when isolated workspaces are enabled)*
+
+   If the project uses isolated execution workspaces, the form includes a workspace mode picker:
+
+   | Mode | What happens |
+   |------|--------------|
+   | **Project default** | The run uses the project's configured workspace behaviour. |
+   | **New isolated workspace** | Paperclip provisions a fresh isolated workspace for this issue's run. |
+   | **Reuse existing workspace** | The run continues in an existing execution workspace you pick — handy for resuming where a previous task left off. |
+
+   Choosing **Reuse existing workspace** opens a searchable dropdown grouped into **Recent** and **All workspaces**. Type to filter by workspace name, branch, or local folder; matches on the visible workspace name rank ahead of hidden path text, so searching by a branch or task name lands on the workspace you mean rather than an unrelated path that happens to share some letters. Each option shows the workspace's status next to its branch or folder.
+
+   See [Execution workspaces](../projects-workflow/workspaces.md) for how Paperclip keeps reused workspaces consistent across runs.
+
+9. **Save the issue**
 
    Click **Create Issue**. The issue appears in the list and the assigned agent is notified.
 
