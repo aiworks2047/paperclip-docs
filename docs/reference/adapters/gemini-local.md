@@ -43,7 +43,7 @@ paperclip_version: v2026.618.0
 | `timeoutSec` | no | Run timeout in seconds. `0` means no timeout. |
 | `graceSec` | no | Grace period before a forced stop. |
 
-> **Note:** Gemini Local uses `--output-format stream-json` for readiness checks and resumes sessions with `--resume` when the stored session cwd still matches the current cwd.
+> **Note:** Gemini Local uses `--output-format stream-json` for readiness checks and resumes sessions with `--resume` when the stored session cwd still matches the current cwd. It passes your prompt with `--prompt` for non-interactive runs (not through stdin), and it sets a headless-safe terminal and browser environment for the Gemini CLI child process so unattended runs never stall waiting on browser auth or a colour-terminal prompt.
 
 ---
 

@@ -53,6 +53,28 @@ Optional `apiUrl` and `target` settings map directly to the Daytona SDK or clien
 
 The current published Daytona SDK dependency is `@daytonaio/sdk`.
 
+### Reusable leases (opt-in)
+
+Set `reuseLease: true` to keep a warm sandbox around between runs. Instead of deleting the sandbox when the lease is released, the driver stops it, and a later run resumes the same sandbox with Daytona's start call. Because adapter installation and the workspace bootstrap survive between runs, this skips the create-and-bootstrap cost that an ephemeral sandbox pays every time. Leave `reuseLease` at its default of `false` and each run gets a fresh sandbox that's deleted on release, same as before.
+
+Reuse is only considered safe when the run matches the lease that created it. The driver writes a sentinel file (`.paperclip-runtime/reusable-sandbox-lease.json`) into the workspace and gates resume on a fingerprint built from these dimensions: `companyId`, `environmentId`, `agentId`, `executionWorkspaceId`, `adapterType`, and the resource-shaping config (`image`, `snapshot`, `target`, `cpu`, `memory`, `disk`, `gpu`). If any of these change — say you bump the requested CPU or swap the image — the old lease no longer matches, so it's expired and a fresh sandbox is provisioned rather than resuming a mis-sized one. Reuse also needs both `agentId` and `executionWorkspaceId` to be present; runs without them stay ephemeral.
+
+### Quota-safe auto-archive (default)
+
+Daytona counts a *stopped* sandbox against your org's storage quota — only an *archived* sandbox moves to cold storage and stops counting. To keep leaked or idle sandboxes from filling the quota (and blocking all new sandbox creation), the driver applies quota-safe defaults on create that you can override per environment:
+
+| Field | Default | Notes |
+|---|---|---|
+| `autoStopInterval` | `15` (minutes) | Stops idle running sandboxes, which frees CPU/RAM and starts the archive clock. `0` disables auto-stop. |
+| `autoArchiveInterval` | `60` (minutes) | Archives stopped sandboxes so they leave the disk quota. `0` uses Daytona's maximum interval. |
+| `autoDeleteInterval` | `10080` (minutes, 7 days) | Backstop reaper for sandboxes nobody resumes. `-1` disables auto-delete; `0` deletes immediately after stop. |
+
+These defaults only apply when you leave a field unset — an explicit value (including `0` or `-1`) is forwarded to Daytona unchanged. Auto-archive is reversible: resuming an archived reusable sandbox restores it, so warm reuse still works under these defaults. If you genuinely need long-lived warm sandboxes, raise or disable the intervals.
+
+### Resource overrides need an image
+
+Optional `cpu` (cores), `memory` (GiB; one of `1`, `2`, `4`, `8`), `disk` (GiB), and `gpu` (units) let you request a larger sandbox — but Daytona only honours resource overrides on image-backed creation. Snapshot/default creation rejects them. The driver enforces this up front: if you set any of these fields without an `image`, validation and lease acquisition fail with a clear Paperclip error ("Daytona resource settings require image-backed sandbox creation; snapshot/default sandbox creation cannot override CPU, memory, disk, or GPU") instead of letting Daytona return an opaque one. To run a sized sandbox, configure an `image`; otherwise leave the resource fields unset and Daytona uses its defaults.
+
 ---
 
 ## exe.dev (`provider: "exe-dev"`)

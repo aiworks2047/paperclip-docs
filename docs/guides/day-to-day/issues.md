@@ -375,6 +375,58 @@ Annotations are a two-way channel: agents can open threads on documents too, so 
 
 ---
 
+## External references (GitHub issues and pull requests)
+
+A lot of the work your agents track lives in other systems — most commonly **GitHub**. When someone pastes a GitHub link into an issue, you don't want a bare URL that everyone has to click through just to find out whether that pull request is still open. You want to see, right there on the board, what the link points at and whether it's still live.
+
+That's what external references do. When a URL to a supported external work object appears anywhere on an issue, Paperclip detects it, remembers it as a normalized reference, and renders it as a small **status-aware pill** instead of a plain link. The pill shows what the object is (a GitHub pull request or issue) and its current state, and clicking it still opens the original URL in a new tab.
+
+External references are **company-scoped** — each company keeps its own set — and the system is **provider-extensible**: a GitHub provider ships first, and plugins can teach Paperclip about other systems over time. The first provider detects two kinds of GitHub object:
+
+- **GitHub Pull Request** — `github.com/{owner}/{repo}/pull/{number}` links.
+- **GitHub Issue** — `github.com/{owner}/{repo}/issues/{number}` links.
+
+### Where references are detected
+
+Paperclip looks for these links across the surfaces you already use:
+
+- The issue **title** and **description**.
+- **Comments** in the Chat tab.
+- **Documents** keyed to the issue (like the `plan` document).
+- Issue **properties**.
+- References contributed by **plugins**.
+
+Each place a link appears is recorded as a source, so a pill knows it was mentioned in, say, the description and twice in comments. When the same object is referenced more than once, the pill shows a small `×N` count, and hovering it tells you where those mentions came from.
+
+### What the pill tells you
+
+For a **pull request**, the status reflects exactly where it stands:
+
+- **Open** — still open and being worked on.
+- **Draft** — open but marked as a draft.
+- **Merged** — merged in. This is a terminal state, shown with a distinct merged treatment.
+- **Closed** — closed without merging. Also terminal.
+
+For a GitHub **issue**, the status is **Open**, or **Closed** (with the close reason surfaced when GitHub provides one, for example "Closed: completed" or "Closed: not planned"). If GitHub returns a 404, the object shows as **Not found**.
+
+Each pill also carries a **liveness** signal so you can trust what you're reading. Most of the time a reference is **Fresh** — recently refreshed and accurate. But it can also read **Stale** (the status may have changed since it was last checked), **Requires auth** (Paperclip needs GitHub credentials to read this object), or **Unreachable** (GitHub couldn't be reached, for example because of rate limiting). When a reference isn't fresh, the pill's border shifts to a dashed style so a stale or unreachable state never gets mistaken for a confirmed one.
+
+> **Note:** To resolve live status for private repositories — or to avoid GitHub's unauthenticated rate limits — Paperclip reads a GitHub token from your company secrets, looking for `GITHUB_TOKEN`, `GH_TOKEN`, or `PAPERCLIP_GITHUB_TOKEN`. Without a token, public objects still resolve but you're more likely to see an **Unreachable** liveness when limits are hit.
+
+### Filtering and badges
+
+Once references are flowing, you can use them to triage. The issue and inbox **filters popover** includes an **External object status** group, so you can narrow the list to issues whose external references need attention:
+
+- **Any failed**, **Any waiting**, **Any running** — issues with an external object in that state.
+- **Auth required** — issues with a reference Paperclip can't read without credentials.
+- **Unreachable** — issues with a reference that couldn't be refreshed.
+- **Stale** — issues with a reference whose status may be out of date.
+- **No external objects** — issues with no external references at all.
+
+References also roll up into **badges** on issue rows and in the sidebar and inbox. Rather than showing every reference, the rollup surfaces the most attention-worthy state — so an issue sitting on three failed checks reads as a single, severity-weighted signal you can spot at a glance. Calm states (a lone merged PR, for example) don't add noise; the badge appears when something is actually worth looking at.
+
+---
+
 ## The Chat tab
 
 The **Chat** tab is the default tab on every issue. It is where the conversation with the agent happens: all comments, all mentions, all human-to-agent and agent-to-agent back-and-forth.

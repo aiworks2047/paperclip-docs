@@ -39,6 +39,7 @@ paperclip_version: v2026.618.0
 | `env` | no | Environment variables passed to the runtime. Secret refs are supported. |
 | `timeoutSec` | no | Run timeout in seconds. `0` means no timeout. |
 | `graceSec` | no | Grace period before a forced stop. |
+| `outputInactivityTimeoutMs` | no | How long the adapter waits for Codex to produce output before treating the run as stuck. The timer resets every time Codex emits a parsed event, so a busy run never trips it. Defaults to 7 minutes (`420000`) when unset. Set it to `null` to switch the monitor off entirely — only do that for tasks you know go quiet for long stretches, since Paperclip's platform-level one-hour silent-run safety net still applies. When it fires, the adapter stops the Codex process and reports the run as failed with a message like `monitor: no codex output for 7m 0s`. |
 | `workspaceStrategy` | no | Execution workspace strategy, such as `git_worktree`. |
 | `workspaceRuntime` | no | Reserved workspace runtime metadata. |
 
@@ -108,6 +109,17 @@ If you set `instructionsFilePath`, Paperclip reads that file and prepends it to 
 That is separate from Codex's own repo instruction discovery. If the working directory contains an `AGENTS.md`, Codex can still load it as part of its normal behavior.
 
 > **Tip:** Use `instructionsFilePath` for Paperclip-managed instructions. Use repo-local instruction files when you want Codex to pick them up naturally from the workspace.
+
+---
+
+## Authentication And Per-Agent Homes
+
+Each `codex_local` agent runs against its own managed Codex home, so one agent can never spend against another agent's login or share its Codex state. Because that home starts empty, Paperclip seeds credentials into it for you before launching Codex:
+
+- **You inherit the host Codex login by default.** If you are already signed in to Codex on the Paperclip host (a ChatGPT-subscription login), Paperclip links that login into the agent's managed home automatically. You do not have to log in again per company or per agent.
+- **A per-agent API key wins when you set one.** If the agent's `env` carries an `OPENAI_API_KEY`, Paperclip writes that key into the managed home as API-key auth instead of borrowing the host login.
+- **Your own `CODEX_HOME` is left alone.** If you point the adapter at a `CODEX_HOME` outside Paperclip's managed company tree, Paperclip treats it as self-managed and never seeds or overwrites it.
+- **No silent credential-less runs.** If a managed home ends up with no usable login and no configured API key, the run fails fast with a clear adapter error instead of starting Codex and hitting a `401` from the provider.
 
 ---
 
