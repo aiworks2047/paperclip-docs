@@ -32,7 +32,7 @@ This is a first-class built-in adapter as of v2026.626.0. You configure it throu
 |---|---:|---|---|
 | `apiBaseUrl` | yes | — | Hermes API server base URL. Accepts the dashboard root or chat URL (such as `http://127.0.0.1:9119/chat`) and maps it to `/api`. Prefer HTTPS for non-loopback hosts. |
 | `apiKey` | yes | — | The Hermes `API_SERVER_KEY`, **not** your `PAPERCLIP_API_KEY`. Stored as a Paperclip secret reference so it never appears in plain text. |
-| `dangerouslyAllowRemoteHttp` | no | `false` | Unsafe dev-only escape hatch. Loopback HTTP (`127.0.0.1`, `localhost`) is always allowed; this toggle is only needed for non-loopback HTTP hosts. |
+| `dangerouslyAllowInsecureRemoteHttp` | no | `false` | Unsafe dev-only escape hatch. Loopback HTTP (`127.0.0.1`, `localhost`) is always allowed; this toggle is only needed for non-loopback HTTP hosts. |
 | `sessionKeyStrategy` | no | `"issue"` | Controls the `X-Hermes-Session-Key` header. Options: `issue` (Issue scoped), `agent` (Agent scoped), `run` (Run scoped), `none` (disabled). See [Session Key Strategy](#session-key-strategy) below. |
 | `timeoutSec` | no | `600` | Run timeout in seconds. |
 | `eventReconnectMs` | no | `2000` | Delay in milliseconds before reconnecting the Hermes SSE events stream after a non-terminal disconnect. |
@@ -56,7 +56,7 @@ When Paperclip triggers a run for a `hermes_gateway` agent, the adapter does the
 
 **API key storage.** The `apiKey` field maps to Hermes' `API_SERVER_KEY`. Paperclip stores it as a secret reference and never writes it to plain-text config. If the field shows that a secret is stored, do not repaste the key unless you are intentionally rotating it.
 
-**HTTP vs HTTPS.** Loopback addresses (`127.0.0.1`, `localhost`) can use plain HTTP. Any other host should use HTTPS or a private overlay network (such as Tailscale or a VPN). If you need to connect to a non-loopback host over plain HTTP during development, enable `dangerouslyAllowRemoteHttp` — but disable it before production.
+**HTTP vs HTTPS.** Loopback addresses (`127.0.0.1`, `localhost`) can use plain HTTP. Any other host should use HTTPS or a private overlay network (such as Tailscale or a VPN). If you need to connect to a non-loopback host over plain HTTP during development, enable `dangerouslyAllowInsecureRemoteHttp` — but disable it before production.
 
 **Extra headers.** The `headers` field is for non-secret auxiliary headers only. The adapter generates the authentication and session headers itself; any attempt to include security-critical headers via `headers` will be ignored.
 
@@ -130,7 +130,7 @@ That is expected. Paperclip masks stored adapter secrets. Do not repaste the key
 
 **HTTP connection refused for a non-loopback host**
 
-Non-loopback plain HTTP is blocked by default. Either switch the `apiBaseUrl` to an HTTPS URL, or enable `dangerouslyAllowRemoteHttp` for development use only.
+Non-loopback plain HTTP is blocked by default. Either switch the `apiBaseUrl` to an HTTPS URL, or enable `dangerouslyAllowInsecureRemoteHttp` for development use only.
 
 **Events stream keeps reconnecting**
 

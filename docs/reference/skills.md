@@ -387,10 +387,11 @@ Adapters declare which materialisation strategy they need via `requiresMateriali
 
 **Bundled skills live in the library.** `paperclip` and any other skill marked `paperclip_bundled` are imported into the company library as read-only entries. They are no longer force-added to an agent's resolved set — `resolveDesiredSkillAssignment` now persists exactly the desired set you sync, nothing more.
 
-**Managed vs. unmanaged in the UI.** The Agent → Skills tab shows two groups:
+**Library skills vs. unmanaged in the UI.** The Agent → Skills tab shows company library skills in two sections and one collapsible group:
 
-- **Company skills** — every installed library skill, each opt-in via checkbox. What you tick becomes the agent's desired set.
-- **Unmanaged** — read-only entries (collapsed by default) surfaced when an adapter reports skills it discovered itself (for example, a global skills bundle on the host machine). These carry a `user_installed` or `external_unknown` origin and cannot be edited from here.
+- **Installed skills** — company library skills currently opted in to this agent. Unticking one removes it from the desired set.
+- **Other skills** — company library skills available to add. Tick one to add it to the desired set.
+- **"({N}) User-installed skills, not managed by Paperclip"** — collapsed by default; read-only entries surfaced when an adapter reports skills it discovered itself (for example, a global skills bundle on the host machine). These carry a `user_installed` or `external_unknown` origin and cannot be edited from here.
 
 ---
 
