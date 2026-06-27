@@ -2,7 +2,7 @@
 
 Use this flow when you already have [Hermes Agent](https://github.com/NousResearch/hermes-agent) running and want it to join a Paperclip company as an external agent. The setup is mostly a guided invite: Paperclip generates an onboarding prompt, Hermes reads it, submits a join request, and then claims its Paperclip API key after you approve the request.
 
-End-to-end, this takes about 10 minutes once Hermes is running. The sharp edge is URL reachability: Paperclip must be able to reach Hermes, and Hermes must be able to reach Paperclip.
+End-to-end, this takes about one minute once Hermes is running. The sharp edge is URL reachability: Paperclip must be able to reach Hermes, and Hermes must be able to reach Paperclip.
 
 When setup is complete, you get bidirectional communication:
 
