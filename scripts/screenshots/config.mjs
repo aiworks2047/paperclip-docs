@@ -7,6 +7,7 @@
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
 import os from "node:os";
+import net from "node:net";
 
 // ── Server / viewport ────────────────────────────────────────────────────────
 
@@ -29,7 +30,12 @@ export const COMPANY_NAME = "Acme Robotics";
  */
 export const INSTANCE_ID = "docs-screenshots";
 
-/** Default embedded-postgres port (server/src/config.ts → embeddedPostgresPort). */
+/**
+ * Compiled-in default embedded-postgres port (server/src/config.ts →
+ * embeddedPostgresPort). This is only the *starting point* for the free-port
+ * scan in `findFreeEmbeddedPostgresPort()` — the screenshot instance never
+ * assumes 54329 is free, because a developer's real local Paperclip uses it too.
+ */
 export const EMBEDDED_POSTGRES_PORT = 54329;
 
 // ── Paths ────────────────────────────────────────────────────────────────────
@@ -116,5 +122,59 @@ export function instanceEnv(home) {
     PAPERCLIP_BIND: "loopback",
     PAPERCLIP_DEPLOYMENT_MODE: "local_trusted",
     PAPERCLIP_DEPLOYMENT_EXPOSURE: "private",
+    // The server loads a `.env` from its cwd (the parent repo) via dotenv with
+    // `override: false` — so any key we DON'T set here leaks in from the
+    // developer's parent-repo `.env` and defeats this instance's isolation.
+    // Pin the ones that would otherwise break a screenshot run:
+    //   • DATABASE_URL="" forces embedded Postgres (the parent's `.env` points at
+    //     a real external database the throw-away instance must never touch).
+    //   • SERVE_UI="true" guarantees the UI is served even if the parent disabled
+    //     it — the capture step navigates real UI routes.
+    DATABASE_URL: "",
+    DATABASE_MIGRATION_URL: "",
+    SERVE_UI: "true",
   };
+}
+
+/**
+ * Absolute path to the throw-away instance's config.json — the file onboard
+ * writes and the server reads. Mirrors the parent's
+ * `${PAPERCLIP_HOME}/instances/${instanceId}/config.json` layout. We rewrite
+ * the embedded-postgres port here so the run lands on a guaranteed-free port.
+ */
+export function instanceConfigPath(home = scratchHome()) {
+  return resolve(home, "instances", INSTANCE_ID, "config.json");
+}
+
+/** Resolve true if nothing is listening on 127.0.0.1:<port>. */
+function isPortFree(port) {
+  return new Promise((res) => {
+    const srv = net.createServer();
+    srv.once("error", () => res(false));
+    srv.once("listening", () => srv.close(() => res(true)));
+    srv.listen(port, "127.0.0.1");
+  });
+}
+
+/**
+ * Find a free TCP port for the throw-away instance's embedded Postgres,
+ * scanning upward from `start`. Crucially this skips any port a real local
+ * Paperclip (or anything else) is already using, so a screenshot run started
+ * while your real instance is up never collides with — or worse, connects into
+ * and seeds — your real database.
+ *
+ * @param {number} start    first port to probe (default EMBEDDED_POSTGRES_PORT)
+ * @param {number} attempts how many consecutive ports to try
+ * @returns {Promise<number>}
+ */
+export async function findFreeEmbeddedPostgresPort(
+  start = EMBEDDED_POSTGRES_PORT,
+  attempts = 200,
+) {
+  for (let port = start; port < start + attempts; port++) {
+    if (await isPortFree(port)) return port;
+  }
+  throw new Error(
+    `No free port found in [${start}, ${start + attempts}) for the screenshot instance's embedded Postgres`,
+  );
 }
