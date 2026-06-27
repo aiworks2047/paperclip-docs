@@ -3,9 +3,12 @@
  *
  * Steps:
  *   1. Validate PARENT_REPO exists.
+ *   1b. Generate the instance config.json and pin its embedded Postgres to a
+ *      guaranteed-free port (so a screenshot run never collides with — or
+ *      connects into — a real local Paperclip already on the default 54329).
  *   2. Spawn `pnpm paperclipai onboard --yes --run` inside PARENT_REPO with a
  *      fully isolated env (scratchHome as PAPERCLIP_HOME, loopback binding,
- *      local_trusted mode, no external DB).
+ *      local_trusted mode, no external DB). onboard preserves the config from 1b.
  *   3. Poll BASE_URL/api/health until 200 (timeout 120 s).
  *   4. Run seed() to create demo entities and write .seed-ids.json.
  *   5. Run sync-registry to back-fill routes into registry.json.
@@ -26,8 +29,8 @@
  */
 
 import { spawn } from "node:child_process";
-import { rm, access } from "node:fs/promises";
-import { constants as fsConstants } from "node:fs";
+import { rm, access, readFile, writeFile } from "node:fs/promises";
+import { constants as fsConstants, existsSync } from "node:fs";
 
 import {
   BASE_URL,
@@ -35,6 +38,8 @@ import {
   REPO_ROOT,
   scratchHome,
   instanceEnv,
+  instanceConfigPath,
+  findFreeEmbeddedPostgresPort,
 } from "./config.mjs";
 
 // Lazy imports — loaded after the server is ready so import errors surface clearly.
@@ -77,6 +82,78 @@ function getFlag(args, flag) {
 /** Check whether a boolean CLI flag is present. */
 function hasFlag(args, flag) {
   return args.includes(flag);
+}
+
+/**
+ * Phase 1b — generate the instance config.json and pin its embedded Postgres to
+ * a free port.
+ *
+ * Why this is needed: the onboard wizard hard-codes embedded Postgres to 54329
+ * and offers no env/flag override — the server reads the port only from
+ * config.json. A developer's real local Paperclip uses the same default, so an
+ * un-pinned screenshot run would either fail to boot or, worse, connect into the
+ * real database on 54329 and seed demo rows there.
+ *
+ * onboard writes config.json *before* it boots the server and preserves an
+ * existing config on the next run. So we let it write the config, stop it,
+ * rewrite the port to a free one, and let the real run (step 2) reuse it.
+ *
+ * Crucially, this pass runs with `DATABASE_URL` pointed at an unreachable
+ * external Postgres. That puts onboard in external-database mode, so it writes a
+ * config (which still contains the embedded-Postgres fields) but never
+ * initializes the embedded cluster in the scratch data dir. If it *did* touch
+ * the data dir, a half-finished `initdb` would leave a `PG_VERSION` file behind;
+ * step 2 would then treat the cluster as "already initialized", skip `initdb`,
+ * and fail with `role "paperclip" does not exist`. Keeping the data dir pristine
+ * lets step 2 initialize a fresh cluster on the pinned port.
+ *
+ * @returns {Promise<number>} the free port written into config.json
+ */
+async function generateIsolatedConfig({ home, env }) {
+  const port = await findFreeEmbeddedPostgresPort();
+  const cfgPath = instanceConfigPath(home);
+  console.log(`run: generating config; pinning embedded Postgres to free port ${port}…`);
+
+  // Unreachable external DB (port 1 → instant ECONNREFUSED, never a real
+  // Postgres) so onboard generates config without initializing the embedded
+  // cluster. The dummy URL is used only for this generation pass.
+  const genEnv = { ...env, DATABASE_URL: "postgres://paperclip:paperclip@127.0.0.1:1/none" };
+  const gen = spawn("pnpm", ["paperclipai", "onboard", "--yes"], {
+    cwd: PARENT_REPO,
+    env: genEnv,
+    stdio: "pipe",
+    detached: true,
+  });
+  gen.stderr.on("data", (d) => process.stderr.write(`[config] ${d}`));
+
+  // Wait for config.json to appear, then stop onboard before it boots Postgres.
+  const deadline = Date.now() + 60_000;
+  let wrote = false;
+  while (Date.now() < deadline) {
+    if (existsSync(cfgPath)) { wrote = true; break; }
+    await new Promise((r) => setTimeout(r, 50));
+  }
+  try { process.kill(-gen.pid, "SIGKILL"); } catch { try { gen.kill("SIGKILL"); } catch {} }
+  if (!wrote) {
+    throw new Error(`config not written within 60 s at ${cfgPath}`);
+  }
+
+  // Rewrite the port. Parse with a short retry in case we caught the file mid-flush.
+  let cfg;
+  for (let attempt = 0; attempt < 5; attempt++) {
+    try {
+      cfg = JSON.parse(await readFile(cfgPath, "utf8"));
+      break;
+    } catch (err) {
+      if (attempt === 4) throw new Error(`could not parse generated config at ${cfgPath}: ${err.message}`);
+      await new Promise((r) => setTimeout(r, 100));
+    }
+  }
+  cfg.database = { ...cfg.database, mode: "embedded-postgres", embeddedPostgresPort: port };
+  delete cfg.database.connectionString;
+  await writeFile(cfgPath, JSON.stringify(cfg, null, 2) + "\n", { mode: 0o600 });
+  console.log(`run: pinned embedded Postgres to port ${port}.`);
+  return port;
 }
 
 // ── Main ──────────────────────────────────────────────────────────────────────
@@ -139,6 +216,15 @@ async function main() {
     await rm(home, { recursive: true, force: true });
   } catch (err) {
     console.warn("run: could not pre-clean scratch home:", err.message);
+  }
+
+  // ── 1b. Generate config + pin embedded Postgres to a free port ───────────
+  try {
+    await generateIsolatedConfig({ home, env });
+  } catch (err) {
+    console.error("run: failed to generate isolated config:", err);
+    await cleanup();
+    process.exit(1);
   }
 
   // ── 2. Spawn the onboard server ──────────────────────────────────────────

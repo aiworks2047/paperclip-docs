@@ -23,7 +23,6 @@ import { createRequire } from "node:module";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import {
-  EMBEDDED_POSTGRES_PORT,
   INSTANCE_ID,
   PARENT_REPO,
   scratchHome,
@@ -38,11 +37,15 @@ function loadPostgres() {
 }
 
 /**
- * Work out which port the embedded Postgres is listening on. The onboard server
- * prefers `embeddedPostgresPort` (default 54329) but falls back to the next free
- * port if it's taken, so we read the live value from the cluster's
- * `postmaster.pid` (line 4 is the port), then the instance config.json, then the
- * compiled-in default.
+ * Work out which port the screenshot instance's embedded Postgres is listening
+ * on. run.mjs pins it to a free port (written into config.json), and the live
+ * cluster records the same value in `postmaster.pid`. We read the running value
+ * from `postmaster.pid` (line 4 is the port) first, then config.json.
+ *
+ * There is deliberately NO compiled-in fallback to 54329: that is the default a
+ * developer's real local Paperclip uses, so guessing it could connect this
+ * direct-DB seed into the real database. If neither source yields a port we
+ * throw — a loud failure is far safer than a silent write to the wrong cluster.
  */
 function resolvePostgresPort(home) {
   const instanceRoot = resolve(home, "instances", INSTANCE_ID);
@@ -64,7 +67,11 @@ function resolvePostgresPort(home) {
     /* fall through */
   }
 
-  return EMBEDDED_POSTGRES_PORT;
+  throw new Error(
+    `[seed-ws] could not resolve the screenshot instance's Postgres port from ` +
+      `${resolve(instanceRoot, "db", "postmaster.pid")} or ${resolve(instanceRoot, "config.json")}. ` +
+      "Refusing to guess (54329 may be your real local instance).",
+  );
 }
 
 /**

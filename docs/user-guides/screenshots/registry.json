@@ -10,8 +10,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/activity",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Activity.tsx"
       ]
@@ -21,8 +21,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/activity",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Activity.tsx"
       ]
@@ -32,8 +32,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/activity",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Activity.tsx"
       ]
@@ -43,8 +43,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/instance/settings/adapters",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/AdapterManager.tsx"
       ]
@@ -54,8 +54,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/instance/settings/adapters",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/AdapterManager.tsx"
       ]
@@ -65,8 +65,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/instance/settings/adapters",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/AdapterManager.tsx"
       ]
@@ -76,8 +76,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/instance/settings/adapters",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/AdapterManager.tsx"
       ]
@@ -87,8 +87,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/agents/new",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/AgentConfigForm.tsx"
       ]
@@ -98,8 +98,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/agents/{agentId}",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/AgentDetail.tsx"
       ]
@@ -109,8 +109,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/agents/{agentId}/runs",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/AgentDetail.tsx"
       ]
@@ -120,8 +120,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/agents/{longRunnerAgentId}",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/AgentDetail.tsx"
       ]
@@ -131,8 +131,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/{emptyPrefix}/agents/all",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Agents.tsx"
       ]
@@ -142,8 +142,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/agents/new",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/AgentConfigForm.tsx"
       ]
@@ -153,8 +153,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/agents/{agentId}/budget",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/AgentDetail.tsx"
       ]
@@ -164,8 +164,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/agents/new",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/AgentConfigForm.tsx"
       ]
@@ -175,8 +175,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/agents/new",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/AgentConfigForm.tsx"
       ]
@@ -186,8 +186,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/agents/{agentId}/configuration",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/AgentDetail.tsx"
       ]
@@ -197,8 +197,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/agents/{agentId}/dashboard",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/AgentDetail.tsx"
       ]
@@ -208,8 +208,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/agents/{agentId}/configuration",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/AgentConfigForm.tsx"
       ]
@@ -219,8 +219,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/agents/{agentId}/configuration",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/AgentConfigForm.tsx"
       ]
@@ -230,8 +230,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/agents/{httpAgentId}/configuration",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/AgentConfigForm.tsx"
       ]
@@ -241,8 +241,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/agents/{agentId}/instructions",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/AgentDetail.tsx"
       ]
@@ -252,8 +252,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/agents/all",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Agents.tsx"
       ]
@@ -263,8 +263,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/agents/new",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/NewAgent.tsx"
       ]
@@ -274,8 +274,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/agents/new",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/NewAgent.tsx",
         "ui/src/components/ReportsToPicker.tsx"
@@ -286,8 +286,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/agents/new",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Agents.tsx"
       ]
@@ -297,8 +297,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/agents/{longRunnerAgentId}/runs",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/AgentDetail.tsx"
       ]
@@ -308,8 +308,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/agents/{runnerAgentId}/runs/{runnerRunId}",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/transcript/RunTranscriptView.tsx",
         "ui/src/pages/AgentDetail.tsx"
@@ -320,8 +320,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/agents/{agentId}/runs",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/AgentDetail.tsx"
       ]
@@ -331,8 +331,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/agents/{agentId}/skills",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/AgentDetail.tsx"
       ]
@@ -342,8 +342,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/agents/new",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/AgentConfigForm.tsx"
       ]
@@ -353,8 +353,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/agents/{runnerAgentId}/configuration",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/AgentConfigForm.tsx"
       ]
@@ -364,8 +364,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/approvals/pending",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Approvals.tsx",
         "ui/src/components/ApprovalCard.tsx"
@@ -376,8 +376,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/approvals/pending",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Approvals.tsx",
         "ui/src/components/ApprovalPayload.tsx"
@@ -388,8 +388,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/approvals/{hireApprovalId}",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/ApprovalDetail.tsx"
       ]
@@ -399,8 +399,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/approvals/{hireApprovalId}",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/ApprovalDetail.tsx"
       ]
@@ -410,8 +410,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/approvals/{approvedApprovalId}?resolved=approved",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/ApprovalDetail.tsx"
       ]
@@ -421,8 +421,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/approvals/{hireApprovalId}",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/ApprovalPayload.tsx",
         "ui/src/pages/ApprovalDetail.tsx"
@@ -433,8 +433,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/approvals/pending",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Approvals.tsx"
       ]
@@ -444,8 +444,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/approvals/{strategyApprovalId}",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/ApprovalDetail.tsx"
       ]
@@ -455,8 +455,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/approvals/{strategyApprovalId}",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/ApprovalPayload.tsx",
         "ui/src/pages/ApprovalDetail.tsx"
@@ -467,8 +467,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/company/settings/access",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/CompanyAccess.tsx"
       ]
@@ -508,8 +508,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/company/export",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/CompanyExport.tsx"
       ]
@@ -519,8 +519,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/company/import",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/CompanyImport.tsx"
       ]
@@ -530,8 +530,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/company/settings/invites",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/CompanyInvites.tsx"
       ]
@@ -541,8 +541,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/inbox/requests",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Inbox.tsx"
       ]
@@ -562,8 +562,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/company/settings",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/CompanySettings.tsx"
       ]
@@ -573,8 +573,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/agents/{budgetMaxAgentId}/budget",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/BudgetPolicyCard.tsx"
       ]
@@ -584,8 +584,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/agents/{budgetHalfAgentId}/budget",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/BudgetPolicyCard.tsx"
       ]
@@ -595,8 +595,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/agents/{budgetWarnAgentId}/budget",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/BudgetPolicyCard.tsx"
       ]
@@ -606,8 +606,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/agents/{budgetHalfAgentId}/budget",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/BudgetPolicyCard.tsx"
       ]
@@ -617,8 +617,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/agents/{agentId}/budget",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/AgentDetail.tsx",
         "ui/src/components/BudgetPolicyCard.tsx"
@@ -629,8 +629,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/costs",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Costs.tsx"
       ]
@@ -640,8 +640,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/costs",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Costs.tsx"
       ]
@@ -651,8 +651,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/costs",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Costs.tsx",
         "ui/src/components/BudgetPolicyCard.tsx"
@@ -663,8 +663,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/costs",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Costs.tsx"
       ]
@@ -674,8 +674,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/costs",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Costs.tsx"
       ]
@@ -685,8 +685,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/costs",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Costs.tsx"
       ]
@@ -696,8 +696,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/costs",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Costs.tsx"
       ]
@@ -707,8 +707,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/costs",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Costs.tsx"
       ]
@@ -718,8 +718,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/dashboard",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Dashboard.tsx"
       ]
@@ -729,8 +729,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/dashboard",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Dashboard.tsx"
       ]
@@ -760,8 +760,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/dashboard",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Dashboard.tsx"
       ]
@@ -781,8 +781,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/dashboard",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Dashboard.tsx"
       ]
@@ -812,8 +812,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/goals/{goalId}",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/GoalDetail.tsx"
       ]
@@ -823,8 +823,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/goals",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Goals.tsx"
       ]
@@ -834,8 +834,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/issues/{issueId}",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/IssueDetail.tsx"
       ]
@@ -845,8 +845,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/issues/{issueId}",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/IssueDetail.tsx"
       ]
@@ -856,8 +856,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/issues/{issueId}",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/IssueDetail.tsx"
       ]
@@ -867,8 +867,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/inbox/requests",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Inbox.tsx"
       ]
@@ -878,8 +878,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/inbox/unread",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Inbox.tsx"
       ]
@@ -889,8 +889,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/inbox/mine",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Inbox.tsx"
       ]
@@ -900,8 +900,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/issues",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/IssueDetail.tsx"
       ]
@@ -911,8 +911,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/inbox/mine",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Inbox.tsx"
       ]
@@ -932,8 +932,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/{emptyPrefix}/dashboard",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Dashboard.tsx"
       ]
@@ -943,8 +943,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/dashboard",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/OnboardingWizard.tsx"
       ]
@@ -954,8 +954,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/dashboard",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/OnboardingWizard.tsx",
         "ui/src/components/SidebarCompanyMenu.tsx"
@@ -966,8 +966,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/dashboard",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/SidebarCompanyMenu.tsx"
       ]
@@ -977,8 +977,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/org",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/OrgChart.tsx"
       ]
@@ -1008,8 +1008,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/org",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/OrgChart.tsx"
       ]
@@ -1019,8 +1019,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/org",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/OrgChart.tsx"
       ]
@@ -1030,8 +1030,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/agents/{agentId}/configuration",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/AgentConfigForm.tsx"
       ]
@@ -1041,8 +1041,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/skills",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/CompanySkills.tsx"
       ]
@@ -1062,8 +1062,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/instance/settings/plugins",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/PluginPage.tsx"
       ]
@@ -1073,8 +1073,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/instance/settings/plugins",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/PluginManager.tsx"
       ]
@@ -1084,8 +1084,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/instance/settings/plugins",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/PluginSettings.tsx"
       ]
@@ -1095,8 +1095,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/instance/settings/plugins",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/PluginManager.tsx"
       ]
@@ -1106,8 +1106,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/instance/settings/plugins",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/PluginSettings.tsx"
       ]
@@ -1117,8 +1117,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/projects/{projectId}/budget",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/ProjectDetail.tsx"
       ]
@@ -1128,8 +1128,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/projects/{projectId}/configuration",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/ProjectDetail.tsx"
       ]
@@ -1139,8 +1139,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/projects/{projectId}/issues",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/ProjectDetail.tsx"
       ]
@@ -1150,8 +1150,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/projects",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Projects.tsx"
       ]
@@ -1161,8 +1161,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/projects/{projectId}/overview",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/ProjectDetail.tsx"
       ]
@@ -1172,8 +1172,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/projects/{projectId}/workspaces",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/ProjectDetail.tsx"
       ]
@@ -1183,8 +1183,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/routines/{routineId}",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/RoutineDetail.tsx",
         "ui/src/components/ScheduleEditor.tsx"
@@ -1195,8 +1195,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/routines/{routineId}",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/RoutineDetail.tsx"
       ]
@@ -1206,8 +1206,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/routines",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Routines.tsx"
       ]
@@ -1217,8 +1217,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/routines/{routineId}",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/RoutineDetail.tsx"
       ]
@@ -1228,8 +1228,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/instance/settings/experimental",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/InstanceExperimentalSettings.tsx"
       ]
@@ -1239,8 +1239,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/instance/settings/access",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/InstanceAccess.tsx"
       ]
@@ -1250,8 +1250,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/instance/settings/adapters",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/AdapterManager.tsx"
       ]
@@ -1261,8 +1261,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/instance/settings/general",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/InstanceGeneralSettings.tsx"
       ]
@@ -1272,8 +1272,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/instance/settings/profile",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/ProfileSettings.tsx"
       ]
@@ -1283,8 +1283,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/instance/settings/heartbeats",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/InstanceSettings.tsx"
       ]
@@ -1294,8 +1294,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/skills",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/CompanySkills.tsx"
       ]
@@ -1305,8 +1305,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/skills",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/CompanySkills.tsx"
       ]
@@ -1316,8 +1316,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/skills/{skillId}",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/CompanySkills.tsx"
       ]
@@ -1327,8 +1327,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/skills",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/CompanySkills.tsx"
       ]
@@ -1338,8 +1338,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/skills",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/CompanySkills.tsx"
       ]
@@ -1379,8 +1379,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/inbox/recent",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Inbox.tsx"
       ]
@@ -1400,8 +1400,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/inbox/mine",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Inbox.tsx"
       ]
@@ -1441,8 +1441,8 @@
       "theme": "dark",
       "viewport": "1440x900",
       "route": "/ACME/issues/{issueId}",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/IssueDetail.tsx"
       ]
@@ -1463,7 +1463,7 @@
       "viewport": "1440x900",
       "route": "/ACME/execution-workspaces/{executionWorkspaceId}/configuration",
       "captured_against": "master",
-      "captured_sha": "058381349ec72d5bbffbb0c227d9fe576d3ce996",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/ExecutionWorkspaceDetail.tsx"
       ]
@@ -1474,7 +1474,7 @@
       "viewport": "1440x900",
       "route": "/ACME/execution-workspaces/{executionWorkspaceId}/issues",
       "captured_against": "master",
-      "captured_sha": "058381349ec72d5bbffbb0c227d9fe576d3ce996",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/ExecutionWorkspaceDetail.tsx"
       ]
@@ -1485,7 +1485,7 @@
       "viewport": "1440x900",
       "route": "/ACME/workspaces",
       "captured_against": "master",
-      "captured_sha": "058381349ec72d5bbffbb0c227d9fe576d3ce996",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Workspaces.tsx"
       ]
@@ -1496,7 +1496,7 @@
       "viewport": "1440x900",
       "route": "/ACME/execution-workspaces/{executionWorkspaceId}/runtime-logs",
       "captured_against": "master",
-      "captured_sha": "058381349ec72d5bbffbb0c227d9fe576d3ce996",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/ExecutionWorkspaceDetail.tsx"
       ]
@@ -1507,7 +1507,7 @@
       "viewport": "1440x900",
       "route": "/ACME/execution-workspaces/{executionWorkspaceId}/services",
       "captured_against": "master",
-      "captured_sha": "058381349ec72d5bbffbb0c227d9fe576d3ce996",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/ExecutionWorkspaceDetail.tsx"
       ]
@@ -1517,8 +1517,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/activity",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Activity.tsx"
       ]
@@ -1528,8 +1528,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/activity",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Activity.tsx"
       ]
@@ -1539,8 +1539,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/activity",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Activity.tsx"
       ]
@@ -1550,8 +1550,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/instance/settings/adapters",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/AdapterManager.tsx"
       ]
@@ -1561,8 +1561,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/instance/settings/adapters",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/AdapterManager.tsx"
       ]
@@ -1572,8 +1572,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/instance/settings/adapters",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/AdapterManager.tsx"
       ]
@@ -1583,8 +1583,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/instance/settings/adapters",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/AdapterManager.tsx"
       ]
@@ -1594,8 +1594,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/agents/new",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/AgentConfigForm.tsx"
       ]
@@ -1605,8 +1605,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/agents/{agentId}",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/AgentDetail.tsx"
       ]
@@ -1616,8 +1616,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/agents/{agentId}/runs",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/AgentDetail.tsx"
       ]
@@ -1627,8 +1627,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/agents/{longRunnerAgentId}",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/AgentDetail.tsx"
       ]
@@ -1638,8 +1638,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/{emptyPrefix}/agents/all",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Agents.tsx"
       ]
@@ -1649,8 +1649,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/agents/new",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/AgentConfigForm.tsx"
       ]
@@ -1660,8 +1660,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/agents/{agentId}/budget",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/AgentDetail.tsx"
       ]
@@ -1671,8 +1671,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/agents/new",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/AgentConfigForm.tsx"
       ]
@@ -1682,8 +1682,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/agents/new",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/AgentConfigForm.tsx"
       ]
@@ -1693,8 +1693,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/agents/{agentId}/configuration",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/AgentDetail.tsx"
       ]
@@ -1704,8 +1704,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/agents/{agentId}/dashboard",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/AgentDetail.tsx"
       ]
@@ -1715,8 +1715,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/agents/{agentId}/configuration",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/AgentConfigForm.tsx"
       ]
@@ -1726,8 +1726,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/agents/{agentId}/configuration",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/AgentConfigForm.tsx"
       ]
@@ -1737,8 +1737,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/agents/{httpAgentId}/configuration",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/AgentConfigForm.tsx"
       ]
@@ -1748,8 +1748,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/agents/{agentId}/instructions",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/AgentDetail.tsx"
       ]
@@ -1759,8 +1759,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/agents/all",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Agents.tsx"
       ]
@@ -1770,8 +1770,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/agents/new",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/NewAgent.tsx"
       ]
@@ -1781,8 +1781,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/agents/new",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/NewAgent.tsx",
         "ui/src/components/ReportsToPicker.tsx"
@@ -1793,8 +1793,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/agents/new",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Agents.tsx"
       ]
@@ -1804,8 +1804,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/agents/{longRunnerAgentId}/runs",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/AgentDetail.tsx"
       ]
@@ -1815,8 +1815,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/agents/{runnerAgentId}/runs/{runnerRunId}",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/transcript/RunTranscriptView.tsx",
         "ui/src/pages/AgentDetail.tsx"
@@ -1827,8 +1827,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/agents/{agentId}/runs",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/AgentDetail.tsx"
       ]
@@ -1838,8 +1838,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/agents/{agentId}/skills",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/AgentDetail.tsx"
       ]
@@ -1849,8 +1849,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/agents/new",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/AgentConfigForm.tsx"
       ]
@@ -1860,8 +1860,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/agents/{runnerAgentId}/configuration",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/AgentConfigForm.tsx"
       ]
@@ -1871,8 +1871,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/approvals/pending",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Approvals.tsx",
         "ui/src/components/ApprovalCard.tsx"
@@ -1883,8 +1883,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/approvals/pending",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Approvals.tsx",
         "ui/src/components/ApprovalPayload.tsx"
@@ -1895,8 +1895,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/approvals/{hireApprovalId}",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/ApprovalDetail.tsx"
       ]
@@ -1906,8 +1906,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/approvals/{hireApprovalId}",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/ApprovalDetail.tsx"
       ]
@@ -1917,8 +1917,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/approvals/{approvedApprovalId}?resolved=approved",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/ApprovalDetail.tsx"
       ]
@@ -1928,8 +1928,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/approvals/{hireApprovalId}",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/ApprovalPayload.tsx",
         "ui/src/pages/ApprovalDetail.tsx"
@@ -1940,8 +1940,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/approvals/pending",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Approvals.tsx"
       ]
@@ -1951,8 +1951,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/approvals/{strategyApprovalId}",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/ApprovalDetail.tsx"
       ]
@@ -1962,8 +1962,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/approvals/{strategyApprovalId}",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/ApprovalPayload.tsx",
         "ui/src/pages/ApprovalDetail.tsx"
@@ -1974,8 +1974,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/company/settings/access",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/CompanyAccess.tsx"
       ]
@@ -2015,8 +2015,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/company/export",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/CompanyExport.tsx"
       ]
@@ -2026,8 +2026,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/company/import",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/CompanyImport.tsx"
       ]
@@ -2037,8 +2037,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/company/settings/invites",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/CompanyInvites.tsx"
       ]
@@ -2048,8 +2048,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/inbox/requests",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Inbox.tsx"
       ]
@@ -2069,8 +2069,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/company/settings",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/CompanySettings.tsx"
       ]
@@ -2080,8 +2080,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/agents/{budgetMaxAgentId}/budget",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/BudgetPolicyCard.tsx"
       ]
@@ -2091,8 +2091,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/agents/{budgetHalfAgentId}/budget",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/BudgetPolicyCard.tsx"
       ]
@@ -2102,8 +2102,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/agents/{budgetWarnAgentId}/budget",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/BudgetPolicyCard.tsx"
       ]
@@ -2113,8 +2113,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/agents/{budgetHalfAgentId}/budget",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/BudgetPolicyCard.tsx"
       ]
@@ -2124,8 +2124,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/agents/{agentId}/budget",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/AgentDetail.tsx",
         "ui/src/components/BudgetPolicyCard.tsx"
@@ -2136,8 +2136,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/costs",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Costs.tsx"
       ]
@@ -2147,8 +2147,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/costs",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Costs.tsx"
       ]
@@ -2158,8 +2158,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/costs",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Costs.tsx",
         "ui/src/components/BudgetPolicyCard.tsx"
@@ -2170,8 +2170,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/costs",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Costs.tsx"
       ]
@@ -2181,8 +2181,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/costs",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Costs.tsx"
       ]
@@ -2192,8 +2192,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/costs",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Costs.tsx"
       ]
@@ -2203,8 +2203,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/costs",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Costs.tsx"
       ]
@@ -2214,8 +2214,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/costs",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Costs.tsx"
       ]
@@ -2225,8 +2225,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/dashboard",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Dashboard.tsx"
       ]
@@ -2236,8 +2236,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/dashboard",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Dashboard.tsx"
       ]
@@ -2267,8 +2267,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/dashboard",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Dashboard.tsx"
       ]
@@ -2288,8 +2288,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/dashboard",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Dashboard.tsx"
       ]
@@ -2319,8 +2319,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/goals/{goalId}",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/GoalDetail.tsx"
       ]
@@ -2330,8 +2330,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/goals",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Goals.tsx"
       ]
@@ -2341,8 +2341,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/issues/{issueId}",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/IssueDetail.tsx"
       ]
@@ -2352,8 +2352,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/issues/{issueId}",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/IssueDetail.tsx"
       ]
@@ -2363,8 +2363,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/issues/{issueId}",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/IssueDetail.tsx"
       ]
@@ -2374,8 +2374,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/inbox/requests",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Inbox.tsx"
       ]
@@ -2385,8 +2385,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/inbox/unread",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Inbox.tsx"
       ]
@@ -2396,8 +2396,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/inbox/mine",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Inbox.tsx"
       ]
@@ -2407,8 +2407,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/issues",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/IssueDetail.tsx"
       ]
@@ -2418,8 +2418,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/inbox/mine",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Inbox.tsx"
       ]
@@ -2439,8 +2439,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/{emptyPrefix}/dashboard",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Dashboard.tsx"
       ]
@@ -2450,8 +2450,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/dashboard",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/OnboardingWizard.tsx"
       ]
@@ -2461,8 +2461,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/dashboard",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/OnboardingWizard.tsx",
         "ui/src/components/SidebarCompanyMenu.tsx"
@@ -2473,8 +2473,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/dashboard",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/SidebarCompanyMenu.tsx"
       ]
@@ -2484,8 +2484,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/org",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/OrgChart.tsx"
       ]
@@ -2515,8 +2515,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/org",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/OrgChart.tsx"
       ]
@@ -2526,8 +2526,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/org",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/OrgChart.tsx"
       ]
@@ -2537,8 +2537,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/agents/{agentId}/configuration",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/components/AgentConfigForm.tsx"
       ]
@@ -2548,8 +2548,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/skills",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/CompanySkills.tsx"
       ]
@@ -2569,8 +2569,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/instance/settings/plugins",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/PluginPage.tsx"
       ]
@@ -2580,8 +2580,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/instance/settings/plugins",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/PluginManager.tsx"
       ]
@@ -2591,8 +2591,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/instance/settings/plugins",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/PluginSettings.tsx"
       ]
@@ -2602,8 +2602,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/instance/settings/plugins",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/PluginManager.tsx"
       ]
@@ -2613,8 +2613,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/instance/settings/plugins",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/PluginSettings.tsx"
       ]
@@ -2624,8 +2624,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/projects/{projectId}/budget",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/ProjectDetail.tsx"
       ]
@@ -2635,8 +2635,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/projects/{projectId}/configuration",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/ProjectDetail.tsx"
       ]
@@ -2646,8 +2646,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/projects/{projectId}/issues",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/ProjectDetail.tsx"
       ]
@@ -2657,8 +2657,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/projects",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Projects.tsx"
       ]
@@ -2668,8 +2668,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/projects/{projectId}/overview",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/ProjectDetail.tsx"
       ]
@@ -2679,8 +2679,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/projects/{projectId}/workspaces",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/ProjectDetail.tsx"
       ]
@@ -2690,8 +2690,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/routines/{routineId}",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/RoutineDetail.tsx",
         "ui/src/components/ScheduleEditor.tsx"
@@ -2702,8 +2702,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/routines/{routineId}",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/RoutineDetail.tsx"
       ]
@@ -2713,8 +2713,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/routines",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Routines.tsx"
       ]
@@ -2724,8 +2724,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/routines/{routineId}",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/RoutineDetail.tsx"
       ]
@@ -2735,8 +2735,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/instance/settings/experimental",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/InstanceExperimentalSettings.tsx"
       ]
@@ -2746,8 +2746,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/instance/settings/access",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/InstanceAccess.tsx"
       ]
@@ -2757,8 +2757,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/instance/settings/adapters",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/AdapterManager.tsx"
       ]
@@ -2768,8 +2768,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/instance/settings/general",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/InstanceGeneralSettings.tsx"
       ]
@@ -2779,8 +2779,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/instance/settings/profile",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/ProfileSettings.tsx"
       ]
@@ -2790,8 +2790,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/instance/settings/heartbeats",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/InstanceSettings.tsx"
       ]
@@ -2801,8 +2801,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/skills",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/CompanySkills.tsx"
       ]
@@ -2812,8 +2812,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/skills",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/CompanySkills.tsx"
       ]
@@ -2823,8 +2823,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/skills/{skillId}",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/CompanySkills.tsx"
       ]
@@ -2834,8 +2834,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/skills",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/CompanySkills.tsx"
       ]
@@ -2845,8 +2845,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/skills",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/CompanySkills.tsx"
       ]
@@ -2886,8 +2886,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/inbox/recent",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Inbox.tsx"
       ]
@@ -2907,8 +2907,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/inbox/mine",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Inbox.tsx"
       ]
@@ -2948,8 +2948,8 @@
       "theme": "light",
       "viewport": "1440x900",
       "route": "/ACME/issues/{issueId}",
-      "captured_against": "HEAD",
-      "captured_sha": "911a1e8b0d24205acd5006e837a5c5e8c4bfb447",
+      "captured_against": "master",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/IssueDetail.tsx"
       ]
@@ -2970,7 +2970,7 @@
       "viewport": "1440x900",
       "route": "/ACME/execution-workspaces/{executionWorkspaceId}/configuration",
       "captured_against": "master",
-      "captured_sha": "058381349ec72d5bbffbb0c227d9fe576d3ce996",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/ExecutionWorkspaceDetail.tsx"
       ]
@@ -2981,7 +2981,7 @@
       "viewport": "1440x900",
       "route": "/ACME/execution-workspaces/{executionWorkspaceId}/issues",
       "captured_against": "master",
-      "captured_sha": "058381349ec72d5bbffbb0c227d9fe576d3ce996",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/ExecutionWorkspaceDetail.tsx"
       ]
@@ -2992,7 +2992,7 @@
       "viewport": "1440x900",
       "route": "/ACME/workspaces",
       "captured_against": "master",
-      "captured_sha": "058381349ec72d5bbffbb0c227d9fe576d3ce996",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/Workspaces.tsx"
       ]
@@ -3003,7 +3003,7 @@
       "viewport": "1440x900",
       "route": "/ACME/execution-workspaces/{executionWorkspaceId}/runtime-logs",
       "captured_against": "master",
-      "captured_sha": "058381349ec72d5bbffbb0c227d9fe576d3ce996",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/ExecutionWorkspaceDetail.tsx"
       ]
@@ -3014,7 +3014,7 @@
       "viewport": "1440x900",
       "route": "/ACME/execution-workspaces/{executionWorkspaceId}/services",
       "captured_against": "master",
-      "captured_sha": "058381349ec72d5bbffbb0c227d9fe576d3ce996",
+      "captured_sha": "4c6c0c6ad048838dda4a67e1aca43aa37a6fcf0d",
       "depends_on": [
         "ui/src/pages/ExecutionWorkspaceDetail.tsx"
       ]

@@ -158,6 +158,11 @@
       "detect": "Fetched via `gh release view <tag>` to give other watchers framing/intent. Never produces edits directly — release notes are reference data, not source."
     }
   ],
+  "adapter_doc_sources": {
+    "$comment": "Maps a doc basename (docs/reference/adapters/<name>.md) to the source paths the verifier should search. Use when the doc name does not match the adapter package directory under packages/adapters/.",
+    "hermes-local": ["packages/adapters/hermes"],
+    "hermes-gateway": ["packages/adapters/hermes"]
+  },
   "screenshot_registry": "docs/user-guides/screenshots/registry.json",
   "quarantine_hours": 24,
   "auto_merge_safety": {

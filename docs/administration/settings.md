@@ -243,12 +243,13 @@ An experimental flag in Paperclip is a feature that:
 - Is being evaluated against real usage before it becomes the default, and
 - May be renamed, reworked, or promoted to a core setting in a future release.
 
-Turning one on is not dangerous in the "this will break your data" sense — but it does mean you're opting into behavior that may change how agents run or how the backend restarts. Flip flags when you have a reason to, not for curiosity, and expect to re-read the release notes if you upgrade.
+Turning one on is not dangerous in the "this will break your data" sense — but experimental features come **without compatibility guarantees**. They may break, change, or be removed at any time, and Paperclip doesn't promise migration or long-term support for them. The app shows a warning to this effect when you enable one. Flip flags when you have a reason to, not for curiosity; don't lean on an experimental feature for a workflow that has to stay stable, and expect to re-read the release notes if you upgrade.
 
 ### The available flags
 
 - **Enable Isolated Workspaces** — shows the execution-workspace controls in project configuration and allows isolated workspace behavior for new and existing issue runs. If you're not using isolated workspaces, leave this off; turning it on exposes extra UI you don't need.
 - **Auto-Restart Dev Server When Idle** — only relevant under `pnpm dev:once`. When the backend detects a stale boot (code changes, new migrations), it waits for queued and running local agent runs to finish and then restarts the dev server automatically. Useful during active development on Paperclip itself, not intended for production.
+- **Streamlined Left Navigation Bar** — **on by default now**, so you don't need to flip anything to get it. It trims the sidebar: Projects move under the **Work** section as a single **Projects** link with its own page, and the agents list shows only your active agents (the five most recently active). Turning this flag **off** is the opt-out — it restores the classic sidebar, where each project gets its own collapsible entry and there's no top-level Projects link.
 
 Both toggles take effect immediately on save. If one misbehaves, flip it back off — no migration is required.
 

@@ -1,3 +1,7 @@
+---
+paperclip_version: v2026.626.0
+---
+
 # Hermes Local
 
 `hermes_local` runs [Hermes Agent](https://github.com/NousResearch/hermes-agent) — a full-featured AI agent by Nous Research — on the same machine as Paperclip. Use it when you want persistent memory, a 30+ tool suite, 80+ loadable skills, multi-provider model routing, and MCP client support in a single adapter.
@@ -6,9 +10,9 @@
 
 ## When To Use
 
-- You already use Hermes Agent locally (`pip install hermes-agent`).
+- Hermes is a built-in adapter — no plugin install required. Paperclip ships `hermes_local` out of the box.
 - You need persistent memory, FTS5 session search, or sub-agent delegation.
-- You want to route to multiple inference providers (Anthropic, OpenRouter, OpenAI, Nous, OpenAI Codex, ZAI, Kimi Coding, MiniMax).
+- You want to route to multiple inference providers (Anthropic, OpenRouter, OpenAI, Nous, OpenAI Codex, Copilot, Copilot ACP, HuggingFace, ZAI, Kimi Coding, MiniMax, Kilocode).
 - You want filesystem checkpoints for rollback safety.
 
 ## When Not To Use
@@ -25,16 +29,16 @@
 
 | Field | Required | Default | Notes |
 |---|---:|---|---|
-| `model` | no | `anthropic/claude-sonnet-4` | Model in `provider/model` format. |
-| `provider` | no | auto-detected | API provider. Accepts `auto`, `openrouter`, `nous`, `openai-codex`, `zai`, `kimi-coding`, `minimax`, `minimax-cn`. |
-| `timeoutSec` | no | `300` | Execution timeout in seconds. |
-| `graceSec` | no | `10` | Grace period before SIGKILL. |
+| `provider` | no | `auto` | API provider. Accepts `auto`, `openrouter`, `nous`, `openai-codex`, `copilot`, `copilot-acp`, `anthropic`, `huggingface`, `zai`, `kimi-coding`, `minimax`, `minimax-cn`, `kilocode`. Usually leave this on `auto` — Hermes infers it from your model or `~/.hermes/config.yaml`. |
+| `timeoutSec` | no | `1800` | Execution timeout in seconds. |
+| `graceSec` | no | `10` | Seconds to wait after SIGTERM before killing the Hermes process. |
 
 ### Tools
 
 | Field | Required | Default | Notes |
 |---|---:|---|---|
-| `toolsets` | no | all | Comma-separated list of toolsets. Available: `terminal`, `file`, `web`, `browser`, `code_execution`, `vision`, `mcp`, `creative`, `productivity`. |
+| `toolsets` | no | all | Comma-separated list of toolsets, such as `terminal,file,web`. |
+| `maxTurnsPerRun` | no | — | Optional Hermes `--max-turns` limit for tool-calling iterations. |
 
 ### Session & workspace
 
@@ -48,19 +52,16 @@
 
 | Field | Required | Default | Notes |
 |---|---:|---|---|
-| `hermesCommand` | no | `hermes` | Custom CLI binary path. |
 | `verbose` | no | `false` | Verbose output. |
 | `quiet` | no | `true` | Clean output — no banner or spinner. |
-| `extraArgs` | no | `[]` | Additional CLI arguments. |
-| `env` | no | `{}` | Extra environment variables. Secret refs supported. |
 | `promptTemplate` | no | built-in | Custom prompt template (see below). |
-| `paperclipApiUrl` | no | `http://127.0.0.1:3100/api` | Paperclip API base URL. |
+| `paperclipApiUrl` | no | — | Optional API base override. Defaults to `PAPERCLIP_API_URL`. |
 
 ---
 
-## Auto Model Detection
+## Model Selection
 
-If you don't set `model`, the adapter reads `~/.hermes/config.yaml` and pre-populates the UI with the user's configured model. This makes the "add a Hermes agent" flow one-click when Hermes is already configured on the machine.
+Hermes manages its own model. You set the model in `~/.hermes/config.yaml` or through Hermes's own configuration — there is no `model` field in the Paperclip adapter config. This keeps the "add a Hermes agent" flow one-click: if Hermes is already configured on your machine, you're done.
 
 ---
 
@@ -133,19 +134,11 @@ The adapter spawns Hermes Agent in single-query mode (`hermes chat -q ...`). Her
 {
   "adapterType": "hermes_local",
   "adapterConfig": {
-    "model": "anthropic/claude-sonnet-4",
     "toolsets": "terminal,file,web",
     "persistSession": true,
     "checkpoints": true,
-    "timeoutSec": 300,
-    "graceSec": 10,
-    "env": {
-      "ANTHROPIC_API_KEY": {
-        "type": "secret_ref",
-        "secretId": "anthropic-key",
-        "version": "latest"
-      }
-    }
+    "timeoutSec": 1800,
+    "graceSec": 10
   }
 }
 ```

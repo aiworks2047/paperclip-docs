@@ -1,5 +1,5 @@
 ---
-paperclip_version: v2026.609.0
+paperclip_version: v2026.626.0
 ---
 
 # Plugin Commands
@@ -82,6 +82,30 @@ paperclipai plugin install /abs/path/to/plugin --local # force local-path treatm
 > **Warning:** Local-path installs run trusted local code from your machine. Only install paths you control. After a local install the CLI reminds you to keep `pnpm dev` running so Paperclip can reload the worker on rebuild.
 
 On success you get the installed plugin's key, version, and status. If the runtime recorded a `lastError` during load, the CLI surfaces it as a warning even though the install call returned a record — always confirm the status is `ready` before relying on the plugin.
+
+---
+
+## Check the install target — `plugin target`
+
+Before installing a plugin you can run `plugin target` to confirm which Paperclip instance the plugin commands will talk to. The command resolves your configured API URL and probes `GET /api/health` on that instance, so you can verify you are pointed at the right runtime — for example the branch runtime you are developing against rather than a stale control-plane host.
+
+```sh
+paperclipai plugin target
+paperclipai plugin target --json
+```
+
+It reports the following fields:
+
+| Field | Description |
+|---|---|
+| `apiBase` | The resolved API URL the CLI will use. |
+| `reachable` | Whether the instance responded to the health probe. |
+| `health.status` | Status string from `GET /api/health`. |
+| `health.version` | Server version running on the instance. |
+| `health.deploymentMode` | Deployment mode, e.g. `local` or `cloud`. |
+| `health.deploymentExposure` | Deployment exposure, e.g. `private` or `public`. |
+
+This command accepts `--json` and all the common client flags (`--api-base`, `--api-key`, `--context`, `--profile`, `--data-dir`). It is purely diagnostic — it does not modify anything on the instance.
 
 ---
 

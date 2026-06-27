@@ -1,5 +1,5 @@
 ---
-paperclip_version: v2026.618.0
+paperclip_version: v2026.626.0
 ---
 
 # Heartbeats & Routines
@@ -181,6 +181,20 @@ A small amber dot appears next to any section with unsaved edits, and a blue pul
 
 Each editable section has its own sticky **save bar** that stays hidden until you change something. When the section is dirty it slides up from the bottom showing how many unsaved changes you have (click the count to see exactly which fields), with **Discard** and **Save changes** buttons — `⌘S` / `Ctrl+S` saves, `Esc` opens a discard confirmation. If someone else edited the routine while you were working, the bar switches to a conflict surface offering **Reload latest** or **Overwrite anyway**. Non-owners see a read-only strip instead of the save bar.
 
+### Commenting on the routine description
+
+You can now treat a routine's instructions the same way you'd treat an issue document: comment on them, and edit them inline. The Markdown instructions editor in the **Overview** section is wrapped in the same annotation surface that issue documents use, so the description isn't static text anymore — it's a document you and your teammates can discuss.
+
+Above the instructions editor you'll see a small **comment count chip** with a speech-bubble icon and a number. The chip's tooltip reads "Open comments on description" when there are none yet, or "Open *N* unresolved comments on description" once threads exist. Click the chip to open the comments panel beside the description; click it again to close it. On a wide screen the panel docks to the side of the document and stays clamped below the top nav as you scroll, so a thread never tucks under the nav bar.
+
+To start a comment, select some text in the description and ask for a comment on that selection — `⌘⇧M` / `Ctrl+Shift+M` does this while the panel is open. The comment anchors to the exact text you highlighted, so the discussion stays attached to the part of the instructions it's about. Comments load with their replies in one go, and the count chip and the panel read from the same source, so a new or resolved thread updates the count without a manual refresh.
+
+New comments are only allowed when the description is in a clean, saved state. If you have unsaved edits in the Overview section, are in the middle of saving, or the routine has a save conflict, the "new comment" action is disabled with a short reason — for example "Save the draft to anchor new comments" or "Resolve the document conflict before adding new comments." That's deliberate: a comment has to anchor to a saved revision, so Paperclip asks you to land your edit first.
+
+### When a save fails
+
+Editing the description is a routine save like any other, and Paperclip surfaces failures rather than swallowing them. If your save runs into a conflict — someone else changed the routine while you were typing — you get a "Routine changed" toast telling you to reload for the latest revision, and the save bar flips into its conflict surface. Any other save error raises a "Failed to save routine" toast that includes the underlying reason (falling back to "Paperclip could not save the routine." when there's no specific message). Either way you keep your edits in the editor until the save actually goes through.
+
 ### Trigger cards and human-readable schedules
 
 On the **Triggers** section, each trigger is a card headed by its kind icon and label. For a schedule trigger, Paperclip shows the cron in **plain English** right under the label — "Every weekday at 09:00", "Every day at 10:00", "Every 15 minutes", "Day 1 of every month at 09:00" — translated from the raw expression as you edit it. (Shapes the translator doesn't recognise simply omit the plain-English line and keep the raw cron.) The card's top-right corner shows a `Next:` line with the resolved local timestamp of the next fire for schedule triggers, a `Webhook` label for webhook triggers, or `API` for manual ones. If a trigger has fired before, its last result also shows there as a badge — green for success, red otherwise — so you can spot a misfiring webhook without leaving the page.
@@ -242,10 +256,12 @@ Routines can accept **variables**: named inputs that you reference inside the ti
 
 Variables are detected automatically. Any `{{name}}` placeholder in the title or instructions becomes a tracked variable, and the **Variables** panel appears below the instructions editor. For each detected variable you can set:
 
-- **Type** — `text`, `textarea`, `number`, `boolean`, or `select`.
+- **Type** — `text`, `textarea`, `number`, `boolean`, `select`, or `date`.
 - **Label** — a friendly name shown on the run-now dialog.
 - **Default value** — the baseline used when nothing else is provided.
 - **Options** — a comma-separated list, only for `select`. The options become a dropdown on the run dialog.
+
+The `date` type renders a date picker in the run-now dialog. Use it when a routine's prompt needs to reference a specific date — for example `{{reportDate}}` — so you can pick the date each time without editing the routine body.
 
 Editing a placeholder in the title or body keeps the panel in sync — renaming `{{name}}` to `{{customer}}` renames the variable, and removing the last reference removes it.
 

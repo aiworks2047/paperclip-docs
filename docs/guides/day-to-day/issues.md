@@ -1,5 +1,5 @@
 ---
-paperclip_version: v2026.618.0
+paperclip_version: v2026.626.0
 ---
 
 # Issues
@@ -90,7 +90,19 @@ The current UI uses **Issues** as the page name, even though the product languag
 
    > **Tip:** The more specific your description, the better the output. An agent given "write a blog post about AI" will produce something generic. An agent given "write a 600-word blog post for a non-technical audience explaining how AI agents can automate customer support, in a conversational tone, targeting founders who manage support teams" will produce something useful.
 
-4. **Set a priority**
+4. **Choose a work mode**
+
+   The work mode tells the agent what kind of response you want. Click the mode chip in the issue form to cycle through the options:
+
+   | Mode | Chip colour | What happens |
+   |------|-------------|--------------|
+   | **Agent mode** | Neutral | The agent picks up the issue, executes the work, and posts results. This is the default. |
+   | **Plan mode** | Amber | The agent produces a plan document first. You review the plan before implementation begins. |
+   | **Ask mode** | Sky blue | The agent answers your question in the issue thread — no implementation, no code changes. |
+
+   Use **Ask mode** when you want a quick answer, a scope assessment, or a clarifying explanation rather than implementation work. Use **Plan mode** when you want to see a roadmap before the agent starts making changes. Use **Agent mode** (the default) for everything else.
+
+5. **Set a priority**
 
    Priority tells agents what to work on first when they have multiple issues assigned. Use it to signal urgency.
 
@@ -101,17 +113,31 @@ The current UI uses **Issues** as the page name, even though the product languag
    | **Medium** | Normal workload |
    | **Low** | Nice to have; do when nothing else is waiting |
 
-5. **Assign it to an agent**
+6. **Assign it to an agent**
 
    Click the Assignee field and choose the agent that should do this work. If heartbeat wake-on-assignment is enabled (it is by default), the agent will receive a heartbeat trigger as soon as you save — it won't have to wait for its next scheduled wake.
 
    > **Note:** Only one agent can hold an issue "in progress" at a time. If you assign an issue that's already in progress by another agent, the new agent won't check it out until the issue is released.
 
-6. **Set a parent issue (if relevant)**
+7. **Set a parent issue (if relevant)**
 
    If this issue is a subtask — part of a larger piece of work — link it to the parent. This keeps the issue hierarchy clean and helps the CEO understand how work fits together.
 
-7. **Save the issue**
+8. **Choose where the work runs** *(when isolated workspaces are enabled)*
+
+   If the project uses isolated execution workspaces, the form includes a workspace mode picker:
+
+   | Mode | What happens |
+   |------|--------------|
+   | **Project default** | The run uses the project's configured workspace behaviour. |
+   | **New isolated workspace** | Paperclip provisions a fresh isolated workspace for this issue's run. |
+   | **Reuse existing workspace** | The run continues in an existing execution workspace you pick — handy for resuming where a previous task left off. |
+
+   Choosing **Reuse existing workspace** opens a searchable dropdown grouped into **Recent** and **All workspaces**. Type to filter by workspace name, branch, or local folder; matches on the visible workspace name rank ahead of hidden path text, so searching by a branch or task name lands on the workspace you mean rather than an unrelated path that happens to share some letters. Each option shows the workspace's status next to its branch or folder.
+
+   See [Execution workspaces](../projects-workflow/workspaces.md) for how Paperclip keeps reused workspaces consistent across runs.
+
+9. **Save the issue**
 
    Click **Create Issue**. The issue appears in the list and the assigned agent is notified.
 
@@ -363,6 +389,58 @@ Annotations are a two-way channel: agents can open threads on documents too, so 
 
 ---
 
+## External references (GitHub issues and pull requests)
+
+A lot of the work your agents track lives in other systems — most commonly **GitHub**. When someone pastes a GitHub link into an issue, you don't want a bare URL that everyone has to click through just to find out whether that pull request is still open. You want to see, right there on the board, what the link points at and whether it's still live.
+
+That's what external references do. When a URL to a supported external work object appears anywhere on an issue, Paperclip detects it, remembers it as a normalized reference, and renders it as a small **status-aware pill** instead of a plain link. The pill shows what the object is (a GitHub pull request or issue) and its current state, and clicking it still opens the original URL in a new tab.
+
+External references are **company-scoped** — each company keeps its own set — and the system is **provider-extensible**: a GitHub provider ships first, and plugins can teach Paperclip about other systems over time. The first provider detects two kinds of GitHub object:
+
+- **GitHub Pull Request** — `github.com/{owner}/{repo}/pull/{number}` links.
+- **GitHub Issue** — `github.com/{owner}/{repo}/issues/{number}` links.
+
+### Where references are detected
+
+Paperclip looks for these links across the surfaces you already use:
+
+- The issue **title** and **description**.
+- **Comments** in the Chat tab.
+- **Documents** keyed to the issue (like the `plan` document).
+- Issue **properties**.
+- References contributed by **plugins**.
+
+Each place a link appears is recorded as a source, so a pill knows it was mentioned in, say, the description and twice in comments. When the same object is referenced more than once, the pill shows a small `×N` count, and hovering it tells you where those mentions came from.
+
+### What the pill tells you
+
+For a **pull request**, the status reflects exactly where it stands:
+
+- **Open** — still open and being worked on.
+- **Draft** — open but marked as a draft.
+- **Merged** — merged in. This is a terminal state, shown with a distinct merged treatment.
+- **Closed** — closed without merging. Also terminal.
+
+For a GitHub **issue**, the status is **Open**, or **Closed** (with the close reason surfaced when GitHub provides one, for example "Closed: completed" or "Closed: not planned"). If GitHub returns a 404, the object shows as **Not found**.
+
+Each pill also carries a **liveness** signal so you can trust what you're reading. Most of the time a reference is **Fresh** — recently refreshed and accurate. But it can also read **Stale** (the status may have changed since it was last checked), **Requires auth** (Paperclip needs GitHub credentials to read this object), or **Unreachable** (GitHub couldn't be reached, for example because of rate limiting). When a reference isn't fresh, the pill's border shifts to a dashed style so a stale or unreachable state never gets mistaken for a confirmed one.
+
+> **Note:** To resolve live status for private repositories — or to avoid GitHub's unauthenticated rate limits — Paperclip reads a GitHub token from your company secrets, looking for `GITHUB_TOKEN`, `GH_TOKEN`, or `PAPERCLIP_GITHUB_TOKEN`. Without a token, public objects still resolve but you're more likely to see an **Unreachable** liveness when limits are hit.
+
+### Filtering and badges
+
+Once references are flowing, you can use them to triage. The issue and inbox **filters popover** includes an **External object status** group, so you can narrow the list to issues whose external references need attention:
+
+- **Any failed**, **Any waiting**, **Any running** — issues with an external object in that state.
+- **Auth required** — issues with a reference Paperclip can't read without credentials.
+- **Unreachable** — issues with a reference that couldn't be refreshed.
+- **Stale** — issues with a reference whose status may be out of date.
+- **No external objects** — issues with no external references at all.
+
+References also roll up into **badges** on issue rows and in the sidebar and inbox. Rather than showing every reference, the rollup surfaces the most attention-worthy state — so an issue sitting on three failed checks reads as a single, severity-weighted signal you can spot at a glance. Calm states (a lone merged PR, for example) don't add noise; the badge appears when something is actually worth looking at.
+
+---
+
 ## The Chat tab
 
 The **Chat** tab is the default tab on every issue. It is where the conversation with the agent happens: all comments, all mentions, all human-to-agent and agent-to-agent back-and-forth.
@@ -452,6 +530,30 @@ When a recovery action is resolved, it is stamped with one of these outcomes (th
 - **`false_positive`** — the recovery action was triggered in error and the issue never needed intervention.
 
 > **Tip:** If a recovery card invites you to resolve as `blocked`, add the blocking issue via the **Blocked by** field on the sidebar first. The resolution will refuse to close until a structured blocker exists.
+
+---
+
+## Task watchdogs
+
+A **task watchdog** is a monitoring agent you attach to a task to keep watch while it runs. If the task's subtree goes quiet — no active runs, no pending interactions, no forward movement — the watchdog wakes up and investigates. It can post a comment, create subtasks, escalate to another agent, or take whatever action makes sense for your workflow.
+
+This is useful for long-running tasks where you don't want to babysit progress. Set a watchdog once, and Paperclip surfaces the watchdog's findings right in the issue thread so you see exactly what it found and what it did — without you having to monitor the task yourself.
+
+### How a watchdog fires
+
+The watchdog evaluates the task's subtree to identify sub-issues that look stuck: issues with no active run and no pending interaction that would explain the silence. When the system detects that stall, the watchdog agent wakes up and handles the situation.
+
+A short grace window applies after the task is first created, so the watchdog won't fire the moment a brand-new issue lands in the queue. It gives the assigned agent a chance to get started before treating the silence as a problem.
+
+### One watchdog per task
+
+Each task can have at most one watchdog attached at a time. If you need to change the monitoring behaviour, remove the existing watchdog first and then attach a new one.
+
+### Where to see watchdog activity
+
+Watchdog outcomes appear in the **Chat** tab on the issue — the same place you'd see any other agent comment. The watchdog posts what it found (the stalled sub-issue, its state) and what it did about it. You can respond in the same thread, create follow-up issues, or adjust from the issue detail sidebar.
+
+> **Note:** Task watchdogs are a user-facing monitoring feature. They are distinct from the system-level `active_run_watchdog` recovery kind, which is an automatic backstop for stranded runs and does not require any setup on your part.
 
 ---
 
