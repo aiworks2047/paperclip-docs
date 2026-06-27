@@ -1,5 +1,5 @@
 ---
-paperclip_version: v2026.618.0
+paperclip_version: v2026.626.0
 ---
 
 # Heartbeats & Routines
@@ -242,10 +242,12 @@ Routines can accept **variables**: named inputs that you reference inside the ti
 
 Variables are detected automatically. Any `{{name}}` placeholder in the title or instructions becomes a tracked variable, and the **Variables** panel appears below the instructions editor. For each detected variable you can set:
 
-- **Type** — `text`, `textarea`, `number`, `boolean`, or `select`.
+- **Type** — `text`, `textarea`, `number`, `boolean`, `select`, or `date`.
 - **Label** — a friendly name shown on the run-now dialog.
 - **Default value** — the baseline used when nothing else is provided.
 - **Options** — a comma-separated list, only for `select`. The options become a dropdown on the run dialog.
+
+The `date` type renders a date picker in the run-now dialog. Use it when a routine's prompt needs to reference a specific date — for example `{{reportDate}}` — so you can pick the date each time without editing the routine body.
 
 Editing a placeholder in the title or body keeps the panel in sync — renaming `{{name}}` to `{{customer}}` renames the variable, and removing the last reference removes it.
 

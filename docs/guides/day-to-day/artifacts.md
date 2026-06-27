@@ -1,5 +1,5 @@
 ---
-paperclip_version: v2026.618.0
+paperclip_version: v2026.626.0
 ---
 
 # Artifacts
@@ -112,6 +112,8 @@ A trailing-slash path like `path/to/folder/` becomes a folder chip that opens th
 Sometimes you want to look around rather than open one specific file. The file viewer includes a **file browser** down the side: a tree of the issue's workspace files and folders that you can expand, navigate, and search by name. Pick a file from the tree and it opens in the same viewer pane next to it; you can drag the divider to resize the tree.
 
 The browser only surfaces files that are safe and previewable, and it skips noisy or sensitive directories (things like `.git`, `node_modules`, build output, and credential folders) so you're looking at real work product, not machinery. If a workspace hasn't been created yet, or has since been cleaned up, the browser says so rather than showing an empty tree.
+
+Each file row shows a **download button** when the file can be downloaded. Click it to save the file directly to your machine. This is the fastest way to pull a work product out of a cloud or sandboxed workspace without needing terminal access — useful when you want to share a report, inspect a generated image, or take a build artifact out of an isolated environment.
 
 ---
 

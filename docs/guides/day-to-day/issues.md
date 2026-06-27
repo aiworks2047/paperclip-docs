@@ -1,5 +1,5 @@
 ---
-paperclip_version: v2026.618.0
+paperclip_version: v2026.626.0
 ---
 
 # Issues
@@ -90,7 +90,19 @@ The current UI uses **Issues** as the page name, even though the product languag
 
    > **Tip:** The more specific your description, the better the output. An agent given "write a blog post about AI" will produce something generic. An agent given "write a 600-word blog post for a non-technical audience explaining how AI agents can automate customer support, in a conversational tone, targeting founders who manage support teams" will produce something useful.
 
-4. **Set a priority**
+4. **Choose a work mode**
+
+   The work mode tells the agent what kind of response you want. Click the mode chip in the issue form to cycle through the options:
+
+   | Mode | Chip colour | What happens |
+   |------|-------------|--------------|
+   | **Agent mode** | Neutral | The agent picks up the issue, executes the work, and posts results. This is the default. |
+   | **Plan mode** | Amber | The agent produces a plan document first. You review the plan before implementation begins. |
+   | **Ask mode** | Sky blue | The agent answers your question in the issue thread — no implementation, no code changes. |
+
+   Use **Ask mode** when you want a quick answer, a scope assessment, or a clarifying explanation rather than implementation work. Use **Plan mode** when you want to see a roadmap before the agent starts making changes. Use **Agent mode** (the default) for everything else.
+
+5. **Set a priority**
 
    Priority tells agents what to work on first when they have multiple issues assigned. Use it to signal urgency.
 
@@ -101,17 +113,17 @@ The current UI uses **Issues** as the page name, even though the product languag
    | **Medium** | Normal workload |
    | **Low** | Nice to have; do when nothing else is waiting |
 
-5. **Assign it to an agent**
+6. **Assign it to an agent**
 
    Click the Assignee field and choose the agent that should do this work. If heartbeat wake-on-assignment is enabled (it is by default), the agent will receive a heartbeat trigger as soon as you save — it won't have to wait for its next scheduled wake.
 
    > **Note:** Only one agent can hold an issue "in progress" at a time. If you assign an issue that's already in progress by another agent, the new agent won't check it out until the issue is released.
 
-6. **Set a parent issue (if relevant)**
+7. **Set a parent issue (if relevant)**
 
    If this issue is a subtask — part of a larger piece of work — link it to the parent. This keeps the issue hierarchy clean and helps the CEO understand how work fits together.
 
-7. **Save the issue**
+8. **Save the issue**
 
    Click **Create Issue**. The issue appears in the list and the assigned agent is notified.
 
@@ -452,6 +464,30 @@ When a recovery action is resolved, it is stamped with one of these outcomes (th
 - **`false_positive`** — the recovery action was triggered in error and the issue never needed intervention.
 
 > **Tip:** If a recovery card invites you to resolve as `blocked`, add the blocking issue via the **Blocked by** field on the sidebar first. The resolution will refuse to close until a structured blocker exists.
+
+---
+
+## Task watchdogs
+
+A **task watchdog** is a monitoring agent you attach to a task to keep watch while it runs. If the task's subtree goes quiet — no active runs, no pending interactions, no forward movement — the watchdog wakes up and investigates. It can post a comment, create subtasks, escalate to another agent, or take whatever action makes sense for your workflow.
+
+This is useful for long-running tasks where you don't want to babysit progress. Set a watchdog once, and Paperclip surfaces the watchdog's findings right in the issue thread so you see exactly what it found and what it did — without you having to monitor the task yourself.
+
+### How a watchdog fires
+
+The watchdog evaluates the task's subtree to identify sub-issues that look stuck: issues with no active run and no pending interaction that would explain the silence. When the system detects that stall, the watchdog agent wakes up and handles the situation.
+
+A short grace window applies after the task is first created, so the watchdog won't fire the moment a brand-new issue lands in the queue. It gives the assigned agent a chance to get started before treating the silence as a problem.
+
+### One watchdog per task
+
+Each task can have at most one watchdog attached at a time. If you need to change the monitoring behaviour, remove the existing watchdog first and then attach a new one.
+
+### Where to see watchdog activity
+
+Watchdog outcomes appear in the **Chat** tab on the issue — the same place you'd see any other agent comment. The watchdog posts what it found (the stalled sub-issue, its state) and what it did about it. You can respond in the same thread, create follow-up issues, or adjust from the issue detail sidebar.
+
+> **Note:** Task watchdogs are a user-facing monitoring feature. They are distinct from the system-level `active_run_watchdog` recovery kind, which is an automatic backstop for stranded runs and does not require any setup on your part.
 
 ---
 
