@@ -3,6 +3,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { transform } from "esbuild";
 import { marked } from "marked";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -12,6 +13,7 @@ const sourceIndexPath = path.join(__dirname, "index.html");
 const sourceStylesPath = path.join(__dirname, "styles.css");
 const sourceAppJsPath = path.join(__dirname, "app.js");
 const sourceNavPath = path.join(__dirname, "content.json");
+const sourceVendorDir = path.join(__dirname, "vendor");
 const screenshotsSourceDir = path.join(docsRoot, "user-guides", "screenshots");
 const defaultSiteUrl = "https://docs.paperclip.ing";
 const defaultSeoDescription = "Guides, references, and walkthroughs for running Paperclip, an AI company operating system for agent teams, governance, budgets, and workflows.";
@@ -447,6 +449,10 @@ function escapeHtml(value) {
     .replace(/"/g, "&quot;");
 }
 
+function escapeAttr(value) {
+  return escapeHtml(value).replace(/'/g, "&#39;");
+}
+
 function escapeXml(value) {
   return String(value)
     .replace(/&/g, "&amp;")
@@ -454,6 +460,50 @@ function escapeXml(value) {
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&apos;");
+}
+
+const responsiveScreenshotVariants = new Map([
+  ["dashboard/dashboard-overview.png", { width: 2880, height: 1800, variantWidth: 900 }],
+]);
+
+function screenshotReleasePath(src, theme = "dark") {
+  const match = String(src).match(/(?:^|\/)user-guides\/screenshots\/(?:light|dark)\/(.+)$/);
+  if (match) return `user-guides/screenshots/${theme}/${match[1]}`;
+  return src;
+}
+
+function screenshotVariantConfig(src) {
+  const match = String(src).match(/(?:^|\/)user-guides\/screenshots\/(?:light|dark)\/(.+)$/);
+  if (!match) return null;
+  return responsiveScreenshotVariants.get(match[1]) || null;
+}
+
+function releaseMarkdownImage(href, title, text) {
+  const src = screenshotReleasePath(href);
+  const attrs = [
+    `src="${escapeAttr(src)}"`,
+    `alt="${escapeAttr(text || "")}"`,
+  ];
+  if (title) attrs.push(`title="${escapeAttr(title)}"`);
+
+  const variantConfig = screenshotVariantConfig(src);
+  if (variantConfig) {
+    const optimizedSrc = src.replace(/\.png(?:\?.*)?$/i, "-900.webp");
+    attrs.push(
+      `class="responsive-screenshot"`,
+      `data-screenshot="${escapeAttr(href)}"`,
+      `width="${variantConfig.width}"`,
+      `height="${variantConfig.height}"`,
+      `sizes="(max-width: 820px) calc(100vw - 48px), 820px"`,
+      `srcset="${escapeAttr(`${optimizedSrc} ${variantConfig.variantWidth}w, ${src} ${variantConfig.width}w`)}"`,
+      `decoding="async"`,
+      `loading="eager"`,
+      `fetchpriority="high"`,
+      `style="aspect-ratio:${variantConfig.width}/${variantConfig.height}"`,
+    );
+  }
+
+  return `<img ${attrs.join(" ")}>`;
 }
 
 function markdownToPlainText(markdown) {
@@ -627,6 +677,11 @@ function buildCloudflareHeaders() {
   return `/*
   X-Robots-Tag: index, follow
   Referrer-Policy: strict-origin-when-cross-origin
+  X-Content-Type-Options: nosniff
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  Cross-Origin-Opener-Policy: same-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'none'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://api.github.com; upgrade-insecure-requests
 
 /sitemap.xml
   Content-Type: application/xml; charset=utf-8
@@ -750,22 +805,73 @@ location ${deploymentBasePath} {
 `;
 }
 
-function renderStaticMarkdown(markdown) {
-  marked.setOptions({ gfm: true, breaks: false });
-  return marked.parse(markdown);
+function renderTabsBlock(labels, body) {
+  const names = labels.split(",").map((label) => label.trim());
+  let output = '<div class="tabs-container">';
+  output += '<div class="tabs-bar">';
+  names.forEach((name, index) => {
+    output += `<button class="tab-btn${index === 0 ? " active" : ""}" data-tab="${escapeAttr(name)}">${escapeHtml(name)}</button>`;
+  });
+  output += "</div>";
+
+  const tabRegex = /<!-- tab: (.+?) -->([\s\S]*?)(?=<!-- tab:|$)/g;
+  let match;
+  let index = 0;
+  while ((match = tabRegex.exec(body)) !== null) {
+    output += `<div class="tab-panel${index === 0 ? " active" : ""}" data-panel="${escapeAttr(match[1].trim())}">`;
+    output += marked.parse(match[2].trim());
+    output += "</div>";
+    index += 1;
+  }
+  return `${output}</div>`;
 }
 
-function buildStaticPageHtml(sourceIndex, metadata, markdown, basePath) {
+function preprocessTabs(markdown) {
+  const openMarker = "<!-- tabs:";
+  const closeMarker = "<!-- /tabs -->";
+  const maxIterations = 100;
+  let output = markdown;
+
+  for (let index = 0; index < maxIterations; index += 1) {
+    const closeIndex = output.indexOf(closeMarker);
+    if (closeIndex === -1) break;
+    const openIndex = output.lastIndexOf(openMarker, closeIndex - 1);
+    if (openIndex === -1) break;
+    const afterOpen = output.indexOf("-->", openIndex);
+    if (afterOpen === -1 || afterOpen > closeIndex) break;
+    const labels = output.slice(openIndex + openMarker.length, afterOpen).trim();
+    const body = output.slice(afterOpen + 3, closeIndex);
+    output = output.slice(0, openIndex) + renderTabsBlock(labels, body) + output.slice(closeIndex + closeMarker.length);
+  }
+
+  return output;
+}
+
+function renderStaticMarkdown(markdown) {
+  const renderer = new marked.Renderer();
+  renderer.image = releaseMarkdownImage;
+  marked.setOptions({ gfm: true, breaks: false, renderer });
+  return marked.parse(preprocessTabs(markdown));
+}
+
+function inlineReleaseStyles(html, css) {
+  return html.replace(
+    '<link rel="stylesheet" href="styles.css" />',
+    `<style data-inline-release-css>${css}</style>`,
+  );
+}
+
+function buildStaticPageHtml(sourceIndex, metadata, markdown, basePath, releaseStyles) {
   const articleHtml = renderStaticMarkdown(markdown);
   const routeBaseHref = basePath === "auto" ? "/" : basePath;
-  return injectSeo(sourceIndex, metadata, { baseHref: routeBaseHref })
+  return inlineReleaseStyles(injectSeo(sourceIndex, metadata, { baseHref: routeBaseHref }), releaseStyles)
     .replace('<section id="landing">', '<section id="landing">')
     .replace('<div id="article-view">', '<div id="article-view" class="is-active">')
     .replace('<div id="loading">', '<div id="loading" style="display:none">')
     .replace('<article id="article" style="display:none"></article>', `<article id="article">${articleHtml}</article>`);
 }
 
-async function writeStaticRoutePages({ outDir, sourceIndex, pages, markdownBodiesByFile, basePath }) {
+async function writeStaticRoutePages({ outDir, sourceIndex, pages, markdownBodiesByFile, basePath, releaseStyles }) {
   for (const metadata of pages) {
     const { page } = metadata;
     const markdown = markdownBodiesByFile.get(page.file);
@@ -775,7 +881,7 @@ async function writeStaticRoutePages({ outDir, sourceIndex, pages, markdownBodie
       throw new Error(`Refusing to write route outside release directory: ${page.slug}`);
     }
     await ensureDir(path.dirname(routePath));
-    await fs.writeFile(routePath, buildStaticPageHtml(sourceIndex, metadata, markdown, basePath));
+    await fs.writeFile(routePath, buildStaticPageHtml(sourceIndex, metadata, markdown, basePath, releaseStyles));
   }
 }
 
@@ -820,6 +926,25 @@ The generated \`.htaccess\` and \`nginx.conf.example\` are optional examples for
 `;
 }
 
+function minifyCss(source) {
+  return source
+    .replace(/\/\*[\s\S]*?\*\//g, "")
+    .replace(/\s+/g, " ")
+    .replace(/\s*([{}:;,>+~])\s*/g, "$1")
+    .replace(/;}/g, "}")
+    .trim();
+}
+
+async function minifyJs(source) {
+  const result = await transform(source, {
+    loader: "js",
+    minify: true,
+    target: "es2020",
+    legalComments: "none",
+  });
+  return result.code;
+}
+
 async function main() {
   const options = parseArgs(process.argv.slice(2));
   const sourceNav = JSON.parse(await fs.readFile(sourceNavPath, "utf8"));
@@ -832,9 +957,13 @@ async function main() {
   const sourceIndex = await fs.readFile(sourceIndexPath, "utf8");
   const sourceStyles = await fs.readFile(sourceStylesPath, "utf8");
   const sourceAppJs = await fs.readFile(sourceAppJsPath, "utf8");
+  const releaseStyles = minifyCss(sourceStyles);
   const releaseAppJs = rewriteAppJs(sourceAppJs, options.basePath);
-  await fs.writeFile(path.join(options.outDir, "styles.css"), sourceStyles);
-  await fs.writeFile(path.join(options.outDir, "app.js"), releaseAppJs);
+  await fs.writeFile(path.join(options.outDir, "styles.css"), releaseStyles);
+  await fs.writeFile(path.join(options.outDir, "app.js"), await minifyJs(releaseAppJs));
+  if (await pathExists(sourceVendorDir)) {
+    await copyDirRecursive(sourceVendorDir, path.join(options.outDir, "vendor"));
+  }
   await fs.writeFile(path.join(options.outDir, ".htaccess"), buildHtaccess(options.basePath));
   await fs.writeFile(path.join(options.outDir, "nginx.conf.example"), buildNginxConfig(options.basePath));
   await fs.writeFile(path.join(options.outDir, "DEPLOY.md"), buildDeployGuide(options.basePath));
@@ -862,7 +991,7 @@ async function main() {
     const fm = frontmatterByFile.get(page.file);
     if (fm) page.frontmatter = fm;
   }
-  await fs.writeFile(path.join(options.outDir, "content.json"), `${JSON.stringify(releaseNav, null, 2)}\n`);
+  await fs.writeFile(path.join(options.outDir, "content.json"), `${JSON.stringify(releaseNav)}\n`);
 
   const pageMetadata = await pageMetadataForNav(releaseNav, options.outDir, options.siteUrl, options.basePath);
   await fs.writeFile(path.join(options.outDir, "_redirects"), buildCloudflareRedirects({
@@ -876,13 +1005,14 @@ async function main() {
     siteUrl: options.siteUrl,
     basePath: options.basePath,
   };
-  await fs.writeFile(path.join(options.outDir, "index.html"), injectSeo(sourceIndex, rootMetadata));
+  await fs.writeFile(path.join(options.outDir, "index.html"), inlineReleaseStyles(injectSeo(sourceIndex, rootMetadata), releaseStyles));
   await writeStaticRoutePages({
     outDir: options.outDir,
     sourceIndex,
     pages: pageMetadata,
     markdownBodiesByFile,
     basePath: options.basePath,
+    releaseStyles,
   });
 
   await fs.writeFile(path.join(options.outDir, "sitemap.xml"), buildSitemap({
