@@ -41,6 +41,21 @@ It earned its keep immediately: the first live run flagged `skills:create` and `
 
 `docs/user-guides/screenshots/registry.json` was scaffolded with 274 empty entries. The `depends_on` arrays need to be populated by hand for staleness detection to fire. Pick high-traffic screenshots first (issues, dashboard, costs, onboarding) and trace them to the relevant `ui/src/**` paths.
 
+## Screenshot capture targets for v2026.707.0 shots — DONE (routes) / seed pending
+
+The 7 `sync:verify-screenshots` gaps inherited from merged PRs #45/#47/#48 are now resolved at the tracking layer:
+
+- **Registered as capture targets** in `scripts/screenshots/routes.mjs` with code-verified routes + `dependsOn`: `work-timeline/*` (`/{prefix}/timeline` → `Timeline.tsx`), `secrets/user-secret-definition` / `secrets/per-user-value-entry` / `secrets/dispatch-check` (`/{prefix}/company/settings/secrets` → `Secrets.tsx` + `ui/src/pages/secrets/*`), and `watchdogs/watchdog-thread-outcome` (`/{prefix}/issues/{issueId}`). Registry entries with `depends_on` added for all 12 (light+dark), so staleness now fires when the surface moves.
+- **`secrets/secret-scope-dispatch-flow`** is a hand-authored diagram, not a UI capture. Added a `STATIC_DIAGRAMS` allowlist to `routes.mjs` and taught `verify-screenshots.mjs` to skip it (same rationale as the intentionally-untracked `index.css`).
+
+**Still pending — seed + interaction steps for the stateful shots.** The targets are route-accurate, but automated capture of the *specific states* needs work in `scripts/screenshots/seed.mjs` and `steps`:
+- `work-timeline-handoff` — multi-agent handoff/overlap state on the timeline.
+- `secrets/user-secret-definition` + `per-user-value-entry` — a seeded user-secret definition and a per-user value, plus the tab/dialog `steps` to reach them.
+- `secrets/dispatch-check` — a run blocked on a missing user secret (the `MissingUserSecretsBanner`).
+- `watchdogs/watchdog-thread-outcome` — a seeded watchdog outcome inside an issue thread.
+
+Until then the committed hand-captured PNGs stand; a `screenshots:refresh` will only revisit these when their `dependsOn` paths change, and the output always lands in a review PR (never auto-pushed).
+
 ## Pre-existing doc issues unrelated to /sync-docs
 
 - 3 broken screenshot refs from before the skill work: `docs/administration/cli-auth.md` → `light/auth/board-claim.png` and `light/auth/device-code.png`; `docs/how-to/connect-agent-to-github.md` → `light/workspaces/github-pr-issue-side-by-side.png`. Either capture the screenshots or rewrite the doc sections that reference them.

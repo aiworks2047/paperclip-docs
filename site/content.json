@@ -51,6 +51,10 @@
           "file": "../docs/guides/day-to-day/dashboard.md"
         },
         {
+          "title": "Command Palette",
+          "file": "../docs/guides/day-to-day/command-palette.md"
+        },
+        {
           "title": "Issues",
           "file": "../docs/guides/day-to-day/issues.md"
         },
@@ -77,6 +81,10 @@
         {
           "title": "Activity Log",
           "file": "../docs/guides/day-to-day/activity-log.md"
+        },
+        {
+          "title": "Work Timeline",
+          "file": "../docs/guides/day-to-day/work-timeline.md"
         },
         {
           "title": "Feedback & Voting",
@@ -145,6 +153,10 @@
         {
           "title": "Execution Workspaces",
           "file": "../docs/guides/projects-workflow/workspaces.md"
+        },
+        {
+          "title": "Custom Sandbox Images",
+          "file": "../docs/guides/projects-workflow/custom-sandbox-images.md"
         },
         {
           "title": "Task Watchdogs",
@@ -303,6 +315,10 @@
         {
           "title": "Roles & Permissions",
           "file": "../docs/administration/roles-and-permissions.md"
+        },
+        {
+          "title": "Secret Scopes",
+          "file": "../docs/administration/secret-scopes.md"
         },
         {
           "title": "Settings",
@@ -624,6 +640,15 @@
               ]
             },
             {
+              "title": "Finance",
+              "pages": [
+                {
+                  "title": "Ramp",
+                  "file": "../docs/reference/skills/optional/finance/ramp.md"
+                }
+              ]
+            },
+            {
               "title": "Product",
               "pages": [
                 {
@@ -656,16 +681,16 @@
           "file": "../docs/reference/adapters/overview.md"
         },
         {
-          "title": "Claude Local",
-          "file": "../docs/reference/adapters/claude-local.md"
+          "title": "Claude Code",
+          "file": "../docs/reference/adapters/claude-code.md"
         },
         {
-          "title": "Codex Local",
-          "file": "../docs/reference/adapters/codex-local.md"
+          "title": "Codex",
+          "file": "../docs/reference/adapters/codex.md"
         },
         {
-          "title": "Gemini Local",
-          "file": "../docs/reference/adapters/gemini-local.md"
+          "title": "Gemini CLI",
+          "file": "../docs/reference/adapters/gemini-cli.md"
         },
         {
           "title": "Cursor Local",
@@ -680,16 +705,16 @@
           "file": "../docs/reference/adapters/acpx-local.md"
         },
         {
-          "title": "OpenCode Local",
-          "file": "../docs/reference/adapters/opencode-local.md"
+          "title": "OpenCode",
+          "file": "../docs/reference/adapters/opencode.md"
         },
         {
-          "title": "Pi Local",
-          "file": "../docs/reference/adapters/pi-local.md"
+          "title": "Pi",
+          "file": "../docs/reference/adapters/pi.md"
         },
         {
-          "title": "Hermes Local",
-          "file": "../docs/reference/adapters/hermes-local.md"
+          "title": "Hermes",
+          "file": "../docs/reference/adapters/hermes.md"
         },
         {
           "title": "Hermes Gateway",
