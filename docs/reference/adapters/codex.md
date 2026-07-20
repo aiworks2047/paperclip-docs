@@ -1,5 +1,5 @@
 ---
-paperclip_version: v2026.618.0
+paperclip_version: v2026.720.0
 ---
 
 # Codex
@@ -28,6 +28,7 @@ paperclip_version: v2026.618.0
 | Field | Required | Notes |
 |---|---:|---|
 | `cwd` | no | Absolute working directory for the agent. Recommended in practice. If omitted, the adapter falls back to the current process working directory. Paperclip creates the path when permissions allow. |
+| `engine` | no | How Codex is run: `auto` (the default — ACP preferred), `acp` (always the Agent Client Protocol), or `cli` (always the classic Codex CLI). See [ACP Engine](#acp-engine). |
 | `model` | no | Codex model id. See [Models](#models). If you leave it unset, the adapter omits `--model` so the Codex CLI uses its own default. |
 | `promptTemplate` | no | Prompt template used for the run. |
 | `instructionsFilePath` | no | Markdown file prepended to the stdin prompt sent to `codex exec`. |
@@ -37,7 +38,7 @@ paperclip_version: v2026.618.0
 | `command` | no | Defaults to `codex`. |
 | `extraArgs` | no | Extra CLI arguments appended to the Codex invocation. |
 | `env` | no | Environment variables passed to the runtime. Secret refs are supported. |
-| `timeoutSec` | no | Run timeout in seconds. `0` means no timeout. |
+| `timeoutSec` | no | Run timeout in seconds. On local and SSH targets, `0` means no adapter wall-clock timeout. On a sandbox target, `0` or an unset value uses the 14,400-second sandbox default; use a positive value to override it or a negative value to opt out of the adapter timeout. |
 | `graceSec` | no | Grace period before a forced stop. |
 | `outputInactivityTimeoutMs` | no | How long the adapter waits for Codex to produce output before treating the run as stuck. The timer resets every time Codex emits a parsed event, so a busy run never trips it. Defaults to 7 minutes (`420000`) when unset. Set it to `null` to switch the monitor off entirely — only do that for tasks you know go quiet for long stretches, since Paperclip's platform-level one-hour silent-run safety net still applies. When it fires, the adapter stops the Codex process and reports the run as failed with a message like `monitor: no codex output for 7m 0s`. |
 | `workspaceStrategy` | no | Execution workspace strategy, such as `git_worktree`. |
@@ -47,13 +48,46 @@ paperclip_version: v2026.618.0
 
 ---
 
+## ACP Engine
+
+Codex can run through one of two engines — ACP or the classic Codex CLI — selected by the `engine` field:
+
+- **`auto` (default) — ACP preferred.** Paperclip runs Codex through the Agent Client Protocol (ACP) when the host meets the prerequisites, and falls back to the Codex CLI — with diagnostics explaining why — when it can't.
+- **`acp` — always ACP.** Force the Agent Client Protocol path.
+- **`cli` — always the Codex CLI.** Force the classic CLI wrapper and skip ACP entirely.
+
+ACP gives you a richer, structured live transcript: session identity, status with context-window usage, assistant and thinking token deltas, and tool-call updates that fold into a single card as they progress. That extra detail is most useful when you're watching a sandbox run stream in.
+
+When the engine resolves to ACP (either `acp`, or `auto` on a capable host), these extra fields apply:
+
+| Field | Default | Notes |
+|---|---|---|
+| `agentCommand` | package-local `codex-acp` | Optional override for the Codex ACP server command. |
+| `mode` | `persistent` | `persistent` keeps ACP session state between runs; `oneshot` starts fresh each run. |
+| `nonInteractivePermissions` | `deny` | What to do if the ACP agent asks for input outside an interactive session — `deny` the request or `fail` the run. |
+| `stateDir` | Paperclip-managed | Optional ACP session-state directory. Defaults to Paperclip's company- and agent-scoped storage. |
+| `warmHandleIdleMs` | `0` | How long to keep the ACP process warm between runs, in milliseconds. `0` closes it after each run while still retaining persistent session state. |
+
+> **Heads-up:** ACP is where the old standalone `acpx_local` adapter's capabilities now live. That adapter has been retired — pick `codex_local` (or `claude_local` / `gemini_local`) and leave `engine` on `auto` to get ACP by default.
+
+### ACP in sandbox environments
+
+You can keep `engine` on `auto` when this agent runs in a Paperclip sandbox environment. If that sandbox provides Paperclip's bidirectional process session, Paperclip keeps the ACP engine and its structured live transcript; you do not add a separate bridge setting to the adapter config.
+
+An environment that only runs one-shot commands cannot host an ACP session, so `auto` falls back to the Codex CLI with a diagnostic. The same fallback applies to non-sandbox remote targets such as SSH. Choose `engine: "acp"` when ACP is required and a failed prerequisite should stop the run, or `engine: "cli"` when you always want the CLI lane.
+
+---
+
 ## Models
 
 Pick any of the known Codex model ids in the `model` field. The current options are:
 
-- `gpt-5.5`
+- `gpt-5.6` (the adapter default)
+- `gpt-5.6-sol`
+- `gpt-5.6-terra`
+- `gpt-5.6-luna`
 - `gpt-5.4`
-- `gpt-5.3-codex` (the adapter default)
+- `gpt-5.4-mini`
 - `gpt-5.3-codex-spark`
 - `gpt-5`
 - `o3`
@@ -173,7 +207,7 @@ Paperclip writes these definitions into a managed region of the per-company mana
   "adapterType": "codex_local",
   "adapterConfig": {
     "cwd": "/Users/me/projects/paperclip-workspace",
-    "model": "gpt-5.3-codex",
+    "model": "gpt-5.6",
     "instructionsFilePath": "/Users/me/projects/paperclip-workspace/INSTRUCTIONS.md",
     "modelReasoningEffort": "medium",
     "search": false,

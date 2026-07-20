@@ -71,6 +71,10 @@
           "file": "../docs/guides/day-to-day/blocked-inbox.md"
         },
         {
+          "title": "Decisions",
+          "file": "../docs/guides/day-to-day/decisions.md"
+        },
+        {
           "title": "Approvals",
           "file": "../docs/guides/day-to-day/approvals.md"
         },
@@ -365,8 +369,20 @@
           "file": "../docs/reference/api/agents.md"
         },
         {
+          "title": "Built-in Agents",
+          "file": "../docs/reference/api/built-in-agents.md"
+        },
+        {
           "title": "Issues",
           "file": "../docs/reference/api/issues.md"
+        },
+        {
+          "title": "Cases",
+          "file": "../docs/reference/api/cases.md"
+        },
+        {
+          "title": "Attention",
+          "file": "../docs/reference/api/attention.md"
         },
         {
           "title": "Checkbox Confirmations",
@@ -385,6 +401,18 @@
           "file": "../docs/reference/api/resource-memberships.md"
         },
         {
+          "title": "Folders",
+          "file": "../docs/reference/api/folders.md"
+        },
+        {
+          "title": "Company Skill Policy",
+          "file": "../docs/reference/api/company-skill-policy.md"
+        },
+        {
+          "title": "Inbox Agent Policy",
+          "file": "../docs/reference/api/inbox-agent-policy.md"
+        },
+        {
           "title": "Costs",
           "file": "../docs/reference/api/costs.md"
         },
@@ -395,6 +423,14 @@
         {
           "title": "Activity",
           "file": "../docs/reference/api/activity.md"
+        },
+        {
+          "title": "Decision Training",
+          "file": "../docs/reference/api/decision-training.md"
+        },
+        {
+          "title": "Summary Slots",
+          "file": "../docs/reference/api/summary-slots.md"
         },
         {
           "title": "Dashboard",
@@ -415,6 +451,10 @@
         {
           "title": "Plugins",
           "file": "../docs/reference/api/plugins.md"
+        },
+        {
+          "title": "Tool Gateway",
+          "file": "../docs/reference/api/tool-gateway.md"
         },
         {
           "title": "Instance Admin",
@@ -709,7 +749,7 @@
           "file": "../docs/reference/adapters/cursor-cloud.md"
         },
         {
-          "title": "ACPX Local",
+          "title": "ACPX Local (retired)",
           "file": "../docs/reference/adapters/acpx-local.md"
         },
         {

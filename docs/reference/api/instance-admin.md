@@ -1,5 +1,5 @@
 ---
-paperclip_version: v2026.529.0
+paperclip_version: v2026.720.0
 ---
 
 # Instance Admin API
@@ -24,6 +24,8 @@ These surfaces are stable enough to call from your own tooling, but they are int
 | `POST /api/instance/settings/experimental/issue-graph-liveness-auto-recovery/run` | Run the auto-recovery sweep. |
 
 The experimental "issue-graph-liveness auto-recovery" routes are paired: preview produces a dry-run summary; run applies the same changes. Both share the `issueGraphLivenessAutoRecoveryRequestSchema` body shape.
+
+The experimental-settings response and patch body include `enableBuiltInAgents` as a boolean. Set it to `true` before using the [Built-in Agents API](./built-in-agents.md); while it is off, those routes return `404 Not Found`.
 
 ---
 

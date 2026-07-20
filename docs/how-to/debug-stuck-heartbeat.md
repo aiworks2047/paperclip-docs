@@ -1,3 +1,7 @@
+---
+paperclip_version: v2026.720.0
+---
+
 # Debug a stuck heartbeat
 
 Five symptoms that cover almost every "this agent isn't working right" report. Open the agent's detail page and scroll to **Run history** before you start — every diagnosis below begins there.
@@ -57,6 +61,14 @@ Five symptoms that cover almost every "this agent isn't working right" report. O
 **Fix.** Before commenting on a `blocked` issue, fetch `GET /api/issues/{issueId}/comments?order=asc`. If the most recent author is you and the body matches, skip. Only re-engage on a new comment, status change, or event-driven wake.
 
 ---
+
+## 6. Recovery wakes slow down after repeated no-progress runs
+
+**Symptom.** A recovery-style wake is recorded as skipped with reason `issue_rewake_throttled`, instead of starting another agent session right away.
+
+**Cause.** Paperclip protects you from an expensive no-op loop. After two successful runs for the same issue make no issue-visible progress, another recovery-style wake waits for an escalating cooldown. The delay starts at two minutes and never exceeds 30 minutes.
+
+**Fix.** Read the latest run first, then give the agent new information or explicitly resume the work when you are ready to intervene. A new comment, fresh issue activity, and an explicit resume bypass the cooldown. Server-side recovery retries also continue immediately, so this safeguard does not delay a real crash-recovery attempt.
 
 ## Where to look first
 
