@@ -199,6 +199,10 @@
           "file": "../docs/experimental/overview.md"
         },
         {
+          "title": "Connections v3 (Apps)",
+          "file": "../docs/experimental/connections-apps.md"
+        },
+        {
           "title": "Environments",
           "file": "../docs/experimental/environments.md"
         },
@@ -379,6 +383,10 @@
         {
           "title": "Secret Scopes",
           "file": "../docs/administration/secret-scopes.md"
+        },
+        {
+          "title": "Secret Folders",
+          "file": "../docs/administration/secret-folders.md"
         },
         {
           "title": "Settings",
